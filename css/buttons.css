@@ -1,0 +1,110 @@
+/* CSS styles for buttons */
+
+.btn,
+.btn:hover,
+.btn:focus {
+    background: #2B9BDB;
+	color: #FFFFFF;
+	text-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border: none }
+
+.btn-large {
+	color: #fff;
+	background: #2980B9;
+	padding: 5px 19px;
+	font-size: 14px;
+    border-radius: 3px
+}
+
+.btn-large:hover {
+	color: #fff;
+	background: #3498DB }
+
+.btn.btn-inverted { 
+	color: #2B9BDB;
+	background: #FFFFFF;
+	box-shadow: none;
+	font-weight: normal }
+
+.btn-2 { font-weight: 700; padding: 1px 20px; border-radius: 3px; margin:0 20px; }
+.btn.btn-large-x-2 { width: 181px }
+
+.button,
+.button:focus,
+.button:hover {
+	font-family: 'Open Sans', sans-serif, semi-bold;
+	display: inline-block; 
+	height: 44px;
+	color: #FFFFFF; 
+	padding: 0;
+	text-align: center;
+	-webkit-border-radius: 3px;
+	border-radius: 272px;
+	background-color: #00b71d; 
+	background-repeat: no-repeat;
+	border: none;
+	font-size: 1.75em;
+	text-decoration: none;
+	box-shadow: none;
+	outline: none }
+
+button.button { line-height: 45px }
+
+.button.button-icon { 
+	text-indent: -9999px; 
+	width: 44px; 
+	background-image: url('../img/buttons/spr-call-action.png');
+	background-position: 2px 1px }
+
+.button.button-icon-call { background-position: 26px 10px }
+
+.button.button-2 {
+	line-height: 0;
+	display: inline-block;
+	min-width: 1px;
+	padding: 0;
+	font-size: 1.375em;
+	height: 35px;
+	overflow: hidden;
+	min-width: 160px }
+	.button.button-2 span {
+		background: transparent;
+		height: 0;
+		display: block;
+		padding: 19px 0 0;
+		font-size: 27px; }
+
+.button.button-3 {
+	line-height: 34px;
+	display: inline-block;
+	padding: 0;
+	width: 49px;
+	height: 49px;
+	overflow: hidden;
+	text-indent: -9999px;
+	min-width: 1px;
+	border-radius: 222px;
+	background-color: #00b81e }
+
+.button.button-autowidth { min-width: 0; padding-left: 20px; padding-right: 20px }
+
+.button.button-color-2{ background-color: #2a9cdb; color: #FFFFFF }
+.button.button-color-3 { background-color: #d5393a; color: #FFFFFF }
+.button.button-color-disabled { background-color: #cfcfcf; color: #282828 }
+
+.button.button-small { 
+	padding: 0 18px;
+	font-size: 11px;
+	line-height: 20px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	min-height: 1px;
+	min-width: 2px;
+	height: auto }
+
+.call-main-action.disabled { background-color: #AAAAAA }
+.button.disabled { background-color: #AAAAAA }
+
+

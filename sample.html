@@ -1,0 +1,1366 @@
+<!-- saved from url=(0017)http://localhost/ -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1">
+    <script type="text/javascript" src="../src/ciscobase.js"></script>
+
+    <script type="text/javascript" src="../src/cwic/cwic.js"></script>
+    <script type="text/javascript" src="fullscreen.js"></script>
+    <script type="text/javascript" src="call-helpers.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        button#showpinpvideo {
+            width: 60px;
+            height: 20px;
+            position: relative;
+            border: 1px solid black;
+        }
+        button#showpinpvideo div.pinp {
+            position: absolute;
+            width: 25%;
+            height: 25%;
+            border: 1px solid black;
+            background: #ffffff;
+        }
+        button#showpinpvideo.off div.pinp {
+            border: #444;
+            background: #ccc;
+            top: 37%;
+            left: 37%;
+        }
+        button#showpinpvideo.topleft div.pinp {
+            top: 10%;
+            left: 10%;
+        }
+        button#showpinpvideo.topright div.pinp {
+            top: 10%;
+            left: 65%;
+        }
+        button#showpinpvideo.bottomleft div.pinp {
+            top: 65%;
+            left: 10%;
+        }
+        button#showpinpvideo.bottomright div.pinp {
+            top: 65%;
+            left: 65%;
+        }
+        div.alignright {
+            float: right;
+        }
+        #logindetails {
+            width: 300px;
+            /*height: 140px;*/
+            border: 1px solid black;
+            padding: 3px;
+        }
+
+        #logindetails label {
+            width: 40%;
+            text-align: right;
+            display: inline-block;
+        }
+
+        #logindetails input,
+        #logindetails select {
+            margin: 2px 0 0 0;
+        }
+        #logindetails input[type="text"],
+        #logindetails input[type="password"] {
+            width: 50%;
+            padding-left: 4px;
+        }
+        ul#calllist,
+        ul#calllist li {
+            width: 400px;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        ul#calllist li.selected {
+            background: #ccc;
+        }
+        ul#calllist li span {
+            padding: 3px;
+        }
+        ul#calllist li span.controls {
+            display: none;
+        }
+        div.videocontainer {
+            height: 100%;
+            width: 100%;
+        }
+        div#videocontainer {
+            position: relative;
+            height: 273px;
+            min-width: 364px;
+            overflow: hidden;
+            background-color: #c0c0c0;
+            resize: both;
+            padding: 5px;
+            border: 1px solid #808080;
+        }
+        div#videocontainer object {
+            min-width: 364px;
+            min-height: 273px;
+            height: 100%;
+            width: 100%;
+        }
+        div#localPreviewContainer {
+            border: 1px solid black;
+            display: inline-block;
+            vertical-align: top;
+        }
+        div#localPreviewContainer object {
+            min-height: 150px;
+            height: 100%;
+            width: 100%;
+            max-width: 400px;
+            max-height: 300px;
+        }
+        div#localPreviewContainer div#localvidcontainer {
+            min-height: 150px;
+            min-width: 272px;
+            max-width: 400px;
+            max-height: 300px;
+            resize: both;
+            overflow: hidden;
+            padding: 5px;
+            border: 1px solid #808080;
+            background-color: #c0c0c0;
+        }
+        div.callcontainer {
+            /*
+            width:300px;
+            height:85px;
+            */
+            display:inline-block;
+            background-color: AliceBlue;
+            border:1px solid #aaaaaa;
+            vertical-align: top;
+        }
+
+        div.callcontainer div.remotename {
+            /*
+            float: left;
+            width: 300px;
+            */
+            height: 30px;
+            background-color: LightGray;
+        }
+
+        div.callcontainer div.callinfo {
+            /*
+            float: left;
+            width: 300px;
+            */
+            height: 30px;
+        }
+
+        div.callcontainer button.endbtn,
+        div.callcontainer button.holdresumebtn,
+        div.callcontainer button.muteaudiobtn,
+        div.callcontainer button.mutevideobtn,
+        div.incomingcontainer button.answerbtn,
+        div.incomingcontainer button.divertbtn {
+            float: right;
+        }
+
+        button.fullscreenbtn {
+            display: none;
+        }
+        div.incomingcontainer {
+            float: left;
+            width: 200px;
+            height: 60px;
+            background-color: CadetBlue;
+        }
+
+        div.incomingcontainer div.message {
+            float: left;
+            width: 200px;
+            height: 30px;
+        }
+
+        div#logindetails div#aboutcontainer {
+            font-size: 10px;
+            text-align: right;
+            border: 1px solid black;
+        }
+
+        div.webExcontainer {
+            width: 400px;
+            border: 1px solid #aaaaaa;
+            background-color: AliceBlue;
+            padding: 0px;
+        }
+
+        div.webExcontainer div.webExsetting {
+            float: left;
+            width: 400px;
+            height: 30px;
+            background-color: LightGray;
+            font-weight:bold;
+            font-size: 15px;
+        }
+
+        div.webExcontainer div.webExbuttons {
+            float: left;
+            width: 400px;
+            height: 30px;
+            background-color: LightGray;
+        }
+        div.mmDevices {
+            outline: black solid 1px;
+            width: 50%;
+        }
+        div.mmDevices select.mmDevicesSelect {
+            width: 300px;
+            height: 100px;
+        }
+        iframe.loginFrame {
+            display: none;
+        }
+        iframe#pinpwindow {
+            position: absolute;
+            border: 0;
+            margin: 0;
+            padding: 0;
+            width: 25%;
+            height: 25%;
+        }
+        iframe#pinpwindow.off {
+            display: none;
+        }
+        iframe#pinpwindow.topleft {
+            top: 5%;
+            left: 5%;
+        }
+        iframe#pinpwindow.bottomleft {
+            top: 70%;
+            left: 5%;
+        }
+        iframe#pinpwindow.topright {
+            top: 5%;
+            left: 70%;
+        }
+        iframe#pinpwindow.bottomright {
+            top: 70%;
+            left: 70%;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+
+    var popupwindow = null;
+    var pinpwin = null;
+    var thiswindow = window;
+	var globalreg = null;
+
+    function pinpLoaded(win,id) {
+        thiswindow.pinpwin = win;
+        if(id) {
+            thiswindow.pinpVideoObject = $('#'+id,win.document)[0];
+        var currentClass = $('#showpinpvideo').attr('class');
+        var classId = pinpsequence.indexOf(currentClass);
+        if(classId !==0) {
+            $(document).cwic('addPreviewWindow',{previewWindow: thiswindow.pinpVideoObject, "window": thiswindow.pinpwin});
+        }
+        } else {
+            if(jQuery(document).cwic('about').capabilities.video && !thiswindow.pinpVideoObject) {
+                win.createVideoWindow();
+            }
+        }
+    }
+    function pinpUnloaded(win,id) {
+        thiswindow.pinpwin = null;
+        $(document).cwic('removePreviewWindow',{previewWindow: id, "window": win});
+    }
+
+    function popupLoaded(win,id) {
+        thiswindow.popupwindow = win;
+        calls.getCallDiv().cwic('updateConversation', {addRemoteVideoWindow: id,"window":win});
+    }
+
+    function popupUnloaded(win,id) {
+        thiswindow.popupwindow = null;
+    }
+
+    /**
+     * These settings are passed into the 'init' method.
+     */
+    var settings = {
+        ready: phoneReadyCallback, /* Callback when phone is ready for use */
+        error: phoneErrorCallback, /* Error callback */
+        encodeBase64: ciscobase.util.crypto.b64Encode,
+        verbose: true,
+        log: function (msg, context) {
+            //console.trace();
+            if (typeof console !== "undefined" && console.log) {
+                var current = new Date(); 
+                var timelog = current.getDate() + "/" +
+                                ('0' + (current.getMonth()+1)).slice(-2)  + "/" +
+                                current.getFullYear() + " " +
+                                ('0' + current.getHours()).slice(-2) + ":" +
+                                ('0' + current.getMinutes()).slice(-2) + ":" +
+                                ('0' + current.getSeconds()).slice(-2) + "." +
+                                ('00' + current.getMilliseconds()).slice(-3) + " ";            
+                console.log(timelog + msg)
+                if (context) {
+                    if(console.dir) {
+                        console.log(context);
+                    } else if(typeof JSON !== "undefined" && JSON.stringify) {
+                        console.log(JSON.stringify(context,null,2));
+                    } else {
+                        console.log(context);
+                    }
+                }
+            };
+        },
+        contactLookupJsonpHost: ""
+    };
+
+    // Array containing DTMF characters that we want to allow
+    var dtmfchars = { '0' : '0', '1' : '1', '2':'2', '3':'3', '4':'4', '5':'5', '6':'6', '7':'7', '8':'8', '9':'9', '#':'#', '*':'*' };
+
+    /*
+     * Multiple-call settings
+     */
+    var calls = multiCallContainer('call', 'calllist');
+
+    var videoObject = null;
+    var previewVideoObject = null;
+    var pinpVideoObject = null;
+
+    var showLocalVideo = false;
+    // Used to track a conversation id that does not yet have a video window to associate to
+    var delayedVideoConversation = null;
+
+    /*
+     * These are the WebEx integration settings
+     */
+    var WebEx = {
+        ticket: '',
+        site: '',
+        username: '',
+        password: ''
+    };
+
+
+    function popoutVideo() {
+        var height = 520;
+        var width = 700;
+        if(popupwindow === null || popupwindow.closed) {
+            var l = (screen.width-width)-16; // offset by 16 pixels for IE borders
+            var t = 0;
+            var windowsettings='height=' + height + ',width=' + width + ',top=' + t + ',left=' + l + ',location=no,resizable=yes,scrollbars=no,status=no,toolbar=no,menubar=no';
+            var popupUrl="popout.html";
+            popupwindow = window.open(popupUrl, "_cwicvideo", windowsettings);
+            if(popupwindow !== null) {
+                popupwindow.focus();
+            }
+        }
+        else {
+            popupwindow.focus();
+        }
+    }
+    /**
+     * This callback is invoked when the phone plugin is available for use.
+     */
+    function phoneReadyCallback(defaults,phoneRegistered, phoneMode) {
+        $('#remotevideocontainer').cwic('createVideoWindow',{id: 'videocallobject', success: function(id) {
+            videoObject = document.getElementById(id);
+            if (delayedVideoConversation) {
+                // The update for the conversation that video is ready can occur before the createVideoWindow() call  
+                // returns asynchronously on some browsers, especially on Safari and background tabs.  Add the video 
+                // window to the call now.
+                calls.getCallDiv(delayedVideoConversation.callId).cwic('updateConversation',{'addRemoteVideoWindow':videoObject});
+                delayedVideoConversation = null;
+            } 
+
+            /*
+            videoObject.addEventListener('videofocus', function() {
+                //console.log("caught video object focus");
+                setTimeout(function() {$('#videocontainer').focus();}, 250);
+            },true);
+            */
+        }});
+        $('#localvidcontainer').cwic('createVideoWindow',{id: 'localPreviewVideo', success: function(id) {
+            previewVideoObject = $('#'+id)[0];
+            /*
+            previewVideoObject.addEventListener('videofocus', function() {
+                //console.log("caught local video object focus");
+                setTimeout(function() {$('#localvidcontainer').focus();}, 250);
+                },true);
+                 */
+        }});
+        if(pinpwin && pinpwin.createVideoWindow) {
+            pinpwin.createVideoWindow();
+        }
+        var about = $('#phonecontainer').cwic('about');
+        $('#jsversion').text(about.javascript.version);
+        $('#jssystem_release').text(about.javascript.system_release);
+        $('#jqueryversion').text(about.jquery.version);
+        if (about.plugin) {
+            $('#pluginversion').text(about.plugin.version.plugin);
+            $('#eccversion').text(about.plugin.version.ecc);
+            $('#pluginsystem_release').text(about.plugin.version.system_release);
+        }
+
+        setupUIHandlers();
+  		refreshMMDevices();
+  		
+        // Handle the login button's behavior
+        $('#loginbtn').click(function() {
+        /**
+        * If we're in Deskphone mode, password is required. Not currently required for Softphone mode.
+        */
+            var authNeeded = !!($('#mode').val() === "DeskPhone" || $('#auth').attr('checked'));
+            login($('#username').val(),$('#password').val(),$('#cucm').val(),authNeeded ,$('#mode').val());
+        });
+
+        // Handle the logout button's behavior
+        $('#logoutbtn').click(function() {
+            $('#incomingcontainer, #callcontainer').hide();
+            $('#logoutbtn').attr('disabled', true);
+            logout();
+        });
+        if(phoneRegistered) {
+			$('#mode').val(phoneMode);
+            setUILoggedIn();
+        }
+    };
+
+    function phoneErrorCallback(error, exception) {
+		if (error) {
+			settings.log('phone error: ', error);
+			var about = $().cwic('about');
+
+			var msg = 'ERROR: cannot initialize phone: ' + error.message + ' (code ' + error.code + ')<br>';
+			msg += 'cwic javascript version is ' + about.javascript.version + '<br>';
+
+			if (about.upgrade) {
+				if (about.upgrade.plugin) { msg += 'plugin upgrade ' + about.upgrade.plugin + '<br>'; }
+				if (about.upgrade.javascript) { msg += 'cwic javascript upgrade ' + about.upgrade.javascript + '<br>'; }
+			}
+
+			$('#msgcontainer').empty().html('<b style="color:red">' + msg + '</b>');
+		}
+
+		if (exception) {
+			settings.log('exception: ',exception);
+		}
+    };
+    
+    function handleMMDeviceChange() {
+        refreshMMDevices();
+    };
+
+    /*
+     * When page is loaded, initialize the plugin.
+     */
+    $(document).ready(function() {
+
+        function onCwicLoaded() {
+            settings.log('onCwicLoaded');
+
+            // set the source of the picture-in-picture iframe (requires cwic to be available)
+            $('#pinpwindow').attr('src', 'pinp.html');
+
+            $('#calllist').click(calls.callListClick);
+
+            $('#mode').change(function() {
+                $('#auth').attr('disabled',$(this).val() === 'DeskPhone');
+            });
+            $('#phonecontainer').cwic('init', settings);
+
+            /**
+             * Add handlers for conversationStart and conversationIncoming events
+             */
+            $('#phonecontainer')
+            .bind('conversationStart.cwic', handleConversationStart)
+            .bind('conversationIncoming.cwic', handleConversationIncoming)
+
+            /**
+             * Handle system events - these are issued when the webphone plugin is handling things like
+             * IP address changes.
+             */
+            .bind('system.cwic', handleSystemEvent)
+            .bind('mmDeviceChange.cwic', handleMMDeviceChange);
+
+            $(document).bind('error.cwic', handleError);
+
+            $('#switchmodebtn').click(switchModeClick);
+
+    		$('#showpinpvideo').click(switchPinPVideo);
+    		$('input:radio[name=showlocalvideo]').click(switchPreviewVideo);
+    		$('#togglepreview').click(switchPreviewVideo1);
+    		/**
+            * Conference Feature
+            */
+    		$('#conferencebtn').click(conferenceButtonClick);
+    		$('#transferbtn').click(transferButtonClick);
+        } // onCwicLoaded
+
+        // use static loading for now, cwic.js is included at the top of this file
+        // and call onCwicLoaded straight away
+        onCwicLoaded();
+    });
+
+    function handleLoggedOut() {
+        calls.removeAll();
+        $('#username').attr('disabled', false);
+        $('#cucm').attr('disabled', false);
+        $('#mode').attr('disabled', false);
+        $('#auth').attr('disabled', false);
+        $('#dntodial').attr('disabled', true);
+        $('#loginbtn').attr('disabled', false);
+        $('#logoutbtn').attr('disabled', true);
+        $('#callbtn').attr('disabled', true);
+        $('#switchmodebtn').attr('disabled', true);
+
+        // Once logout has completed, unbind all handlers that are bound in login
+        // On second thought, don't
+    }
+
+    function unbindCallHandlers() {
+        $('#callbtn').unbind();
+        $('#callcontainer').unbind();
+        $('#callcontainer :button').unbind();
+        $('#webExcontainer :button').unbind();
+    }
+    /**
+     * Helper function to logout
+     */
+    function logout(){
+
+        $('#phonecontainer').cwic('unregisterPhone', {
+            forceLogout: true,
+            // the complete callback is always called after unregistering
+            complete: function(){
+                handleLoggedOut();
+            }
+        });
+    };
+
+    function refreshMMDevices(){
+        var recordingDevicesSelect = $('#mmDevices #recordingDevicesSelect');
+        recordingDevicesSelect.empty();
+
+        var captureDevicesSelect = $('#mmDevices #captureDevicesSelect');
+        captureDevicesSelect.empty();
+
+        var playoutDevicesSelect = $('#mmDevices #playoutDevicesSelect');
+        playoutDevicesSelect.empty();
+
+        $('#mmDevices #currentRecording').text("Current Recording Device: None");
+        $('#mmDevices #currentPlayout').text("Current Playout Device: None");
+        $('#mmDevices #currentCapture').text("Current Capture Device: None");
+
+        var devices = $().cwic('getMultimediaDevices');
+        if(devices.multimediadevices)
+        {
+            for(var i=0; i < devices.multimediadevices.length; i++)  
+            {
+               if (devices.multimediadevices[i].canRecord)
+               {
+                   // In order to set a device as a recording device, send in the clientRecordingID to setRecordingDevice().
+                   // Depending on the platform, it may match other fields, but it will always be the value that works for
+                   // setRecordingDevice.  We save it here as clientID, so we can send it when the Set Recording Device button
+                   // is pushed.
+                   recordingDevicesSelect.append($("<option></option>")
+                                                   .attr("value", devices.multimediadevices[i].clientRecordingID)
+                                                   .text(devices.multimediadevices[i].deviceName + ((devices.multimediadevices[i].isDefault) ? " *" : ""))); 
+               }        
+               
+               if (devices.multimediadevices[i].canPlayout)            
+               {
+                   playoutDevicesSelect.append($("<option></option>")
+                                       .attr("value", devices.multimediadevices[i].clientPlayoutID)
+                                       .text(devices.multimediadevices[i].deviceName + ((devices.multimediadevices[i].isDefault) ? " *" : "")));
+               }
+               
+               if (devices.multimediadevices[i].canCapture)            
+               {
+                   captureDevicesSelect.append($("<option></option>")
+                                       .attr("value", devices.multimediadevices[i].clientCaptureID)
+                                       .text(devices.multimediadevices[i].deviceName + ((devices.multimediadevices[i].isDefault) ? " *" : "")));
+               }
+               
+               if (devices.multimediadevices[i].isSelectedRecordingDevice)
+               {
+                   $('#mmDevices #currentRecording').text("Current Recording Device:" + devices.multimediadevices[i].deviceName);
+               }
+               
+               if (devices.multimediadevices[i].isSelectedPlayoutDevice)
+               {
+                   $('#mmDevices #currentPlayout').text("Current Playout Device:" + devices.multimediadevices[i].deviceName);
+               }
+               
+               if (devices.multimediadevices[i].isSelectedCaptureDevice)
+               {
+                   $('#mmDevices #currentCapture').text("Current Capture Device:" + devices.multimediadevices[i].deviceName);
+               }
+            }
+        }
+    };
+    
+    function setCaptureDevice()
+    {
+        var capSelect = $('#captureDevicesSelect');
+        var optSel = $('#captureDevicesSelect option:selected');
+        
+        if (optSel && optSel.val())
+        {
+            $().cwic('setCaptureDevice', optSel.val());
+            refreshMMDevices();
+        }
+    }
+    
+    function setRecordingDevice()
+    {
+        var capSelect = $('#recordingDevicesSelect');
+        var optSel = $('#recordingDevicesSelect option:selected');
+        
+        if (optSel && optSel.val())
+        {
+            $().cwic('setRecordingDevice', optSel.val());
+            refreshMMDevices();
+        }
+    }
+
+    function setPlayoutDevice()
+    {
+        var capSelect = $('#playoutDevicesSelect');
+        var optSel = $('#playoutDevicesSelect option:selected');
+        
+        if (optSel && optSel.val())
+        {
+            $().cwic('setPlayoutDevice', optSel.val());
+            refreshMMDevices();
+        }
+    }
+
+    /**
+    * Set up the UI's handlers for clicks and cwic events. Doing this once prevents bugs from multiple
+    * events being fired
+    */
+    function setupUIHandlers() {
+        $('#popoutbtn').click(popoutVideo);
+        $('#callbtn').click(callButtonClick);
+        $('#callcontainer .holdresumebtn').click(holdResumeButtonClick);
+        $('#callcontainer .muteaudiobtn').click(muteButtonClick);
+        $('#callcontainer .mutevideobtn').click(muteButtonClick);
+		$('#callcontainer .escalatebtn').click(escalateButtonClick);
+
+        $('#dntodial').keypress( function (event) {
+            var conversation = calls.getSelectedCall();
+            if(conversation && conversation.capabilities.canSendDigit) {
+                var char = String.fromCharCode(event.charCode || event.keyCode);
+                if(dtmfchars[char]) {
+                    calls.getCallDiv().cwic('sendDTMF', char);
+                }
+            }
+        });
+
+        $('#callcontainer .endbtn').click(endButtonClick);
+
+        // WebEx handlers
+        $('#callcontainer .webExbtn').click( function() {
+            $('#webExcontainer').show();
+        });
+
+        $('#webExcontainer .webExclosebtn').click( function() {
+            $('#webExcontainer').hide();
+         });
+
+        $('#webExcontainer .applybtn').click(function() {
+            WebEx.password = $('#webExpassword').val();
+                        WebEx.username = $('#webExusername').val();
+                        WebEx.site = $('#webExaddress').val();
+                        $('#msgcontainer').text("Signing in...");
+                                    var backupURL = window.location.toString();
+                                    $('#backupURL,#imbackupURL').val(backupURL.replace('/sample.html','/bu.html'));
+                        loginURL();
+        });
+        $('#webExcontainer .startMeeting').click(function() {
+            $('#tckt').val(WebEx.ticket);
+            $('#wbxid').val(WebEx.username);
+            $('#impromptuMeeting').attr('action','https://'+WebEx.site+'.webex.com/'+WebEx.site+'/m.php');
+            $('#impromptuMeeting').submit();
+        });
+        
+        $('#mmDevices .refreshMMDevices').click(function() {
+            refreshMMDevices();
+        });       
+        
+        $('#mmDevices #setCapture').click(function() {
+            setCaptureDevice(); 
+            refreshMMDevices();
+        });
+
+        $('#mmDevices #setRecording').click(function() {
+            setRecordingDevice(); 
+            refreshMMDevices();
+        });
+
+        $('#mmDevices #setPlayout').click(function() {
+            setPlayoutDevice(); 
+            refreshMMDevices();
+        });
+
+    };
+
+    /**
+     * preview video radio toggle handler
+     */
+    function switchPreviewVideo(evt) {
+        if(showLocalVideo !== evt.target.value) {
+            showLocalVideo = evt.target.value;
+            if(showLocalVideo === "On") {
+                $('#localPreviewVideo').css('width','');
+                $('#localPreviewVideo').css('height','');
+                $(document).cwic('addPreviewWindow',{previewWindow: 'localPreviewVideo' /*previewVideoObject*/});
+            } else {
+                $(document).cwic('removePreviewWindow',{previewWindow: 'localPreviewVideo' /*previewVideoObject*/});
+                $('#localPreviewVideo').css('height','0px');
+                $('#localPreviewVideo').css('width','0px');
+            }
+        }
+    }
+    function switchPreviewVideo1() {
+        if(showLocalVideo === "Off") {
+            $('#localPreviewVideo').css('display','');
+            $(document).cwic('addPreviewWindow',{previewWindow: previewVideoObject});
+            showLocalVideo = "On";
+        } else {
+            $(document).cwic('removePreviewWindow',{previewWindow: previewVideoObject});
+            $('#localPreviewVideo').css('display','none');
+            showLocalVideo = "Off";
+        }
+    }
+
+    /**
+     * switch position/visibility of picture-in-picture
+     */
+    var pinpsequence = ['off','bottomright','bottomleft','topleft','topright'];
+    function switchPinPVideo(evt) {
+        var currentClass = $('#showpinpvideo').attr('class');
+        var classId = pinpsequence.indexOf(currentClass) + 1;
+        if(classId >= pinpsequence.length) {
+            classId = 0;
+        }
+        $('#showpinpvideo').attr('class',pinpsequence[classId]);
+        $('#pinpwindow').attr('class',pinpsequence[classId]);
+        if(classId ===0) {
+            $(document).cwic('removePreviewWindow',{previewWindow: pinpVideoObject, "window": pinpwin});
+        } else {
+            $(document).cwic('addPreviewWindow',{previewWindow: pinpVideoObject, "window": pinpwin});
+        }
+    }
+    /**
+     * Set the UI state to logged in
+     */
+    function setUILoggedIn() {
+        $('#msgcontainer').empty();
+        $('#username').attr('disabled', true);
+        $('#dntodial').attr('disabled', false);
+        $('#cucm').attr('disabled', true);
+        $('#mode').attr('disabled', true);
+        $('#auth').attr('disabled', true);
+        $('#loginbtn').attr('disabled', true);
+        $('#logoutbtn').attr('disabled', false);
+        $('#switchmodebtn').removeAttr('disabled');
+        $('#callbtn').removeAttr('disabled');
+    };
+    /**
+     * Login the webphone.
+     */
+    function login(user,password,cucm,auth,phoneMode){
+        // magic number for encoded password length and trailing char, may break in the future
+        // original password must be short <16 chars to produce something that matches
+        if(password.length === 44 && password[43] === '=') {
+            password = { "cipher" : "cucm", "encrypted": password};
+        }
+        $('#loginbtn').attr('disabled', true);
+        var forcereg = $('#forcereg').attr('checked');
+        
+        $('#phonecontainer').cwic('registerPhone', {
+            user: user,
+            password: password,
+            cucm: (cucm || '').split(','), // array of string
+            mode: phoneMode,
+            authenticate: auth,
+            forceRegistration: forcereg,
+
+            devicesAvailable: function(devices,phoneMode,callback,automatic) {
+                $('#devices').children().remove();
+                var deviceSelected = false;
+                for(var i=0;i<devices.length;i++)  {
+                    if((phoneMode === "SoftPhone" && devices[i].isSoftPhone) || (phoneMode === "DeskPhone" && devices[i].isDeskPhone)) {
+                        if(automatic && !deviceSelected) {
+                            callback(phoneMode,devices[i].name,'');
+                            deviceSelected = true;
+                        }
+                        if(phoneMode === "SoftPhone") {
+                            $('#devices').append($('<option>', {value: devices[i].name+":"}).text(devices[i].name).attr('title',devices[i].modelDescription));
+                        } else {
+                            for(var j=-1;j<devices[i].lineDNs.length;j++) {
+                                $('#devices').append($('<option>', {value: devices[i].name+":"+(j>=0 ? devices[i].lineDNs[j] : '')}).text((j>=0 ? devices[i].lineDNs[j]+' : ' : '')+devices[i].name).attr('title',devices[i].modelDescription));
+                            }
+                        }
+                    }
+                }
+                $('#connectbtn').unbind('click').attr('disabled', false);
+                $('#connectbtn').bind('click', function() {
+                    $(this).attr('disabled', true);
+                    var device= $('#devices').val().split(':');
+                    if(device) {
+                        callback(phoneMode, device[0],device[1]);
+                    }
+                }).removeAttr('disabled');
+            },
+            /**
+             * Callback that's invoked when phone is successfully registered.
+             * Use this callback to enable UI controls etc to enable calls to be made.
+             */
+            success: function(registration) {
+				settings.log('Registration succeeded. Registration: ',registration);
+				globalreg = registration;
+            },
+            /**
+             * Callback that's invoked if registration fails for some reason.
+             */
+            error: handleLoginFailure
+        }); // End of registerPhone
+    } // End of login
+
+
+    function updateConversationInfo(conversation, callcontainer){
+        if(!calls.getSelectedCall() || calls.getSelectedCall().callId !== conversation.callId) {
+            return;
+        }
+        var $callcontainer = $(callcontainer);
+        updateTransferConferenceLists(conversation);
+        $callcontainer.css('display','inline-block');
+		if(conversation.isConference) {
+			$callcontainer.find('.remotename').text("Conference");
+		}
+        else if(conversation.callType === "Outgoing") {
+            $callcontainer.find('.remotename').text(conversation.calledPartyDirectoryNumber);
+        }
+        else if (conversation.callType === "Incoming") {
+            $callcontainer.find('.remotename').text(conversation.callingPartyDirectoryNumber);
+        }
+        $callcontainer.find('.callinfo').text(conversation.callState);
+
+        if (conversation.callState === 'Hold' || conversation.callState === 'RemHold') {
+            $callcontainer.find('.holdresumebtn').attr('disabled', !conversation.capabilities.canResume).text('Resume').addClass('held');
+        } else {
+            $callcontainer.find('.holdresumebtn').attr('disabled', !conversation.capabilities.canHold).text('Hold').removeClass('held');
+        }
+        $callcontainer.find('.endbtn').attr('disabled', !conversation.capabilities.canEndCall);
+
+        if (conversation.state === 'Reorder') {
+            $callcontainer.find('.callinfo').text('Call failed');
+        }
+
+        if(conversation && conversation.callState === "Connected" && (conversation.videoDirection === "RecvOnly" ||  conversation.videoDirection === "SendRecv")) {
+            if(videoObject) {
+                calls.getCallDiv().cwic('updateConversation',{'addRemoteVideoWindow':videoObject});
+            }
+            else {
+                // The update for the conversation that video is ready can occur before the createVideoWindow() call  
+                // returns asynchronously on some browsers, especially on Safari and background tabs.  Save off the 
+                // conversation so that we can add the window to it when it is ready.
+                delayedVideoConversation = conversation;
+            }
+            if(popupwindow && !popupwindow.closed && popupwindow.videoObject) {
+                calls.getCallDiv().cwic('updateConversation',{'addRemoteVideoWindow':popupwindow.videoObject,window:popupwindow});
+            }
+        }
+        if(conversation.audioMuted) {
+            $callcontainer.find('.muteaudiobtn').attr('disabled', !conversation.capabilities.canUnmuteAudio);
+            $callcontainer.find('.muteaudiobtn').text('Unmute Audio').addClass('muted');
+        } else {
+            $callcontainer.find('.muteaudiobtn').attr('disabled', !conversation.capabilities.canMuteAudio);
+            $callcontainer.find('.muteaudiobtn').text('Mute Audio').removeClass('muted');
+        }
+
+        if(conversation.videoMuted) {
+            $callcontainer.find('.mutevideobtn').attr('disabled', !conversation.capabilities.canUnmuteVideo);
+            $callcontainer.find('.mutevideobtn').text('Unmute Video').addClass('muted');
+        } else {
+            $callcontainer.find('.mutevideobtn').attr('disabled', !conversation.capabilities.canMuteVideo);
+            $callcontainer.find('.mutevideobtn').text('Mute Video').removeClass('muted');
+        }
+
+		if(conversation.videoDirection === "Inactive" || conversation.videoDirection === "RecvOnly") {
+            $callcontainer.find('.escalatebtn').text('Escalate').attr('disabled',!conversation.capabilities.canUpdateVideoCapability);
+        } else {
+            $callcontainer.find('.escalatebtn').text('De-escalate').attr('disabled',!conversation.capabilities.canUpdateVideoCapability);
+        }
+
+
+    }
+
+    /*
+     * WebEx integration functions
+     */
+    function loginBU(result) {
+        if(result.AT === "LO") {
+            if(result.ST === "SUCCESS") {
+                $('#msgcontainer').text('iFrame URL logout SUCCESS.');
+            } else {
+                $('#msgcontainer').text('iFrame URL logout result: '+ result.RS);
+                }
+                }
+        if(result.AT === "LI") {
+            if(result.ST === "SUCCESS") {
+            $('#webExcontainer .startMeeting').show();
+            $('#msgcontainer').text('iFrame URL login SUCCESS.');
+            } else {
+                $('#msgcontainer').text('iFrame URL login result: '+ result.RS);
+            }
+        }
+    }
+    function meetingBU(result) {
+            if(result.ST === 'SUCCESS') {
+                $('#msgcontainer').text('iFrame URL Impromptu meeting SUCCESS.');
+            } else {
+                $('#msgcontainer').text('iFrame URL Impromptu meeting result: '+ result.RS);
+            }
+    }
+    function otherBU(result) {
+        $('#msgcontainer').text('iFrame URL other BU result: '+ result.RS);
+    }
+    function loginURL() {
+        $('#act').val("LI");
+        $('#webexid').val(WebEx.username);
+        $('#passwd').val(WebEx.password);
+        $('#urlLogin').attr('action','https://'+WebEx.site+'.webex.com/'+WebEx.site+'/p.php');
+        $('#urlLogin').submit();
+    };
+
+
+    function getCwicClasses(el) {
+        var classes = jQuery(el).attr('class');
+        var classestoadd = [];
+        if(classes) {
+            classes = classes.split(' ');
+            for(var i=0;i<classes.length;i++) {
+                if(classes[i].substring(4,0) === 'cwic') {
+                    classestoadd.push(classes[i]);
+                }
+            }
+        }
+        return classestoadd.join(' ');
+    }
+    function handleConversationStart(event, conversation, containerdiv) {
+        calls.addCall(conversation, containerdiv);
+		updateConversationInfo(conversation, '#callcontainer');
+    };
+
+    function handleConversationIncoming(event, conversation, containerdiv) {
+        calls.addCall(conversation, containerdiv);
+    };
+
+    function handleSystemEvent(event) {
+        var reason = event.phone.status || null;
+        settings.log('system event with reason=' + reason);
+        settings.log('system event phone.ready=' + event.phone.ready);
+
+        if (reason == 'eRecoveryPending') {
+            settings.log('recovery pending, end any active call and disable make call');
+
+            //handleLoggedOut();
+            $('#msgcontainer').empty().text('System recovery is pending ...');
+            $('#callbtn').attr('disabled', true);
+        }
+        else if (reason == 'eIdle') {
+            handleLoggedOut();
+        }
+        else if (reason == 'eReady') {
+            $('#msgcontainer').empty();
+            settings.log('phone is ready, enable make call');
+            setUILoggedIn();
+        }
+		else if (reason == 'ePhoneModeChanged') {
+			$('#mode').val(event.phone.registration.mode);
+		}
+        else if (reason == 'eConnectionTerminated') {
+            $('#msgcontainer').empty().text("Logged in elsewhere - disconnecting....");
+            logout();
+        }
+        else {
+            settings.log('ignoring system.cwic event with reason=' + reason);
+        }
+    };
+
+    function handleError(error) {
+        var msg = (error.message || '') + '<br>';
+        msg += error.details.join('<br>');
+
+        try {
+            if (error.nativeError) {
+                msg += '<br> native error: ' + (typeof JSON !== 'undefined' && JSON.stringify) ? JSON.stringify(error.nativeError) : error.nativeError;
+            }
+        }
+        catch(e) {
+            if(typeof console !== "undefined" && console.trace) {
+                console.trace();
+            }
+        }
+
+        $('#msgcontainer').empty().html(msg);
+    };
+
+    function incomingAnswerClick() {
+
+        var videodirection = $('#videocall').is(':checked');
+        var $call = $(this).parent().parent();
+        var answerObject = $call.data('cwic');
+        if (videodirection) {
+            answerObject.videoDirection = 'SendRecv';
+        } else {
+            answerObject.videoDirection = (jQuery(document).cwic('about').capabilities.video ? 'RecvOnly' : 'Inactive');
+        }
+        answerObject.remoteVideoWindow = 'videocallobject';
+        $call.cwic('startConversation', answerObject);
+   };
+
+   function incomingDivertClick() {
+        var $call = $(this).parent().parent();
+        $call.cwic('endConversation',true);
+   };
+
+   function switchModeClick(){
+        var modechange;
+        if($('#mode').val()=='SoftPhone') {
+            modechange="DeskPhone";
+        }
+        else {
+            modechange='SoftPhone';
+        }
+        authNeeded = ($('#mode').val() === "DeskPhone" || $('#auth').attr('checked'));
+        $('#callbtn').attr('disabled', true);
+        $('#switchmodebtn').attr('disabled', true);
+        var forcereg = $('#forcereg').attr('checked');
+        $('#switchmodebtn').cwic('switchPhoneMode', {
+            mode: modechange,
+            error: handleLoginFailure,
+            forceRegistration: forcereg
+        });
+		calls.removeAll();
+    };
+
+    function callButtonClick() {
+        var dn = $('#dntodial').val();
+        var videodirection = $('#videocall').is(':checked');
+        var originateObject = {participant: {recipient: dn}, videoDirection: (videodirection ? 'SendRecv':(jQuery(document).cwic('about').capabilities.video ? 'RecvOnly' : 'Inactive')),remoteVideoWindow: 'videocallobject'};
+		if (dn !=""){
+        $('#phonecontainer').cwic('startConversation',originateObject);
+        $('#switchmodebtn').attr('disabled', true);
+		}
+    };
+
+    function holdResumeButtonClick() {
+        if($(this).hasClass('held')) {
+            calls.getCallDiv().cwic('updateConversation', 'resume');
+        } else {
+            calls.getCallDiv().cwic('updateConversation', 'hold');
+        }
+    };
+
+    function muteButtonClick() {
+        var muteIsAudio = true;
+        if($(this).hasClass('mutevideobtn')) {
+            muteIsAudio = false;
+        }
+        if($(this).hasClass('muted')) {
+            calls.getCallDiv().cwic('updateConversation', muteIsAudio? 'unmuteAudio' : 'unmuteVideo');
+        } else {
+            calls.getCallDiv().cwic('updateConversation', muteIsAudio? 'muteAudio' : 'muteVideo');
+        }
+    };
+
+    function endButtonClick() {
+        calls.getCallDiv().cwic('endConversation');
+    };
+
+    function handleConversationUpdate(event, conversation, container) {
+        settings.log('conversationUpdate Event for conversation:'+conversation.callId+' on Dom node: ' + event.target.id, conversation);
+        calls.addCall(conversation, container);
+        updateConversationInfo(conversation, $('#callcontainer'));
+    };
+
+    function handleConversationEnd(event, conversation) {
+        $('#callcontainer').hide();
+		calls.removeCall(conversation.callId);
+        settings.log('conversationEnd Event for conversation:'+conversation.callId);
+        delayedVideoConversation = null;
+    };
+
+    function handleLoginFailure(error) {
+        var msg = 'Unable to login: ' + error.message+' ';
+        msg += error.details.join(', ');
+        $('#msgcontainer').html(msg);
+        $('#phonecontainer').cwic('unregisterPhone', {
+            forceLogout: true
+        });
+        $('#username').attr('disabled', false);
+        $('#cucm').attr('disabled', false);
+        $('#mode').attr('disabled', false);
+        $('#auth').attr('disabled', false);
+        $('#loginbtn').attr('disabled', false);
+        $('#logoutbtn').attr('disabled', true);
+        $('#callbtn').attr('disabled', true);
+        $('#switchmodebtn').attr('disabled', true);
+        $('#callbtn').attr('disabled', true);
+    };
+
+	function transferButtonClick() {
+		var transferCallId = $("#transferlist option:selected").val();
+		var currentCall = calls.getSelectedCall();
+        if(currentCall.callId !== transferCallId) {
+            calls.getCallDiv().cwic('updateConversation', {'transferCall':transferCallId});
+        }
+    }
+	function conferenceButtonClick() {
+		var joinCallId = $("#conferencelist option:selected").val();
+        var joinCall = calls.getCall(joinCallId);
+		var currentCall = calls.getSelectedCall();
+
+        if(!joinCall || !currentCall) {
+            settings.log("Call does not exist");
+            return;
+        }
+        var currentParticipants = (currentCall.isConference ? currentCall.participants.length : 1);
+        var joinParticipants = (joinCall.isConference ? joinCall.participants.length : 1);
+        // if 2 conference calls are joined, we get a conference with n+1 participants one of whom is a conference, not n+m participants
+        if(currentCall.isConference && joinCall.isconference) {
+            joinParticipants = 1;
+        }
+        // maxParticipants is either 0 (if not a conference), a positive number if the call is a conference, or -1 if it cannot be determined
+        // if -1, we attempt to conference anyway - at worst it just won't conference and the calls are left as is
+        if((joinCall.isConference && joinCall.maxParticipants > 0 && (currentParticipants + joinParticipants > joinCall.maxParticipants)) || (currentCall.isConference && currentCall.maxParticipants > 0 && (currentParticipants + joinParticipants > currentCall.maxParticipants))) {
+            settings.log("Cannot join calls, max participants exceeded.");
+            return;
+        }
+        calls.getCallDiv().cwic('updateConversation', {'joinCall':joinCallId});
+    };
+
+	function updateTransferConferenceLists(conversation) {
+        var existingCalls = calls.getCalls();
+        var text = '';
+        $('#conferencelist').empty();
+        $('#transferlist').empty();
+        var conferenceAvailable = false;
+        var transferAvailable = false;
+        if(conversation && conversation.callState === "Connected") {
+            for(var call in existingCalls) {
+                if(existingCalls.hasOwnProperty(call)) {
+                    if(conversation.capabilities.canJoinAcrossLine && existingCalls[call].callId !== conversation.callId && existingCalls[call].capabilities.canJoinAcrossLine) {
+                        if(existingCalls[call].isConference) {
+                            text = "Conference";
+                        } else if(existingCalls[call].callType === "Outgoing") {
+                            text=existingCalls[call].calledPartyDirectoryNumber;
+                        } else {
+                            text=existingCalls[call].callingPartyDirectoryNumber;
+                        }
+                        $('#conferencelist').append("<option value='" + existingCalls[call].callId + "'>" + text + "</option>");
+                        conferenceAvailable = true;
+                    }
+                    if(conversation.capabilities.canDirectTransfer && existingCalls[call].callId !== conversation.callId && existingCalls[call].capabilities.canDirectTransfer) {
+                        if(existingCalls[call].isConference) {
+                            text = "Conference";
+                        } else if(existingCalls[call].callType === "Outgoing") {
+                            text=existingCalls[call].calledPartyDirectoryNumber;
+                        } else {
+                            text=existingCalls[call].callingPartyDirectoryNumber;
+                        }
+                        $('#transferlist').append("<option value='" + existingCalls[call].callId + "'>" + text + "</option>");
+                        transferAvailable = true;
+                    }
+                }
+            }
+        }
+        $('#conferencebtn').attr('disabled', !conferenceAvailable);
+        $('#transferbtn').attr('disabled', !transferAvailable);
+    };
+
+	function escalateButtonClick() {
+		var currentCall = calls.getSelectedCall();
+		var $callcontainer = $('#callcontainer');
+		if (currentCall.videoDirection === "Inactive" || currentCall.videoDirection === "RecvOnly") {
+			calls.getCallDiv().cwic('updateConversation', {videoDirection:'SendRecv'});
+			$callcontainer.find('.escalatebtn').text('De-escalate');
+		}
+		else if (currentCall.videoDirection === "SendRecv") {
+			calls.getCallDiv().cwic('updateConversation', {videoDirection:'RecvOnly'});
+			$callcontainer.find('.escalatebtn').text('Escalate');
+		}
+		else if (currentCall.videoDirection === "SendOnly") {
+			calls.getCallDiv().cwic('updateConversation', {videoDirection:'RecvOnly'});
+			$callcontainer.find('.escalatebtn').text('Escalate');
+		}
+		else {
+			alert("invalid value for video direction!");
+		}
+
+    }
+
+    </script>
+  </head>
+  <body>
+      <div class="alignright">
+    <div id="logindetails">
+        <label for="username">User Name:</label>
+        <input type="text" id="username">
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password"/>
+        <br>
+        <label for="cucm">CUCM:</label>
+        <input type="text" id="cucm">
+        <br>
+        <label for="mode">Mode:</label>
+        <select id="mode">
+                <option value="SoftPhone">SoftPhone</option>
+                <option value="DeskPhone">DeskPhone</option>
+        </select>
+        <br>
+        <label for="auth" title="Additional server-side Authorisation">Server Auth:</label>
+        <input type="checkbox" id="auth"></input><br />
+
+        <label for="loginbtn"></label>
+        <button id="loginbtn" type="button">Login</button>
+        <button id="logoutbtn" type="button" disabled="true">Logout</button>
+        <div id="aboutcontainer">
+            <div><span>cwic version: </span><span id="jsversion"></span></div>
+            <div><span id="jssystem_release"></span></div>
+            <div><span>jQuery version: </span><span id="jqueryversion"></span></div>
+            <hr>
+            <div><span>plugin Version: </span><span id="pluginversion"></span></div>
+            <div><span id="pluginsystem_release"></span></div>
+            <div><span>ecc version: </span><span id="eccversion"></span></div>
+        </div>
+        <div id="devicedetails">
+            <label for="devices">Device:</label><select id="devices"></select>
+            <button id="connectbtn" type="button" disabled="disabled">Connect</button>
+            <label for="forcereg">Force Reg:</label>
+            <input type="checkbox" id="forcereg" checked></input><br />
+        </div>
+    </div>
+</div>
+    <div id="phonecontainer"></div>
+    <label for="dntodial" id="dnlabel">Number (and DTMF):</label>
+    <input type="text" id="dntodial">
+    <button type="button" id="callbtn" disabled="true">Make Call</button><input type="checkbox" id="videocall">with Video</input>
+    <button type="button" id="switchmodebtn" disabled="true">Switch Phonemode</button><br>
+    <ul id="calllist" class="calllist"></ul>
+    <div id="msgcontainer"></div>
+    <div id="localPreviewContainer"><span style="padding: 5px;">Local Preview</span><div id="localvidcontainer" tabindex="998"></div><span style="padding: 5px;"><input name="showlocalvideo" type="radio" value="On">On</input><input name="showlocalvideo" type="radio" checked="checked" value="Off">Off</input>
+<!-- enable to have one-click preview switch toggle <button type="button" id="togglepreview">toggle</button></span> -->
+    </div>
+    <div id="callcontainer" class="callcontainer" style="display:none">
+        <div class="remotename"></div>
+        <div class="callinfo"></div>
+        <div id="videocontainer">
+        <div class="videocontainer">
+        <div id="remotevideocontainer" class="videocontainer" tabindex="999"></div><iframe class="off" id="pinpwindow" frameBorder="0" hspace="0" vspace="0" marginwidth="0" marginheight="0" scrolling="No"></iframe></div></div>
+        <button type="button" class="muteaudiobtn">Mute Audio</button>
+        <button type="button" class="mutevideobtn">Mute Video</button>
+        <button type="button" class="holdresumebtn">Hold</button>
+        <button type="button" class="endbtn">End Call</button>
+        <button type="button" class="webExbtn">webEx</button>
+        <button type="button" id="fullscreenbtn">Fullscreen!</button>
+        <button type="button" id="popoutbtn">Popout</button>
+        <button id="showpinpvideo" type="button" class="off"><div class="pinp"></div></button>
+        <br>
+        <select id="conferencelist"></select>
+        <button type="button" id="conferencebtn" disabled="true">Conference</button>
+        <br><select id="transferlist"></select>
+        <button type="button" id="transferbtn" disabled="true">Transfer</button>
+		<br>
+		<button type="button" class="escalatebtn" >Escalate</button>
+    </div>
+    <div id="incomingcontainer" class="incomingcontainer" style="display:none">
+        <div class="message"></div>
+        <button type="button" class="answerbtn">Answer</button>
+        <button type="button" class="divertbtn">iDivert</button>
+    </div>
+    <br>
+    <div id="webExcontainer" class="webExcontainer" style="display:none">
+        <div class="webExsetting">Webex Account Settings</div>
+        <br>
+        <label for="webExaddress">WebEx site Address: http://</label>
+        <input type="text" id="webExaddress">
+        <label for="webExaddress">.webex.com/</label>
+        <br>
+        <label for="webExusername">WebEx User Name:</label>
+        <input type="text" id="webExusername">
+        <br>
+        <label for="webExpassword">WebEx Password:</label>
+        <input type="password" id="webExpassword"/>
+        <br>
+        <br>
+        <!--<div class="webExbuttons">-->
+        <button type="button" id="doApply" class="applybtn">Apply</button>
+        <button type="button" class="webExclosebtn">Close</button>
+        <button type="button" class="startMeeting" id="startMeeting" style="display:none">One-Click Meeting</button>
+    </div>
+    
+    <div id="mmDevices" class="mmDevices">
+        <h3>Multimedia Devices</h3>
+        <button type="button" class="refreshMMDevices">Refresh Devices</button>
+
+        <h4>Recording Devices:</h4>
+
+        <select class="mmDevicesSelect" name="recordingDevicesSelect" id="recordingDevicesSelect" size="4"></select>
+        <br>
+        <button type="button" class="mmButton" name="setRecording" id="setRecording">Set Recording Device</button>
+        <br>
+        <div class="mmCurrent" name="currentRecording" id="currentRecording">Current Recording Device: None</div>
+
+        <h4>Playout Devices:</h4>
+
+        <select class="mmDevicesSelect" name="playoutDevicesSelect" id="playoutDevicesSelect" size="4">
+        </select>
+        <br>
+        <button type="button" class="mmButton" name="setPlayout" id="setPlayout">Set Playout Device</button>
+        <br>
+        <div class="mmCurrent" name="currentPlayout" id="currentPlayout">Current Playout Device: None</div>
+
+        <h4>Capture Devices:</h4>
+        <select class="mmDevicesSelect" name="captureDevicesSelect" id="captureDevicesSelect" size="4">
+        </select>
+        <br>
+        <button type="button" class="mmButton" name="setCapture" id="setCapture">Set Capture Device</button>
+            <div class="mmCurrent" name="currentCapture" id="currentCapture">Current Capture Device: None</div>
+        <br>
+    </div>
+    
+        <iframe id="loginFrame" class="loginFrame" name="loginFrame"></iframe><br>
+        <div  style="display: inline-block;">
+             <form id="urlLogin" target="loginFrame">
+                    <input type="hidden" id="act" name="AT" value="LI"></input>
+                    <input type="hidden" id='backupURL' name="BU" value=""></input>
+                    <input type="hidden" name="MU" value="GoBack"></input>
+                    <input type="hidden" id="webexid" name="WID"></input>
+                    <input type="hidden" id="passwd" name="PW"></input>
+             </form>
+         <form id="impromptuMeeting" method="POST" target="_blank">
+           <input type="hidden" name="AT" value="IM"></input>
+           <input type="hidden" id="wbxid" name="WID"></input>
+           <input type="hidden" id="tckt" name="TK"></input>
+           <input type="hidden" id="imbackupURL" name="BU" value=""></input>
+         </form>
+        </div>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head><title></title>
+        <style type="text/css">
+            html {
+                height: 100%;
+                width: 100%;
+            }
+            body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                border: none;
+                overflow: hidden;
+            }
+            div.videocontainer {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                position: relative;
+            }
+            #videoCall {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background: transparent;
+                z-index: 0;
+            }
+            iframe#controls {
+                border: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                z-index: 1;
+                position: absolute;
+                background-color: rgba(0,0,0,0.25);
+                height: 60px;
+                width: 50%;
+                left: 25%;
+                bottom: 5%;
+            }
+        </style>
+        <script type="text/javascript">
+            var iframetimeout = null;
+            var videoObject = null;
+            var videoObjectId = '';
+            function addEvent(obj, name, func)
+            {
+                if (window.addEventListener) {
+                    obj.addEventListener(name, func, false); 
+                } else {
+                    obj.attachEvent("on"+name, func);
+                }
+            }
+            function videopluginLoaded(obj) {
+                window.opener._cwic_onPopupVideoPluginLoaded(obj,window);
+                addEvent(document.getElementById('videoCall'),"videomousemove",function(x,y) {
+                    if(typeof console !== "undefined" && console.log) console.log("X: "+x+", Y: "+y);
+                    showControls();
+                });
+            }
+            function showControls(e) {
+                document.getElementById('controls').style.display='';
+                document.getElementById('controls').focus();
+                if(iframetimeout) {
+                    clearTimeout(iframetimeout);
+                }
+                iframetimeout = setTimeout(hideControls,2000);
+            }
+            function latchControls() {
+                document.getElementById('controls').style.display='';
+                if(iframetimeout) {
+                    clearTimeout(iframetimeout);
+                }
+            }
+            function hideControls() {
+                //document.getElementById('controls').style.display='none';
+                //document.getElementById('vidcontainer').focus();
+                if(iframetimeout) {
+                    clearTimeout(iframetimeout);
+                }
+            }
+            function onPageLoad() {
+                var win = window, doc=document;
+                document.getElementById('controls').focus();
+                window.$ = window.jQuery = window.opener.jQuery;
+                window.opener.popupLoaded(win,'videoCall');
+                window.onbeforeunload= function() {window.opener.popupUnloaded(win,'videoCall')};
+                jQuery('#vidcontainer',document).cwic('createVideoWindow',{"window":win,id: 'videoCall', onload: "videopluginLoaded", success: function(id) {
+                    win.videoObject = $('#'+id,doc)[0];
+                    /*win.videoObject.addEventListener('videofocus', function() {
+                        console.log("caught video object focus");
+                        setTimeout(function() {$('#videocontainer',doc).focus();}, 250);
+                        },true);
+                    */
+                }});
+                //document.getElementById('vidcontainer').innerHTML='<object type="application/x-cisco-cwc-videocall" id="videoCall"><param name="onload" value="videopluginLoaded"></param></object>';
+                //document.body.addEventListener("mouseover",showControls,false);
+                //document.addEventListener("mouseover",showControls,false);
+                //document.body.addEventListener("mousemove",showControls,false);
+                //document.addEventListener("mousemove",showControls,false);
+            }
+        </script>
+    </head>
+<body onload="onPageLoad()">
+    <div class="videocontainer">
+    <div id="vidcontainer" style="height: 100%;width: 100%; margin: 0; padding: 0" tabindex="2"></div>
+    <iframe id="controls" src="controls.html" tabindex="1" onMouseOver="latchControls()" onMouseOut="hideControls()"></iframe>
+    </div>
+</body>
+</html>

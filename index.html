@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en" id="mfApp" data-ng-app="mfApp" xmlns="http://www.w3.org/1999/html">
+<head>
+	<!-- Metas -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    
+	<title>Mind Frame Desktop App</title>
+	<link rel="icon" type="image/png" href="img/favicon.ico" /> 
+	
+    <!-- build:css(.) styles/index-framework.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/docs/assets/css/bootstrap.css" />    
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css" />   
+    <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
+    <link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    
+    <!-- build:css(.tmp/styles) styles/index-mindframe.css -->
+    <link rel="stylesheet" href="css/bootstrap-override.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="contacts/contacts.css">
+    <link rel="stylesheet" href="login/login.css">
+    <link rel="stylesheet" href="notes/notes.css">
+    <link rel="stylesheet" href="tasks/tasks.css">
+    <link rel="stylesheet" href="settings/settings.css">
+    <link rel="stylesheet" href="content/content.css">
+    <link rel="stylesheet" href="contactPane/contactPane.css">
+    <link rel="stylesheet" href="contacts/find/findContacts.css">
+    <link rel="stylesheet" href="contacts/add/addUnrecognizedContact.css">
+    <link rel="stylesheet" href="ng-tags-input/ng-tags-input.css">    
+    <!-- endbuild -->	
+    
+	<script>
+        var buildVersion = '@JENKINSAPPVERSION@';
+        var buildTimestamp = '@JENKINSRELEASEDATE@';
+        //if buildNumber has not being replaced by jenkins, assign it an static number
+        if (buildVersion.indexOf('@') !== -1){
+        	buildTimestamp = new Date().getTime();
+        }        
+        version = buildVersion;
+        release_date = buildTimestamp;
+        localStorage.version = version;
+        localStorage.releaseDate = buildTimestamp;
+    </script>
+
+</head>
+
+<body class="screen-home" style="-webkit-user-select: none; user-select:none;">
+
+<!-- Piwik Analytics -->
+<div piwik-tracker></div>
+<!-- End Piwik Code -->
+
+<!-- Template | Content > Subscribers navigation -->
+	<script id="tmpl-subscribers-navigation" type="text/x-jquery-tmpl">
+		<div class="main-nav-item cta-home cta-right-border">
+			<a href="" class="icon icon-home" title="Home">Home</a>
+		</div>
+		<div class="main-nav-item cta-settings cta-left-border right">
+			<a href="" class="icon icon-settings-2" title="Settings">Settings</a>
+		</div>
+		<div class="subscriber-list">
+			<div class="fadeout"></div>
+			<div class="fadeout fadeout-left"></div>
+			<ul>
+				{{each(i, child) content}}
+				<li>
+					{{if child.counterpart}}
+						<a title="Content for this profile" href="" class='background-pasive contact' data-target="content-subscriber-{{= child.id}}" onclick="analytics.trackTag('on_tabs_access')">{{= child.name}}</a>
+						<span class="active-indicator"></span>
+					{{else}}
+						<a href="" class='user' data-target="content-subscriber-{{= child.id}}" onclick="analytics.trackTag('on_tabs_access')">{{= child.name}}</a>
+						<span class="active-indicator"></span>
+					{{/if}}
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+	</script>
+
+	<!-- Template | Content > Subscribers content -->
+	<script id="tmpl-subscribers-contents" type="text/x-jquery-tmpl">
+		<section class="content-subscriber mf-ui-hidden mf-ui-element mf-ui-animate-out-left "
+			id="content-subscriber-{{= content.id}}"
+			data-provider-name="{{= content.name}}"
+
+			data-counterpart="{{= content.counterpart}}">
+			<div class="add-note-wrap">
+				<a class="add-note-icon" href="" title="Add Note" data-account-id="{{= person.accountUserId}}" data-person-id="{{= person.id}}" data-person-name="{{= person.firstName}}" data-content-id="{{= content.id}}" data-content-name="{{= content.name}}">+</a>
+				<a id="add-note" class="add-note" href="" title="Add Note" data-account-id="{{= person.accountUserId}}" data-person-id="{{= person.id}}" data-person-name="{{= person.firstName}}" data-content-id="{{= content.id}}" data-content-name="{{= content.name}}">Add Note</a>
+			</div>
+			<div class="user-content-subscriber">
+			</div>
+
+		</section>
+	</script>
+
+	<!-- Template | Content > Child -->
+	<script id="tmpl-content-child" type="text/x-jquery-tmpl">
+
+		{{if componentType == 'Columns'}}
+			<div class="content-item content-columns content-columns-${content.length}">
+		{{else componentType == 'Header'}}
+			<div class="content-item content-header position-${position.toLowerCase()}">
+				<div class="content-header-wrapper">
+					<h2 style="background-image: url('img/content/header/${icon.toLowerCase().replace(/_/g,'-')}.png')">{{= title}}</h2>
+				</div>
+		{{else componentType == 'List'}}
+			<ul class="content-item content-list operation-${operation.toLowerCase().replace(/_/g,'-')}{{if allowsNotes}} allows-notes{{/if}}" data-operation="{{= operation}}">
+		{{else componentType == 'Image'}}
+			<div class="content-item content-image image-${image.toLowerCase().replace(/_/g,'-')} position-${position.toLowerCase()} size-${size.toLowerCase()}">
+				<img src="img/content/image/${image.toLowerCase().replace(/_/g,'-')}.png" alt="{{= image}}" />
+		{{else componentType == 'TabBar'}}
+			<div class="content-item content-tabbar">
+				<div class="content-tabbar-tabs-wrapper">
+					<ul class="content-tabbar-tabs">
+		{{else}}
+			<div class="content-item content-${componentType.toLowerCase().replace(/ /g,'-')}">
+		{{/if}}
+
+		{{each(i, child) content}}
+
+			{{if child.componentType == 'Cue'}}
+				<li class="content-item content-cue">
+			{{else child.componentType == 'Tab'}}
+				<li class="content-item content-tab{{if i == 0}} active{{/if}}{{if child.traits != null}} hidden{{/if}}">
+			{{else child.componentType == 'Column'}}
+				<div class="content-item content-column">
+					<div class="content-item content-column-inner">
+			{{else}}
+				<div class="content-item content-${componentType.toLowerCase().replace(/ /g,'-')}">
+			{{/if}}
+
+				{{if child.componentType == 'Tab'}}
+					<a href="" data-target="tab-content-{{= i}}">{{= child.title}}</a>
+				{{else child.componentType == 'Cue'}}
+					<div class="content-cue-wrapper">
+						<a class="vote" href="" data-hash="{{= child.hash}}" data-type="NEUTRAL">vote</a>
+						<p><span>{{html child.text}}</span></p>
+					</div>
+					{{if child.description != null && child.description != '' && child.description != 'null'}}
+						<a class="icon icon-tiny icon-info" data-cue-description="{{= child.description}}" href="" title="Click for More Detail">Information</a>
+					{{/if}}
+
+					{{if child.hash != null && child.hash != '' && child.hash != 'null'}}
+						<a class="icon icon-comment-written icon-comment" data-cue-hash="{{= child.hash}}" data-cue-person-id="" data-cue-content-id="" href="" title="Comments" style="display: none;">Comment</a>
+					{{/if}}				{{/if}}
+
+				{{if child.content && child.content.length > 0}}
+					{{tmpl(child.content) "#tmpl-content-child" }}
+				{{/if}}
+
+			{{if child.componentType == 'Cue' || child.componentType == 'Tab'}}
+				</li>
+			{{else child.componentType == 'Column'}}
+				</div></div>
+			{{else}}
+				</div>
+			{{/if}}
+
+		{{/each}}
+
+		{{if componentType == 'List'}}
+			</ul>
+		{{else componentType == 'TabBar'}}
+			</ul></div></div>
+		{{else}}
+			</div>
+		{{/if}}
+
+	</script>
+
+	<!-- Template | Content > Cue > Form -->
+	<script id="tmpl-content-tab-form" type="text/x-jquery-tmpl">
+		<div class="content-cue-comment">
+			<form action="#" method="POST">
+				<fieldset>
+					<textarea name="{{= name}}" id="{{= id}}" placeholder="Add a comment..." maxlength="200" autofocus></textarea>
+					<button type="button" class="cancel button button-color-disabled button-small">Cancel</button>
+					<button type="submit" class="button button-color-2 button-small">Submit</button>
+				</fieldset>
+			</form>
+		</div>
+	</script>
+
+	<!-- Template | Content > Cue > Description tooltip -->
+	<script id="tmpl-content-cue-information" type="text/x-jquery-tmpl">
+		<div class="content-cue-description" style="z-index: -1">
+			<div class="pointer"></div>
+			<p>{{= description}}</p>
+		</div>
+	</script>
+
+	<!-- Template | tooltip -->
+	<script id="tmpl-content-tooltip" type="text/x-jquery-tmpl">
+		<a href="" data-toggle="tooltip" title="first tooltip">{{= text}}</a>
+	</script>
+
+	<!-- Template | Ajax Loader -->
+	<script id="tmpl-ajax-loader" type="text/x-jquery-tmpl">
+		<div class="ajax-loader">
+			<img src="img/ajax/loader-big.gif" alt="Loading content" />
+		</div>
+	</script>
+
+    <!-- Template Comment / new comment-->
+    <script id="tmpl-content-cue-comment-written" type="text/x-jquery-tmpl">
+        <div class="content-cue-comment-written" style="z-index: -1">
+            <div class="pointer"></div>
+            <div class="forScrollbar" >
+                {{each(i) feed}}
+                    <div class="who-written-when">
+                         <span class="author"> {{= creator.firstName}} {{= creator.lastName}}</span>
+                         <span class="said"> said:</span>
+                         <span class="createdAt"> ${mf.content.getCommentCreatedAt(createdAt)}</span>
+                    </div>
+                    <div class="comment">
+                        <span> {{= comment}}</span>
+                    </div>
+                    {{if i != (feed.length - 1) }}
+                        <div class="line"/>
+                    {{/if}}
+
+                 {{/each}}
+             </div>
+        </div>
+    </script>
+
+
+	<!-- Template | Contacts List -->
+	<script id="tmpl-contacts-list" type="text/x-jquery-tmpl">
+		{{each(i, contact) contacts}}
+		<li class="{{= contact.phoneType}} ui-menu-item" role="menuitem">
+			<a class="ui-corner-all" data-phone-number="{{= contact.phone}}">
+				<b class="contact-name">{{= contact.name}}</b>
+				<i class="contact-phone">{{= contact.phone}}</i>
+				<span class="status icon-status icon-status-mini ${status.toLowerCase()}">{{= contact.status}}</span>
+			</a>
+		</li>
+		{{/each}}
+	</script>
+
+	<!-- Template Override Modal window -->
+	<script id="template/modal/window.html" type="text/ng-template">
+		<div class="modal fade {{ windowClass }}" ng-class="{in: animate}" ng-style="{'z-index': 10050 + index*10}" ng-transclude></div>
+	</script>
+	<script id="template/modal/backdrop.html" type="text/ng-template">
+		<div class="modal-backdrop fade" ng-class="{in: animate}" ng-style="{'z-index': 10040 + index*10}" ng-click="close($event)"></div>
+	</script>	
+
+
+	<article class="main-wrapper"
+		data-ng-show="authenticationService.authenticated"
+		data-ng-controller="MainController" data-ng-click="onClickModule()" data-ng-class="{'show-contact-margin': showContacts,'hide-contact-margin':!showContacts}" ng-cloak>
+
+		<a href="" id="logout" class="hidden" title="Logout" style="position: absolute; left: 10px; top: 10px; display: inline-block; z-index: 9999">Logout</a>
+
+		<!-- CHAT -->
+		<section class="contacts-module"
+			data-ng-controller="ContactsController"
+			data-ng-click="onClickModule()"
+			data-ng-hide="firstTimeLogin"
+			data-ng-class="{'hidden':!showContacts}">
+
+            <header data-status="{{me.status}}" class="{{me.status}}">
+                <p class="message" data-ng-hide="me.status || errors.connectionErrorMessage">Loading my info...</p>
+                <figure data-ng-show="me.username" data-ng-click="selectMyProfile()" class="figure-cursor">
+                    <img class="avatar" data-ng-src="{{me.image}}" data-err-src="contacts/img/default.png" alt="{{me.username}} picture" />
+                    <span class="cover" data-ng-class="{'available-background' : me.status == 'available', 'dnd-background' : me.status == 'dnd', 'away-background' : me.status == 'away', 'offline-background' : me.status == ''||me.status == 'offline'  }"></span>
+                </figure>
+                <div class="info my-info" data-ng-show="me.username">
+                    <p class="name" data-ng-click="selectMyProfile()" data-ng-class="{'name-selected' : isMyProfileSelected}" >{{me.displayName}}<span class="notifications" data-ng-show="notesNotifications.notesId.length > '0'||taskNotifications.tasksId.length>'0'" data-ng-hide="notesNotifications.notesId.length == '0' && taskNotifications.tasksId.length=='0' ">&nbsp;</span></p>
+                    <p class="status-desc">
+                        <a href="" class="status-change-cta" data-ng-click="toggleStatusSelector($event)">
+                            <span>{{(me.statusShow  | cutName:statusShow['custom-available']) || 'Available'}}</span>
+                            <span class="icon-status icon-deploy">&nbsp;</span>
+                        </a>
+                    </p>
+                </div>
+
+				<a href=""
+					id="settingsToggle" class="icon icon-settings-small"
+					title="Settings"
+					data-ng-click="toggleSettings()"
+					data-ng-class="{disabled: !callmanagerAuthenticationService.phoneRegistration}">Settings</a>
+				<div class="status-selector" data-ng-show="statusSelectorToggle">
+					<ul class="list-available">
+						<li data-ng-class="{selected: myStatus == 'available'}">
+							<a href="" data-ng-click="setStatus('chat', 'available')">{{statusShow['available']}}</a>
+						</li>
+						<li data-ng-class="{selected: myStatus == 'custom-available'}">
+							<a href="" data-ng-click="setStatus('chat', 'custom-available')">{{statusShow['custom-available']}}</a>
+						</li>
+					</ul>
+					<ul class="list-away">
+						<li data-ng-class="{selected: myStatus == 'away'}">
+							<a href="" data-ng-click="setStatus('away','away')">{{statusShow['away']}}</a>
+						</li>
+						<li data-ng-class="{selected: myStatus == 'custom-away'}">
+							<a href="" data-ng-click="setStatus('away','custom-away')">{{statusShow['custom-away']}}</a>
+						</li>
+					</ul>
+					<ul class="list-dnd">
+						<li data-ng-class="{selected: myStatus == 'dnd'}">
+							<a href="" data-ng-click="setStatus('dnd','dnd')">{{statusShow['dnd']}}</a>
+						</li>
+						<li data-ng-class="{selected: myStatus == 'custom-dnd'}">
+							<a href="" data-ng-click="setStatus('dnd','custom-dnd')">{{statusShow['custom-dnd']}}</a>
+						</li>
+					</ul>
+					<div class="pointer"></div>
+				</div>
+
+				<!-- Find contacts-->
+				<div class="contacts-search-container" data-ng-show="me.username">
+				<div class="dropdown-menu-mf leftupper" data-ng-show="addLinksVisible">
+					<ul>
+						<li data-ng-click="toggleAddNewContactsMenu()">Add Contact</li>
+						<div class="line"></div>
+						<li data-ng-click="toggleAddGroupsMenu()">Add Group</li>
+					</ul>
+					<div class="pointer"></div>
+				</div>
+				<form class="contacts-search" autocomplete="off">
+					<fieldset>
+						<a href="" data-ng-click="toggleAddLinks($event)" class="add-contact contact-action contact-action-add-contact">Add contact</a>
+						<input id="searchcontact" value="" data-ng-model="contactSearchTerm" autocomplete="off" type="text" data-ng-keyup="keyupSearch($event)" name="searchcontact" placeholder="Search..." data-ng-click="stopPropagation($event)"/>
+						<img src="img/ajax/loader.gif" alt="Ajax Loader" class="loader-ajax" data-ng-show="showLoadingSearch"/>
+						<button id="clearSearch" type="button" class="contacts-clear-button mf-clear-button" data-ng-hide="!contactSearchTerm|| showLoadingSearch" data-ng-show="contactSearchTerm || !showLoadingSearch" data-ng-click="cleanSearch()">Clear</button>
+						<button type="button" disabled class="mf-form-element mf-search-button" data-ng-hide="false" data-ng-show="true">Search</button>
+						<a href="" data-ng-class="{'cues-mf':true, 'contact-action':true, 'disable-mf': false , 'show-mf': !statusShowHideMF, 'hide-mf': statusShowHideMF}" data-ng-click="toggleUserContentPanel($event)">show hide mf</a>
+					</fieldset>
+				</form>
+			</div>
+
+			</header>
+
+			<div class="roster" data-fixed-heigth data-fixed-heigth-adjust="-100">
+				<p class="message error" data-ng-show="errors.connectionErrorMessage">{{errors.connectionErrorMessage}}</p>
+				<p class="message" data-ng-hide="contactsList.length > 0 || genericUser.length > 0 || errors.connectionErrorMessage">Loading contacts...</p>
+
+				<div class="float-container" data-ng-click="stopPropagation($event)" data-ng-class="{'visible': personsList.length > 0}" data-ng-hide="personsList.length == 0 || errors.connectionErrorMessage">
+					<div class="top-triangle"></div>
+					<!-- sometimes the search personsList will replace the contact list -->
+					<div class="list-container" data-ng-class="{'scroll': personsList.length > 10}">
+						<ul id="person-list" data-ng-show="personsList.length > 0">
+						<li id="{{person.id}}" class="roster-item {{person.status}} {{person.type}}"
+							data-status="{{person.type}}"
+							data-guid="{{person._guid}}"
+							data-ng-repeat="person in personsList"
+							data-ng-class="{'paint-first-contact' : $first && person.displayName != 'No user found'  }"
+							data-ng-hide="person.type == 'error'"
+							data-ng-mouseover="hoverIn(person.id)" data-ng-mouseleave="hoverOut()"  >
+							<figure data-ng-hide="!person.statusShow">
+								<img data-ng-src="img/presence/{{person.status == 'away' ? 'Presence_Idle' : person.status == 'unavailable' ? 'Presence_Offline' : person.status == 'dnd' ? 'Presence_Busy' : person.status == 'available' ? 'Presence_Available' : 'Presence_Available' }}.svg" alt="{{person.status}}"  />
+
+							</figure>
+							<div class="info roster-item-info" data-ng-click="findContactSelected(person)">
+								<p class="name">{{person.displayName}}</p>
+							</div>
+							<div data-ng-show="hoverEdit == person.id" class="roster-item-action">
+								<ul>
+									<li data-ng-click="imContact($event,person)" class="chat" data-ng-hide="!person.username">
+										<a href="" data-track-info="on_chat">chat</a>
+									</li>
+									<li data-ng-hide="(person.phones.length === 0 || !person.phones )" data-ng-class="{'call': person.phones.length === 1, 'call-multiples': person.phones.length > 1}">
+										<a href="" data-phone-number="{{person.selectedPhone}}" data-ng-click="(person.phones.length > 1) ? togglePersonPhoneSelector($index) : callContact(person)">call</a>
+										<div id="{{$index}}-group" class="phone-selector" data-ng-show="phoneSelectorToggle == $index">
+											<ul>
+												<li data-ng-repeat="contactPhone in person.phones" data-ng-show="contactPhone.number" data-ng-click="selectPhoneAndCall(person, contactPhone)" class="{{contactPhone.type}}">
+													<a href="">{{contactPhone.number}}</a>
+												</li>
+											</ul>
+											<div class="pointer"></div>
+										</div>
+									</li>
+								</ul>
+
+							</div>
+						</li>
+						 <div id="scrollTo"></div>
+					</ul>
+
+					</div>
+
+				</div>
+
+				<ul data-ng-hide="errors.connectionErrorMessage || contactsList.length=='0' && genericUser.length=='0'" class="contacts-container">
+
+					<li data-ng-repeat="group in groups">
+
+						<div class="group-collapser"
+							data-ng-click="expandCollapseGroup(group);"
+							data-ng-class="{collapsed:!group.visible}"
+							data-ng-hide="group.isDefault"
+							data-ng-right-click="showContextualGroupOptions($index, group)">
+							<span class="group-name crop">{{group.name}}</span>
+							<input id="txt-group-rename-{{$index}}" type="text" class="txt-rename"
+								data-ng-show="renameGroupIndex === $index"
+								data-ng-enter="renameGroup($index, group)"
+								data-ng-model="renameNewGroupName[$index]"
+								maxlength="25" />
+							<menu id="menu-group-options-{{$index}}"
+								data-ng-if="selectedGroupIndex === $index"
+								class="contextual-menu" data-ng-class="getGroupMenuPositionClass()" data-ng-init="initGroupMenuPosition( 'menu-group-options-' + $index )">
+									<ul>
+										<li><a href="" data-ng-hide="group.contacts.length > 0 || (genericUser.length > 0 && !group.isDefault && genericUser[$index - 1].groups[0] == group.name )" data-ng-mousedown="deleteGroup($index, group)" class="highlighted">Delete Group...</a></li>
+										<li><a href="" data-ng-mousedown="enableRenameGroup($event, $index, group.name)">Rename...</a></li>
+									</ul>
+								<div class="pointer"></div>
+							</menu>
+						</div>
+
+                        <!--contacts-->
+                        <ul id="roster-list" data-ng-show="group.visible && group.contacts.length > 0">
+                            <li id="{{contact.id}}" class="roster-item {{contact.status}} {{contact.type}}"
+                                data-ng-repeat="contact in group.contacts | orderBy:'displayName':false"
+                                data-ng-click="selectContact(contact)"
+                                data-status="{{contact.type}}"
+                                data-ng-class="{'selected': contact==selectedContact||(contact.id&&selectedContact.id&&contact.id == selectedContact.id)}"
+                                data-guid="{{contact._guid}}"
+                                data-ng-hide="!isGenericContact(contact) && (contact.type == 'error' || !contact.key || isShowOffline(contact)==false)"
+                                data-ng-right-click="showDeleteContactMenu($event, contact, group)">
+
+                                <figure>
+                                    <img class="avatar" alt="{{contact.displayName}}" data-ng-src="{{contact.image}}" data-err-src="contacts/img/default.png" />
+                                    <span class="cover" data-ng-if="!isGenericContact(contact)" data-ng-class="{'available-presence-background' : contact.status == 'available', 'dnd-presence-background' : contact.status == 'dnd', 'away-presence-background' : contact.status == 'away', 'offline-presence-background' : contact.status == 'unavailable'||contact.status == 'offline'  }"></span>
+                                    <img class="cover"  data-ng-if="isGenericContact(contact)" alt="" data-err-src="contacts/img/local-contact2.png" />
+                                </figure>
+
+                                <div data-ng-if="!isGenericContact(contact)" class="info roster-item-info">
+                                    <p class="name">{{contact.displayName | cutName:contact.phones.length }}</p>
+                                    <p class="status-desc">{{contact.statusShow | cutName:contact.statusShow.length}}</p>
+                                </div>
+                                <div data-ng-if="isGenericContact(contact)" class="info generic-contact-info roster-item-info">
+                                    <p class="name crop generic-contact-list-width ">{{contact.displayName }}</p>
+
+                                </div>
+
+                                <div data-ng-if="!isGenericContact(contact)" class="roster-item-action">
+                                    <ul>
+                                        <li id="im-contact" data-ng-click="imContact($event, contact)" class="chat" data-ng-hide="contact.status == 'offline'">
+                                            <a href="" data-track-info="on_chat">chat</a>
+                                        </li>
+                                        <li data-ng-hide="!contact.personId || !contact.phones" data-ng-class="{'call': contact.phones.length === 1, 'call-multiples': contact.phones.length > 1}">
+                                            <a href="" data-phone-number="{{contact.selectedPhone}}"
+                                            data-ng-click="getContactPhones($event, group, contact)">call</a>
+                                            <div class="phone-selector" data-ng-show="selectedRosterGroup == group && selectedRosterContact == contact">
+                                                <ul>
+                                                    <li data-ng-repeat="contactPhone in contact.phones" data-ng-click="selectPhoneAndCall(contact, contactPhone)" class="{{contactPhone.type}}">
+                                                        <a href="">{{contactPhone.number}}</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="pointer"></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div data-ng-if="isGenericContact(contact)" class="roster-item-action">
+                                    <ul>
+                                        <li data-ng-hide="!contact.id || !contact.phones" data-ng-class="{'call': contact.phones.length === 1, 'call-multiples': contact.phones.length > 1}">
+                                            <a href="" data-phone-number="{{contact.selectedPhone}}" data-ng-click="getContactPhones($event, group, contact)">call</a>
+                                            <div class="phone-selector" data-ng-show="selectedRosterGroup == group && selectedRosterContact == contact">
+                                                <ul>
+                                                    <li data-ng-repeat="contactPhone in contact.phones" data-ng-click="selectPhoneAndCall(contact, contactPhone)" class="{{contactPhone.type}}">
+                                                        <a href="">{{contactPhone.number}}</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="pointer"></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+								<div class="delete-contact" data-ng-if="!isGenericContact(contact)" data-ng-show="selectedRosterGroup == group && deleteContactMenuToggle == contact.email">
+									<div class="inner-delete-contact">
+										<ul>
+											<li data-ng-click="onClickDeleteContact($event, contact, group)">Remove From Contact List</li>
+											<li data-ng-mouseover="hoverGroupsIn(contact)" data-ng-mouseleave="hoverGroupsOut(contact)" >Move to group...
+												<ul class="submenu" data-ng-show="contact.showGroupListForContact">
+													<li data-ng-click="onClickMoveContactToGroup($event, contact, '')">Default</li>
+													<li data-ng-repeat="g in groups" data-ng-hide="g.isDefault" data-ng-click="onClickMoveContactToGroup($event, contact, g, group)">{{g.name}}</li>
+													<li class="divider"></li>
+												</ul>
+											</li>
+										</ul>
+										<div class="pointer"></div>
+									</div>
+								</div>
+                                <div class="delete-contact" data-ng-if="isGenericContact(contact)" data-ng-show="selectedRosterGroup == group && deleteContactMenuToggle == contact.id ">
+                                    <div class="inner-delete-contact">
+                                        <ul>
+                                            <li data-ng-show="myPersonId == contact.createdBy.id" data-ng-click="onClickEditContact($event, contact, group)">Edit Contact</li>
+                                            <div data-ng-show="myPersonId == contact.createdBy.id" class="line"></div>
+                                            <li data-ng-click="onClickRemoveGenericContact($event, contact)">Remove From Contact List</li>
+                                            <div data-ng-show="myPersonId == contact.createdBy.id" class="line"></div>
+                                            <li data-ng-show="myPersonId == contact.createdBy.id" class="delete" data-ng-click="onClickDisableContact($event, contact, group)">Delete Contact</li>
+                                        </ul>
+                                        <div class="pointer"></div>
+                                    </div>
+                                </div>
+
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+			</div>
+
+
+			<div id="add-contacts-menu" data-ng-show="addNewContactsVisible" >
+                <div class="inner-wrapper" data-fixed-heigth data-fixed-heigth-adjust="-63" >
+                    <span>
+                        <div data-ng-include="'contacts/add/add.html'" class="add-contact-include" ></div>
+                    </span>
+                </div>
+			</div>
+
+			<div id="add-groups-menu" data-ng-show="addGroupsVisible">
+				<div class="inner-wrapper" data-fixed-heigth data-fixed-heigth-adjust="-63">
+					<form id="addGroupForm" class="regular-form">
+						<fieldset>
+							<label>
+								Group Name:
+								<input type="text" id="txt-add-groups-group-name" data-ng-model="newGroup" name="groupname" class="form-control" />
+							</label>
+							<div class="mf-ui-right">
+								<button type="button" data-ng-click="toggleAddGroupsMenu()" class="btn btn-cancel btn-inverted">Cancel</button>
+								<button type="button" class="btn btn-2 btn-submit" data-ng-click="saveNewGroup($event, newGroup)">Save</button>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+
+			<footer>
+
+		 </footer>
+
+		</section>
+
+
+		<!-- Wrap all page content here -->
+		<aside id="wrap"
+			class="contact-pane-module content-wrapper"
+			data-fixed-heigth
+			data-ng-controller="ContactPaneController"
+			data-ng-click="onClickModule($event)"
+			data-ng-show="statusShowHideMF || (noJabberConnect&&firstTimeLogin)"
+			ng-cloak>
+			<header class="top-contact-info" data-ng-show="selectedContact">
+				<div class="left-right-nav" data-ng-hide="isMultiCalls()">
+					<a href="" title="Contacts" rel="contacts" data-ng-click="toggleContactsList()">Contacts</a>
+					<p class="user-status" data-username="{{selectedContact.key}}" id="selected-person-status">
+						<span data-ng-show="selectedContact.status" class="icon-status {{selectedContact.status}}">&nbsp;</span>
+					</p>
+					<p class="user-name" data-concat="for" data-ng-show="selectedContact.displayName"><b>{{selectedContact.displayName | cutName}}</b></p>
+					<p class="user-phone">{{selectedContact.selectedPhone.number}}</p>
+					<p class="unrecognized-plus-button" data-ng-show="selectedContact.isUnrecognized" data-ng-click="openAddUnrecognizedMenu($event)">
+                        <div class="dropdown-menu-mf unknown-dropdown popupmenu-background menu-width" data-ng-show="isOpenAddUnrecognizedMenu">
+                            <ul>
+                                <li data-ng-click="openAddUnrecognizedContact($event)">Add Contact</li>
+                                <div class="line"></div>
+                                <li data-ng-click="openUnknownSearch($event)">Add To Existing Contact</li>
+                            </ul>
+                            <div class="pointer center"></div>
+                        </div>
+                        <div data-ng-include="'contacts/find/findContactsHeader.html'" class="add-find-contact-container-new popupmenu-background" data-ng-show="isOpenUnknownSearchPanel">
+                        </div>
+                        <div data-ng-click="onClickPopupModuleCenter($event)" data-ng-show="openAddUnrecognizedPanel" data-ng-include="'contacts/add/addheaderCenter.html'" class="unrecognized-contact-container-popup center  popupmenu-background">
+                        </div>
+					</p>
+                    <p class="contact-edit-button btn-hover" data-ng-class="{'editing':addNewContactsVisiblePopUp}" data-ng-show="!selectedContact.isLDAP&&(!(selectedContact.authenticationSource&&selectedContact.authenticationSource=='LDAP'))" data-ng-click="onClickEditContactPopUp($event, selectedContact)"></p>
+
+					<p class="phone-icon" data-ng-class="selectedContact.selectedPhone.type" data-ng-show="selectedContact.phones.length==1&&selectedContact.selectedPhone.type">{{selectedContact.selectedPhone.type}}</p>
+					<div class="phone-selector"
+						data-ng-click="togglePhoneSelector($event)"
+						data-ng-class="{opened:viewMainPhoneSelector}"
+						data-ng-show="selectedContact&&selectedContact.phones&&selectedContact.phones.length>1">
+						<span class="phoneselectorleft phone-icon {{selectedContact.selectedPhone.type}}" data-ng-show="selectedContact.selectedPhone.type">{{selectedContact.selectedPhone.type}}</span>
+						<span href="" class="phoneselect">PhoneSelect</span>
+					</div>
+					<span class="single-call-status state icons" data-ng-class="getPhoneStatus()" data-ng-show="getPhoneStatus()&&isSamePhoneCall()">single-call-status</span>
+
+                </div>
+				<div class="phone-selector-dropdown" data-ng-show="viewMainPhoneSelector">
+					<ul>
+						<li data-ng-class="{selected:(selectedContact.selectedPhone == phone)}"
+							data-ng-repeat="phone in selectedContact.phones"
+							data-ng-click="selectPhone(phone)"
+							class="{{phone.type}}">
+							<img class="check" src="img/icons/check.png" alt="check" />
+							<a href="" data-phone-type="{{phone.type}}" data-phone-number="{{phone.number}}">
+								<span class="type">{{outputPhoneType[phone.type]}}</span>
+								<span class="number">{{phone.number | cutName:'10'}}</span>
+							</a>
+						</li>
+					</ul>
+					<div class="pointer"><em></em></div>
+				</div>
+
+				<!--multi calls header-->
+				<div class="multi-calls-header" data-ng-show="isMultiCalls()">
+					<ul id="calllist" class="calllist">
+
+					</ul>
+				</div>
+
+			</header>
+
+            <div id="addNewContactsVisiblePopUpId" data-ng-click="onClickPopupModule($event)" ng-show="addNewContactsVisiblePopUp" data-ng-include="'contacts/add/addheader.html'" class="unrecognized-contact-container-popup right" data-ng-class="{'contact-edit-loading' : addNewContactsVisiblePopUp }">
+            </div>
+			<div class="dark-overlay-find-contacts" data-ng-class="{'visible':addNewContactsVisiblePopUp||openAddContact||showMergeTransferBackground||isOpenUnknownSearchPanel||isOpenAddUnrecognizedMenu||openAddUnrecognizedPanel}"></div>
+
+			<div class="lightbox lightbox-notes tabbed-content" ng-cloak ng-show="on" data-ng-controller="NotesPopupController">
+				<div class="overlay"></div>
+				<main>
+					<div class="selected-object-content add-note-tab">
+					   <article class="nomargin">
+							<header>
+								<div class="tableContainer" style="table-layout:auto">
+									<div class="tableRow">
+										<div class="tableCell" style="float: left;width: 360px;">
+											<h1 class="title-nowrap mf-ui-semibold crop" data-ng-hide="editSubject" data-ng-model="noteAdd.title" data-ng-click="enableEditSubject()">{{noteAdd.title}}</h1>
+											<input type="text" class="edit edit-subject mf-ui-semibold" data-ng-show="editSubject" data-ng-model="noteAdd.title" data-ng-blur="editSubject = false" />
+										</div>
+
+										<div class="tableCell" style="float:right; padding-top: 11px;">
+											<div class="actions">
+												<a href="" data-ng-click="remove()" class="action action-remove" title="Remove Meeting Minutes">Remove</a>
+												<a href="" data-ng-click="saveNote()" class="action action-save" title="Save note" data-ng-class="{disabled:noteAdd.isSaved}">Save Note</a>
+											</div>
+											<div class="ui-clear"></div>
+										</div>
+									</div>
+								</div>
+							</header>
+							<main>
+								<div class="object-wrapper light-box">
+									<textarea data-ng-model="noteAdd.text" class="notes-text"></textarea>
+								</div>
+							</main>
+						</article>
+					</div>
+				</main>
+			</div>
+
+			<div id="callcontainer" style="display:none">
+
+				<div id="videocontainer">
+					<div id="remotevideocontainer">
+					</div>
+					<div id="localvidcontainer">
+					</div>
+				</div>
+
+			</div> <!-- end #callcontainer -->
+
+			<!-- User content -->
+			<div class="user-content content-module" data-ng-controller="ContentController" data-ng-hide="noJabberConnect&&firstTimeLogin||!selectedContact||selectedContact.isUnrecognized" >
+
+				<!-- Tabbed content menu -->
+				<menu class="tabbed-content-menu" data-ng-show="selectedContact && selectedContact.personId">
+					<ul>
+						<li data-ng-class="{selected: selectedTabbedContent == 'notes'}" class="notes">
+							<a href="" data-ng-click="selectTabbedContent('notes')">
+								<img src="img/menu/tabbed-content-menu/notes.svg" alt="">
+								<!--<img class="bell" src="img/notifications/Notification-Bell.svg" alt="" data-ng-show="notesNotifications.notesId.length > '0'" data-ng-hide="notesNotifications.notesId.length == '0'" >-->
+							</a>
+							<a href="" data-ng-click="selectTabbedContent('notes')">Notes</a>
+						</li>
+						<li data-ng-class="{selected: selectedTabbedContent == 'tasks'}" class="tasks">
+							<a href="" data-ng-click="selectTabbedContent('tasks')">
+								<img src="img/menu/tabbed-content-menu/new-tasks.svg" alt="">
+								<!--<img class="bell" src="img/notifications/Notification-Bell.svg" alt=""   data-ng-show="taskNotifications.tasksId.length > '0'" data-ng-hide="taskNotifications.tasksId.length == '0'">-->
+							</a>
+							<a href="" data-ng-click="selectTabbedContent('tasks')">Tasks</a>
+						</li>
+						<li data-ng-class="{selected: selectedTabbedContent == 'email'}" class="hidden email">
+							<a href="" data-ng-click="selectTabbedContent('email')">
+								<img src="img/menu/tabbed-content-menu/email.svg" alt="">
+							</a>
+							<a href="" data-ng-click="selectTabbedContent('email')">Email</a>
+						</li>
+					</ul>
+				</menu>
+				<nav class="subscribers-navigation clear"></nav>
+				<div class="subscribers-contents clear"></div>
+			</div>
+
+
+			<div id="handling-bar" data-ng-hide="noJabberConnect&&firstTimeLogin">
+
+				<div id="call-control">
+					<ul id="contacts-list" class="contacts-list ui-autocomplete autocomplete-handling-bar ui-menu ui-widget ui-widget-content hidden" role="listbox" tabindex="1"></ul>
+
+					<a href="" data-ng-click="imContactFromHandlingBar($event);" id="callbtn-chat" class="call-action chat " title="Chat" data-title-chat="Chat" data-title-resume="Chat">Chat</a>
+
+					<a href="" id="callbtn-transfer" class="call-action call-transfer" data-ng-click="transferButtonClick($event)" data-ng-class="{'disabled':disableTransferBtn}">Transfer</a>
+
+					<a href="" id="callbtn-conference" class="call-action conference-merge" data-ng-click="mergeButtonClick($event)" data-ng-class="{'disabled':disableMergeBtn}">Merge
+					</a>
+					<a href="#" id="callbtn-add" class="call-action add-find-contact-btn" data-ng-controller="findContactsController" data-ng-click="clickBtnAdd($event)" data-ng-class="{'add-find-contact-btn-disable': disableAddButton}" >Add
+						<div data-ng-include="'contacts/find/findContacts.html'" class="add-find-contact-container" data-ng-show="openAddContact"></div>
+					</a>
+					<a href="" id="callbtn-cues-position" class="call-action cues-position top hidden" title="Change Cues position" data-hide-on-search>Change Cues position</a>
+					<a href="" id="callbtn-call" class="button button-3 call-main-action call margin disabled">Call</a>
+					<a href="" id="callbtn-end" class="button button-3 button-color-3 call-main-action end margin hidden">End</a>
+					<a href="" id="callbtn-decline" class="button button-3 button-color-3 call-main-action decline mf-ui-margin-right-10 margin hidden">Dismiss</a>
+					<a href="" id="callbtn-answer" class="button button-3 call-main-action answer hidden margin">Answer</a>
+
+					<a href="" id="callbtn-pause" class="call-action pause hold disabled" title="Hold" data-ng-class="{'blink':isResumeBlink}" data-title-pause="Hold" data-title-resume="Resume">Hold</a>
+					<a href="" id="callbtn-dial-pad" class="call-action dial-pad-icon" title="Dial" data-ng-click="openDialPad()">Dial</a>
+					<a href="" id="callbtn-mute" class="call-action mute unmuted disabled" title="Mute" data-text-mute="Mute" data-text-unmute="Unmute">Mute</a>
+					<a href="" id="callbtn-video" class="call-action video" data-ng-class="{'video-inactive':!isVideoInactive,'video-active':isVideoInactive,'disabled':isVideoDisabled}" data-ng-click="muteUnmuteVideo()" title="Show Video">Video</a>
+
+					<input type="hidden" id="dialPad-Number" />
+					<div class="conference-dropdown merge" data-ng-show="showMergeList">
+						<ul>
+							<li id="merge-{{call.callId}}" data-ng-repeat="call in conferenceList" data-ng-class="{'last':$last}" data-ng-click="mergeListClick(call.callId)">
+								<span class="title">Merge with </span>
+								<span class="content" data-ng-bind="call.displayName" ></span>
+							</li>
+						</ul>
+						<div class="pointer"><em></em></div>
+					</div>
+					<div class="conference-dropdown transfter" data-ng-show="showTransferList">
+						<ul>
+							<li id="tranfer-{{call.callId}}" data-ng-repeat="call in transferList" data-ng-click="transferListClick(call.callId)" data-ng-class="{'last':$last}">
+								<span class="title">Transfer to&nbsp;</span>
+								<span class="content" data-ng-bind="call.displayName" ></span>
+							</li>
+						</ul>
+						<div class="pointer"><em></em></div>
+					</div>
+				</div>
+			</div> <!-- End #handling-bar -->
+
+			<!-- Settings -->
+			<section id="settings" class="settings-module mf-modal mf-chatter-settings"
+				data-ng-controller="SettingsController"
+				data-ng-show="viewSettings" data-ng-cloak>
+				<div class="mf-modal-content mf-modal-content-settings">
+					<div class="logo-container">
+						<h1><img src="img/Mindframe_Logo_Original.svg" class="logo" alt="Mindframe Settings" /></h1>
+						<div class="close-settings" data-ng-click="toggleSettings()">
+							<p>Close</p>
+						</div>
+					</div>
+					<header>
+						<nav class="preference-menu">
+							<ul>
+								<li data-ng-class="{active: selectedPanel === 'general'}"><a data-ng-click="showSettingsPanel('general')" data-ng-class="{active: selectedPanel === 'general'}">General</a></li>
+								<li data-ng-class="{active: selectedPanel === 'account'}"><a data-ng-click="showSettingsPanel('account')" data-ng-class="{active: selectedPanel === 'account'}">Accounts</a></li>
+								<li data-ng-class="{active: selectedPanel === 'av'}"><a data-ng-click="showSettingsPanel('av')" data-ng-class="{active: selectedPanel === 'av'}">Video/Audio</a></li>
+								<li data-ng-class="{active: selectedPanel === 'about'}"><a data-ng-click="showSettingsPanel('about')" data-ng-class="{active: selectedPanel === 'about'}">About</a></li>
+							</ul>
+						</nav>
+					</header>
+					<main>
+
+						<!-- General settings -->
+						<div class="general-settings" data-ng-show="selectedPanel === 'general'">
+							<h2>General</h2>
+							<div class="row-fluid">
+								<div class="span6">
+									<p>Default Call Type</p>
+									<ul class="radio-group">
+										<li>
+											<input id="setting-general-video-call"
+												class="mf-form-element mf-checkbox"
+												type="radio" name="videoaudio-mode"
+												value="true"
+												data-ng-change="saveUserSetting('settings.general.showVideo', settings.general.showVideo)"
+												data-ng-model="settings.general.showVideo" />
+											<label for='setting-general-video-call'>Video Call</label>
+										</li>
+										<li>
+											<input id="setting-general-audio-call"
+												class="mf-form-element mf-checkbox"
+												type="radio" name="videoaudio-mode"
+												value="false"
+												data-ng-change="saveUserSetting('settings.general.showVideo', settings.general.showVideo)"
+												data-ng-model="settings.general.showVideo" />
+											<label for='setting-general-audio-call'>Audio-only Call</label>
+										</li>
+									</ul>
+									<p>Show Content Specific To</p>
+									<ul class="radio-group">
+										<li>
+											<input id="choice-content-first-me"
+												class="mf-form-element mf-checkbox"
+												type="radio" name="choice_content_order"
+												value="caller"
+												data-ng-change="saveUserSetting('settings.general.contentOrder', settings.general.contentOrder)"
+												data-ng-model="settings.general.contentOrder" />
+											<label for='choice-content-first-me'>Me First, Then Contacts</label>
+										</li>
+										<li>
+											<input id="choice-content-first-contacts"
+												class="mf-form-element mf-checkbox"
+												type="radio" name="choice_content_order"
+												value="callee"
+												data-ng-change="saveUserSetting('settings.general.contentOrder', settings.general.contentOrder)"
+												data-ng-model="settings.general.contentOrder" />
+											<label for='choice-content-first-contacts'>Contacts First, Then Me</label>
+										</li>
+									</ul>
+                                    <p>Offline Contacts</p>
+                                    <input id="show-offline-contacts"
+                                           class="mf-form-element mf-checkbox"
+                                           type="checkbox" name="show-offline-contacts"
+                                           data-ng-true-value="true"
+                                           data-ng-false-value="false"
+                                           data-ng-change="saveUserSetting('settings.general.showOffline', settings.general.showOffline)"
+                                           data-ng-model="settings.general.showOffline" />
+                                    <label for='show-offline-contacts' class="singleleft">Show offline Contacts</label>
+								</div>
+								<div class="span6">
+									<p>Profile</p>
+									<div class="profiler" data-ng-controller="ProfileController" data-flow-init
+										 data-flow-file-added="!!{png:1}[$file.getExtension()]">
+										<a href="javascript:void(0);" class="thumbnail-image">
+											<div data-ng-show="!showImage()">
+												<img src="contacts/img/default.png" class="img-circle" />
+											</div>
+											<div data-ng-show="showImage()">
+												<img class="img-circle profile-image" data-ng-src="{{ image }}" />
+											</div>
+										</a>
+										<div class="btn-image">
+											<a href="javascript:void(0);" class="btn-profile" data-flow-btn data-flow-attrs="{accept:'image/png'}">{{ btnText }}
+												<input type="file" name="img-input" style="visibility: hidden; position: absolute;">
+											</a>
+											<a href="javascript:void(0);" class="btn-profile delete" data-ng-show="showImage()"
+											data-ng-click="remove()">Remove Image</a>
+										</div>
+										<div class="alert info">* Only PNG image under 2MB</div>
+									</div>
+                                    <br/>
+                                    <p>Email Notifications Alerts</p>
+                                    <ul class="radio-group">
+                                        <li>
+                                            <input id="choice-comment-cues"
+                                                   class="mf-form-element mf-checkbox"
+                                                   type="checkbox"
+                                                   data-ng-true-value="true"
+                                                   data-ng-false-value="false"
+                                                   data-ng-change="saveUserSetting('settings.emailNotifications.addCommentclass=&quot;filters&quot;', settings.emailNotifications.addComment)"
+                                                   data-ng-model="settings.emailNotifications.addComment"/>
+                                            <label for='choice-comment-cues'>When a comment is added to one of my cues</label>
+                                        </li>
+                                        <li>
+                                            <input id="choice-content-to-me"
+                                                   class="mf-form-element mf-checkbox"
+                                                   type="checkbox"
+                                                   data-ng-true-value="true"
+                                                   data-ng-false-value="false"
+                                                   data-ng-change="saveUserSetting('settings.emailNotifications.assignedToMe', settings.emailNotifications.assignedToMe)"
+                                                   data-ng-model="settings.emailNotifications.assignedToMe"/>
+                                            <label for='choice-content-to-me'>When notes and tasks assigned to me are created or edited</label>
+                                        </li>
+                                    </ul>
+								</div>
+							</div>
+						</div>
+
+						<!-- Account settings -->
+						<div class="account-settings" data-ng-show="selectedPanel === 'account'">
+							<h2>Accounts</h2>
+							<form method="post" id="form-account-settings" name="formAccountSettings">
+								<div id="call-and-jabber-container">
+								   <div id="call-manager-container">
+									  <div style="padding: 0px 0 0 33px;">
+										   <h2>Phone Services</h2>
+										   <fieldset>
+											  <input id="callManager-remember"
+													 class="mf-form-element mf-checkbox hidden"
+													 type="checkbox" name="callManager-remember-name"
+													 data-ng-change="saveUserSetting('callmanagerAuthenticationService.RememberAccount', callmanagerAuthenticationService.RememberAccount)"
+													 data-ng-model="callmanagerAuthenticationService.RememberAccount"/>
+											  <label id="callManager-remember-label" for='callManager-remember' >Use the same login for Mindframe and Phone Services.</label>
+										  </fieldset>
+										   <fieldset>
+											   <label for='username_settings' class="hidden">Username</label>
+											   <input type="text" placeholder="Username"
+													  id="username_settings" name="username_settings"
+													  required data-error-message="Username is required"
+													  data-ng-disabled="callmanagerAuthenticationService.RememberAccount"
+													  data-ng-blur="saveUserSetting('callmanagerAuthenticationService.username', callmanagerAuthenticationService.username)"
+													  data-ng-model="callmanagerAuthenticationService.username" />
+											   <label for='password_settings' class="hidden">Password</label>
+											   <input type="password" placeholder="Password"
+													  id="password_settings" name="password_settings"
+													  required data-error-message="Password is required"
+													  data-ng-disabled="callmanagerAuthenticationService.RememberAccount"
+													  data-ng-blur="savePassword()"
+													  data-ng-model="callmanagerAuthenticationService.password" />
+											   <div class="control-group ajax-control-wrapper mf-ui-margin-top-bottom">
+												   <a href=""
+													  class="btn btn-large btn-large-x-2 mf-ui-display-inline-block button-login-settings"
+													  id="loginbtn-settings"
+													  data-ng-click="doCallManagerLogin()"
+													  data-ng-show="!callmanagerAuthenticationService.authenticated">Login</a>
+												   <a href=""
+													  class="btn btn-large btn-large-x-2 mf-ui-display-inline-block button-login-settings"
+													  id="logoutbtn"
+													  data-ng-click="doCallManagerLogout()"
+													  data-ng-show="callmanagerAuthenticationService.authenticated">Logout</a>
+												   <img data-ng-show="accountLoginProgress" src="img/ajax/loader.gif" alt="Ajax Loader" class="loader loader-login" />
+												   <p class="message account-message error" data-ng-class="{'show-msg-error':loginErrorMessage && loginErrorMessage != ''}" data-ng-show="loginErrorMessage && loginErrorMessage != ''">{{loginErrorMessage}}</p>
+											   </div>
+										   </fieldset>
+										   <fieldset>
+											   <label for="devicemode" class="hidden">devicemode</label>
+											   <select name="mode" id="devicemode" class="dropdown-select-down"
+													   data-ng-model="callmanagerAuthenticationService.phoneMode"
+													   data-ng-init="callmanagerAuthenticationService.phoneMode = 'DeskPhone'"
+													   data-ng-change="changePhoneMode()">
+												   <option value="SoftPhone" data-ng-selected="callmanagerAuthenticationService.phoneMode == 'SoftPhone'" class="icon-monkey">Soft Phone</option>
+												   <option value="DeskPhone" data-ng-selected="callmanagerAuthenticationService.phoneMode == 'DeskPhone'" class="icon-bear">Desk Phone</option>
+											   </select>
+											   <div class="control-group ajax-control-wrapper device-selector-wrapper">
+												   <label for="devices" class="label-inline hidden">Device selection</label>
+												   <select id="devices" name="devices"
+														   class="dropdown-select-down dropdown-inline"
+														   data-ng-model="callmanagerAuthenticationService.device"
+														   data-ng-change="changeDevice()"
+														   data-ng-show="callmanagerAuthenticationService.devices.length > 0"
+														   data-ng-options="(dev.name + ': ' + dev.modelDescription) for dev in callmanagerAuthenticationService.devices | filter: filterDevices track by dev.name "
+														   data-ng-selected="callmanagerAuthenticationService.device == dev.name">
+													   <option class="icon-monkey" value="">
+														   Select Device
+													   </option>
+												   </select>
+												   <img data-ng-show="deviceSelectionProgress" src="img/ajax/loader.gif" alt="Ajax Loader" class="loader loader-device" />
+											   </div>
+										   </fieldset>
+										   <p class="message" data-ng-show="message" data-ng-class="{'show-msg-error':loginError, 'show-msg-success' : !loginError}">{{message}}</p>
+									  </div>
+								   </div>
+								   <div id="jabber-container">
+									   <h2>Jabber</h2>
+									   <fieldset>
+										   <label for='username_jabber_settings' class="hidden">Username</label>
+										   <input type="text" placeholder="Username"
+												  id="username_jabber_settings" name="username_jabber_settings"
+												  required data-error-message="Username is required"
+												  data-ng-blur="saveUserSetting('jabberLogin.username', jabberLogin.username)"
+												  data-ng-model="jabberLogin.username" />
+										   <label for='password_jabber_settings' class="hidden">Password</label>
+										   <input type="password" placeholder="Password"
+												  id="password_jabber_settings" name="password_jabber_settings"
+												  required data-error-message="Password is required"
+												  data-ng-blur="savePasswordJabber()"
+												  data-ng-model="jabberLogin.password" />
+										   <div class="control-group ajax-control-wrapper mf-ui-margin-top-bottom">
+											   <a href=""
+												  class="btn btn-large btn-large-x-2 mf-ui-display-inline-block button-login-settings"
+												  id="loginbtn-jabber-settings"
+												  data-ng-click="doJabberLogin()"
+												  data-ng-show="!jabberLogin.connected">Login</a>
+											   <a href=""
+												  class="btn btn-large btn-large-x-2 mf-ui-display-inline-block button-login-settings"
+												  id="logoutbtn-jabber"
+												  data-ng-click="doJabberLogout()"
+												  data-ng-show="jabberLogin.connected">Logout</a>
+											   <img data-ng-show="jabberLogin.isInProgress" src="img/ajax/loader.gif" alt="Ajax Loader" class="loader loader-login" />
+											   <p class="message" data-ng-show="jabberLogin.message" data-ng-class="{'show-msg-error':jabberLogin.isError, 'show-msg-success' : !jabberLogin.isError}">{{jabberLogin.message}}</p>
+										   </div>
+									   </fieldset>
+                                       <div data-ng-show="webex.sites.length>0">
+                                       <h2>WebEX</h2>
+                                       <fieldset>
+                                           <label for="id-webex-urls" class="hidden">WebExURLS</label>
+                                           <select id="id-webex-urls" class="dropdown-select-down"
+                                                   name="webex-urls"
+                                                   data-ng-model="webex.selectedSite"
+                                                   data-ng-change="onChangeWebExSite()"
+                                                   data-ng-options="(site.siteName) for site in webex.sites"
+                                                   data-ng-selected="webex.selectedSite.siteName == site.siteName">
+                                               <option class="icon-monkey" value="">
+                                                   Select Site
+                                               </option>
+                                           </select>
+                                           <label for='username_webex_settings' class="hidden">Username</label>
+                                           <input type="text" placeholder="Username"
+                                                  id="username_webex_settings" name="username_webex_settings"
+                                                  required data-error-message="Username is required"
+                                                  data-ng-blur="saveUserSetting('webex.username', webex.username)"
+                                                  data-ng-model="webex.username"
+                                                  />
+                                           <label for='password_webex_settings' class="hidden">Password</label>
+                                           <input type="password" placeholder="Password"
+                                                  id="password_webex_settings" name="password_webex_settings"
+                                                  required data-error-message="Password is required"
+                                                  data-ng-blur="saveUserSetting('webex.password', webex.password)"
+                                                  data-ng-model="webex.password"
+                                                  />
+                                           <div class="control-group ajax-control-wrapper mf-ui-margin-top-bottom">
+                                               <a href=""
+                                                  class="btn btn-large btn-large-x-2 mf-ui-display-inline-block button-login-settings"
+                                                  id="loginbtn-webex-settings"
+                                                  data-ng-click="onChangeWebExSite()"
+                                                  data-ng-show="true">Login</a>
+
+                                               <img data-ng-show="false" src="img/ajax/loader.gif" alt="Ajax Loader" class="loader loader-login" />
+                                               <p class="message" data-ng-show="webex.response.message">{{webex.response.message}}</p>
+                                           </div>
+                                       </fieldset>
+                                       </div>
+								   </div>
+							   </div>
+							</form>
+						</div>
+
+						<!-- Video/Audio settings -->
+						<div class="video-audio-settings"  data-ng-show="selectedPanel === 'av'">
+							<h2>Video/Audio</h2>
+							<div id="mmDevices">
+								<h3>Video</h3>
+								<div>
+									<label for="captureDevicesSelect" class="labelselect">Camera:</label>
+									<select id="captureDevicesSelect"
+										class="dropdown-select label-inline"
+										data-ng-model="defaultCaptureDevice"
+										ng-options="capDev.deviceName for capDev in captureDevices"
+									   >
+
+									</select>
+								</div>
+								<div id="settings-selfview"></div>
+								<h3>Audio</h3>
+								<div>
+									<label class="labelselect">Sound Output:</label>
+									<select id="playoutDevicesSelect"
+										class="dropdown-select label-inline"
+										data-ng-model="defaultPlayoutDevice"
+										ng-options="capDev.deviceName for capDev in playoutDevices"
+										>
+
+									</select>
+								</div>
+								<div>
+									<label for="recordingDevicesSelect" class="labelselect">Microphone:</label>
+									<select id="recordingDevicesSelect"
+										class="dropdown-select label-inline"
+										data-ng-model="defaultRecordingDevice"
+										ng-options="capDev.deviceName for capDev in recordingDevices"
+										>
+
+									</select>
+								</div>
+                                <div id="settings-selfview-alerts"></div>
+                                <h3>Alert Sounds</h3>
+
+                                <div class="checkbox-group">
+                                    <div>
+                                        <input  id="chk_alert_chat"
+                                                class="mf-form-element mf-checkbox"
+                                                type="checkbox"
+                                                name="chk_alert_chat"
+                                                data-ng-change="saveAlertSoundSetting('settings.alertSounds.chatSound',settings.alertSounds.chatSound)"
+                                                data-ng-model="settings.alertSounds.chatSound">
+                                        <label for="chk_alert_chat">Chats</label>
+
+                                    </div>
+                                    <div>
+                                        <input  id="chk_alert_note_and_task"
+                                                class="mf-form-element mf-checkbox"
+                                                type="checkbox"
+                                                name="chk_alert_note_and_task"
+                                                data-ng-change="saveAlertSoundSetting('settings.alertSounds.noteAndTaskSound',settings.alertSounds.noteAndTaskSound)"
+                                                data-ng-model="settings.alertSounds.noteAndTaskSound">
+                                        <label for="chk_alert_note_and_task">Notes and Tasks</label>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+
+                        <!-- About -->
+                        <div class="about" data-ng-show="selectedPanel === 'about'">
+                            <h2>About</h2>
+                            <p>Version {{currentVersion}}</p>
+                            <label class="label-inline">Release Date {{currentReleaseDate | date:'M/dd/yyyy hh:mm a'}}</label>
+                            <br>
+                            <label ng-show="releaseUpToDate" class="label-inline">Your current version is up to date.</label>
+                            <label ng-show="updateAvailable" class="label-inline">Available Version {{availableVersion}}. Release Date {{availableReleaseDate | date:'M/dd/yyyy hh:mm a'}}</label>
+                            <a href="" data-ng-click="checkForUpdates()" class="btn btn-large" id="checkForUpdates" style="margin-right: 20px">Check for Updates</a>
+                            <a href="" ng-show="updateAvailable" data-ng-click="updateToNewVersion()" class="btn btn-large" id="update">Update</a>
+                            <br/><br/>
+                            <p>Contact Us</p>
+                            <label>Akkadian Labs LLC </label>
+                            <label>240 West 35th Street Fl.6 </label>
+                            <label>New York, NY 10001 </label>
+                            <label>United States</label>
+                            <label>1-800-818-4128</label>
+
+                            <label><a data-ng-click="openAboutPage()" data-ng-bind="mUrlAboutPage"></a></label>
+                            <a href=""  data-ng-click="sendFeedback()" style="margin-left:30px;" class="btn btn-large" id="sendfeedback">Send Feedback</a>
+
+						</div>
+
+					</main>
+				</div> <!-- end modal-content -->
+			</section> <!-- end #settings -->
+
+			<!-- Notes -->
+			<section class="notes-module tabbed-content"
+				data-ng-controller="NotesController"
+				data-ng-show="selectedContact && selectedContact.personId"
+                data-ng-if="selectedTabbedContent === 'notes'"
+                static-include="notes/notes-template.html"
+				data-ng-cloak>
+
+			</section>
+
+            <!-- Tasks -->
+			<section class="tasks-module tabbed-content"
+                data-ng-controller="TasksController"
+                data-ng-show="selectedContact && selectedContact.personId"
+                data-ng-if="selectedTabbedContent === 'tasks'"
+                static-include="tasks/tasks-template.html"
+                data-ng-cloak>
+            </section>
+
+			<!--first time login hint connection page-->
+			<div class="connect-setup" data-ng-show="noJabberConnect&&firstTimeLogin">
+				<section class="wrap">
+					<h5 class="title">Sign in to Phone Services &amp; Jabber</h5>
+					<p class="desc">Add your phone number and Jabber to Mindframe to connect with your contacts.</p>
+					<div class="content-img">
+						<img class="imghint" src="img/icons/Desk-phone.svg">
+						<img class="imghint" src="img/icons/Speech-Bubbles.svg">
+					</div>
+					<button class="btn btn-large btn-gotit" data-ng-click="firstTimeShowSettings()">Got it!</button>
+				</section>
+			</div>
+			<div class="container" data-ng-show="selectedContact.isUnrecognized" data-fixed-heigth data-fixed-heigth-adjust="-135" >
+				<img src="img/unknown-contact.png" style="width:100%;height:100%;"/>
+			</div>
+		</aside> <!-- end wrap -->
+	</article> <!-- end main-wrapper -->
+
+	<!-- Mindframe Login -->
+	<div class="login-module login-wrapper login mf-modal mf-modal-loginpage" data-ng-controller="LoginController" ng-cloak data-ng-show="!authenticationService.authenticated">
+		<article class="mf-modal-content mf-ui-center mf-modal-content-loginpage">
+			<header>
+				<h1><img src="img/Login_Screen.svg" alt="MindFrame" class="logo" /></h1>
+			</header>
+			<form method="post" id="login-form" name="loginForm" action="" class="mf-ui-center">
+				<fieldset>
+					<label for="username" class="hidden">Email</label>
+					<input type="text" value placeholder="Username" id="username" data-error-message="Username is required" data-ng-model="username" required data-ng-focus="clearError()" />
+					<label for="password" class="hidden">Password</label>
+					<input type="password" value placeholder="Password" id="password" required data-error-message="Password is required" data-ng-model="password" required data-ng-focus="clearError()" />
+					<div class="mf-ui-left mf-ui-display-inline-block">
+						<input class="mf-form-element mf-checkbox" type="checkbox" name="chk_remember_password" id="chk_remember_password" data-ng-model="rememberme" />
+						<label for="chk_remember_password" class="password-recover">Remember Password</label>
+					</div>
+					<div class="control-group mf-ui-margin-top-bottom mf-ui-center">
+						<button class="btn btn-large mf-ui-display-inline-block" id="loginbtn" data-ng-click="doLogin()" data-ng-disabled="loginForm.$invalid">Sign In</button>
+						<img data-ng-show="doingLogin" src="img/ajax/loading-gray.gif" alt="Ajax Loader" class="loader" />
+					</div>
+					<p data-ng-if="message" data-ng-class="{error:loginError}">{{message}}</p>
+				</fieldset>
+			</form>
+			<a href="" class="mf-ui-center password-recover fontsize-recover">Forgot Password?</a>
+
+        </article>
+        <footer>
+            <span class="mf-ui-center login-color-version">Version {{currentVersion}}</span>
+        </footer>
+    </div>
+
+	<div class="logout-wrapper mf-modal mf-modal-loginpage hidden">
+		<div class="mf-modal-content mf-ui-center mf-modal-content-loginpage">
+		   <p class="h2">Logging out...</p>
+		</div>
+	</div>
+
+
+
+
+
+	<!-- /////////////////////////////////////////////////// -->
+	<!-- Jabber SDK -->
+	<div class="hidden">
+		<div class="alignright">
+		<div id="logindetails">
+			<label for="mode">Mode:</label>
+			<select id="mode">
+					<option value="SoftPhone">SoftPhone</option>
+					<option value="DeskPhone">DeskPhone</option>
+			</select>
+			<br>
+			<label for="auth" title="Additional server-side Authorisation">Server Auth:</label>
+			<input type="checkbox" id="auth"></input><br />
+
+			<label for="loginbtn"></label>
+			<div id="aboutcontainer">
+				<div><span>cwic version: </span><span id="jsversion"></span></div>
+				<div><span id="jssystem_release"></span></div>
+				<div><span>jQuery version: </span><span id="jqueryversion"></span></div>
+				<hr>
+				<div><span>plugin Version: </span><span id="pluginversion"></span></div>
+				<div><span id="pluginsystem_release"></span></div>
+				<div><span>ecc version: </span><span id="eccversion"></span></div>
+			</div>
+			<div id="devicedetails">
+				<label for="forcereg">Force Reg:</label>
+				<input type="checkbox" id="forcereg" checked></input><br />
+			</div>
+		</div>
+	</div>
+	<div id="phonecontainer"></div><input type="checkbox" id="videocall" checked="checked">with Video</input>
+	<button type="button" id="switchmodebtn" disabled="true">Switch Phonemode</button><br>
+	<ul id="calllist" class="calllist"></ul>
+	<div id="msgcontainer"></div>
+	<div id="localPreviewContainer"><span style="padding: 5px;">Local Preview</span><div id="localvidcontainer" tabindex="998"></div><span style="padding: 5px;"><input name="showlocalvideo" type="radio" value="On">On</input><input name="showlocalvideo" type="radio" checked="checked" value="Off">Off</input>
+<!-- enable to have one-click preview switch toggle <button type="button" id="togglepreview">toggle</button></span> -->
+	</div>
+	<div id="callcontainer" class="callcontainer" style="display:none">
+		<div class="remotename"></div>
+		<div class="callinfo"></div>
+		<div id="videocontainer">
+		<div class="videocontainer">
+		<div id="remotevideocontainer" class="videocontainer" tabindex="999"></div><iframe class="off" id="pinpwindow" frameBorder="0" hspace="0" vspace="0" marginwidth="0" marginheight="0" scrolling="No"></iframe></div></div>
+		<button type="button" class="muteaudiobtn">Mute Audio</button>
+		<button type="button" class="mutevideobtn">Mute Video</button>
+		<button type="button" class="holdresumebtn">Hold</button>
+		<button type="button" class="webExbtn">webEx</button>
+		<button type="button" id="fullscreenbtn">Fullscreen!</button>
+		<button type="button" id="popoutbtn">Popout</button>
+		<button id="showpinpvideo" type="button" class="off"><div class="pinp"></div></button>
+		<br>
+		<select id="conferencelist"></select>
+		<button type="button" id="conferencebtn" disabled="true">Conference</button>
+		<br><select id="transferlist"></select>
+		<button type="button" id="transferbtn" disabled="true">Transfer</button>
+		<br>
+		<button type="button" class="escalatebtn" >Escalate</button>
+	</div>
+	<div id="incomingcontainer" class="incomingcontainer" style="display:none">
+		<div class="message"></div>
+		<button type="button" class="answerbtn">Answer</button>
+		<button type="button" class="divertbtn">iDivert</button>
+	</div>
+	<br>
+	<div id="webExcontainer" class="webExcontainer" style="display:none">
+		<div class="webExsetting">Webex Account Settings</div>
+		<br>
+		<label for="webExaddress">WebEx site Address: http://</label>
+		<input type="text" id="webExaddress">
+		<label for="webExaddress">.webex.com/</label>
+		<br>
+		<label for="webExusername">WebEx User Name:</label>
+		<input type="text" id="webExusername">
+		<br>
+		<label for="webExpassword">WebEx Password:</label>
+		<input type="password" id="webExpassword"/>
+		<br>
+		<br>
+		<!--<div class="webExbuttons">-->
+		<button type="button" id="doApply" class="applybtn">Apply</button>
+		<button type="button" class="webExclosebtn">Close</button>
+		<button type="button" class="startMeeting" id="startMeeting" style="display:none">One-Click Meeting</button>
+	</div>
+
+	<div id="mmDevices" class="mmDevices">
+		<h3>Multimedia Devices</h3>
+		<button type="button" class="refreshMMDevices">Refresh Devices</button>
+
+		<h4>Recording Devices:</h4>
+
+		<select class="mmDevicesSelect" name="recordingDevicesSelect" id="recordingDevicesSelect" size="4"></select>
+		<br>
+		<button type="button" class="mmButton" name="setRecording" id="setRecording">Set Recording Device</button>
+		<br>
+		<div class="mmCurrent" name="currentRecording" id="currentRecording">Current Recording Device: None</div>
+
+		<h4>Playout Devices:</h4>
+
+		<select class="mmDevicesSelect" name="playoutDevicesSelect" id="playoutDevicesSelect" size="4">
+		</select>
+		<br>
+		<button type="button" class="mmButton" name="setPlayout" id="setPlayout">Set Playout Device</button>
+		<br>
+		<div class="mmCurrent" name="currentPlayout" id="currentPlayout">Current Playout Device: None</div>
+
+		<h4>Capture Devices:</h4>
+		<select class="mmDevicesSelect" name="captureDevicesSelect" id="captureDevicesSelect" size="4">
+		</select>
+		<br>
+		<button type="button" class="mmButton" name="setCapture" id="setCapture">Set Capture Device</button>
+			<div class="mmCurrent" name="currentCapture" id="currentCapture">Current Capture Device: None</div>
+		<br>
+	</div>
+
+		<iframe id="loginFrame" class="loginFrame" name="loginFrame"></iframe><br>
+		<div  style="display: inline-block;">
+			 <form id="urlLogin" target="loginFrame">
+					<input type="hidden" id="act" name="AT" value="LI"></input>
+					<input type="hidden" id='backupURL' name="BU" value=""></input>
+					<input type="hidden" name="MU" value="GoBack"></input>
+					<input type="hidden" id="webexid" name="WID"></input>
+					<input type="hidden" id="passwd" name="PW"></input>
+			 </form>
+		 <form id="impromptuMeeting" method="POST" target="_blank">
+		   <input type="hidden" name="AT" value="IM"></input>
+		   <input type="hidden" id="wbxid" name="WID"></input>
+		   <input type="hidden" id="tckt" name="TK"></input>
+		   <input type="hidden" id="imbackupURL" name="BU" value=""></input>
+		 </form>
+		</div>
+	</div>
+	<!-- end Jabber SDK -->
+	<!-- /////////////////////////////////////////////////// -->
+
+
+	<!-- cdnify target libraries -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+	<!-- end cdnify target libraries -->
+
+    <!-- build:js(.) scripts/index-framework.js -->
+    <script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/jquery-autosize/jquery.autosize.js"></script>
+    <script src="bower_components/jquery.tmpl/jquery.tmpl.js"></script>
+    <script src="bower_components/jquery.easing/js/jquery.easing.js"></script>
+    <script src="bower_components/jquery.easing/js/jquery.easing.compatibility.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/bootstrap/docs/assets/js/bootstrap.js"></script>
+    <script src="bower_components/jquery.scrollTo/jquery.scrollTo.js"></script>
+    <script src="bower_components/ng-flow/dist/ng-flow.js"></script>
+    <script src="bower_components/flow.js/dist/flow.js"></script>
+    <script src="bower_components/toastr/toastr.js"></script>
+    <script src="bower_components/socket.io-client/socket.io.js"></script>    
+    <!-- endbuild -->
+    
+    <!-- directy included libraries -->
+    <script src="js/lib/ciscobase.js"></script>
+	<script src="js/lib/caxl/jabberwerx.js"></script>
+	<script src="js/lib/caxl/jabberwerx.cisco.js"></script>
+	<script src="js/lib/cwic.js"></script>
+	<script src="js/lib/fullscreen.js"></script>
+	<script src="js/lib/call-helpers.js"></script>   
+    <!-- end directy included libraries -->
+
+    <!-- build:js({.tmp,app}) scripts/index-mindframe.js -->
+	<script src="ng-tags-input/ng-tags-input.js"></script>
+    <script src="services/messages/messages_en-US.js"></script>
+    <script src="app.js"></script>
+    <script src="constants/constants.js"></script>
+    <script src="services/authentication.service.js"></script>
+    <script src="services/callmanager.authentication.service.js"></script>
+    <script src="services/encoding.service.js"></script>
+    <script src="services/jabber.service.js"></script>
+    <script src="services/update.service.js"></script>
+    <script src="services/path.service.js"></script>
+    <script src="services/popup.service.js"></script>
+    <script src="services/postmessage.service.js"></script>
+    <script src="services/storage.service.js"></script>
+    <script src="services/socketIO.service.js"></script>
+    <script src="services/users.service.js"></script>
+    <script src="services/message.service.js"></script>
+    <script src="resources/resources.js"></script>
+    <script src="filters/filters.js"></script>    
+    <script src="directives/directives.js"></script>
+    <script src="main/main.module.js"></script>
+    <script src="contacts/contacts.module.js"></script>
+    <script src="login/login.module.js"></script>
+    <script src="notes/notes.module.js"></script>
+    <script src="tasks/tasks.module.js"></script>
+    <script src="settings/settings.module.js"></script>
+    <script src="modules/profile.js"></script>
+    <script src="modules/toastr.js"></script>
+    <script src="content/content.module.js"></script>
+    <script src="contactPane/contactPane.module.js"></script>
+    <script src="dialPad/dialPad.module.js"></script>
+    <script src="contacts/find/findContacts.module.js"></script>
+    <script src="contacts/add/addUnrecognizedContact.module.js"></script>
+    <script src="notes/share.dialog.js"></script>
+    <script src="tasks/share.dialog.js"></script>
+    <script src="js/mf-app.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/mf-ajax.js"></script>
+    <script src="js/analytic.js"></script>
+    <script src="js/util.js"></script>    
+    <!-- endbuild -->
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+/* CSS styles for login.module */
+
+.login-module .control-group { position: relative }
+	.login-module button { width: 220px }
+	.login-module .loader { position: absolute; /*left: 210px;*/ top: 5px; width: 24px; height: 24px }
+	.login-module .password-recover { color:rgb(54,104,157); }
+    .login-module .fontsize-recover { font-size: 0.8em; }
+	.login-module footer { position:fixed; bottom:10px; left:65px }
+		.login-module footer span { color: rgb(42,155,219); }
+   

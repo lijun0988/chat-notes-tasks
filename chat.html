@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="chatApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat Window</title>
+
+    <!-- build:css(.) styles/chat-framework.css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/docs/assets/css/bootstrap.css" />  
+    <!-- endbuild -->	
+    
+    <!-- build:css(.tmp/styles) styles/chat-mindframe.css -->
+    <link rel="stylesheet" href="css/bootstrap-override.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <!-- endbuild -->
+
+    <script>
+        version = localStorage.version;
+    </script>
+
+    </head>
+
+  <body id="chatWindow" data-ng-controller="ChatWindowController" data-ng-blur="onBlur($event)" data-ng-click="onClickModel($event)">
+
+
+  <article id="chat" class="chat-window col-xs-12 col-sm-9">
+          <header>
+              <div class="header-content">
+                  <div class="contact-name">
+                      <h1>
+                          <strong>
+                              {{chatWithName}}
+                          </strong>
+                      </h1>
+                  </div>
+                  <div class="actions">
+                      <a href="" class="action webex" data-ng-click="webExClick($event)">webex</a>
+
+                      <a href="" class="action view-contact" data-ng-click="viewContact($event)">viewContact</a>
+                      <a href="" class="action" data-ng-class="{'call-contact-multi':getParentContactPhones()&&getParentContactPhones().length>1,'call-contact':getParentContactPhones()&&getParentContactPhones().length==1}" data-ng-click="callContact($event)">callContact</a>
+                      <div class="phone-selector" data-ng-show="isShowMultiPhones">
+                          <ul>
+                              <li data-ng-repeat="contactPhone in getParentContactPhones()" data-ng-click="selectPhoneAndCall($event,contactPhone)" class="{{contactPhone.type}}">
+                                  <a href="">{{contactPhone.number}}</a>
+                              </li>
+                          </ul>
+                          <div class="pointer"></div>
+                      </div>
+                  </div>
+              </div>
+          </header>
+          <div class="chat-content" id="chatContent" ng-attr-contenteditable="false">
+              <!--<button style="border:none;" class="btn" data-ng-click="onLoadLast50Msg()" data-ng-show="hasHistory()">Last 50 messages</button>-->
+              <ol class="chat-items" id="messageList">
+                  <li data-ng-repeat="chatMsg in chatMessageList" class="chat-item" data-ng-class="{'me':isMe(chatMsg), 'counterpart':!isMe(chatMsg), 'first-item':chatMsg.appendTimeFlag}" >
+                      <figure data-ng-class="getImgClass(chatMsg)"><img data-ng-src="{{getImgUrl(chatMsg)}}" err-src="contacts/img/default.png" alt=""><div class="cover"></div></figure>
+                      <div class="chat-item-content">
+                          <p  parsemessageelement value="{{chatMsg.body}}" ng-dblclick="onDblClick($event)"></p>
+                          <time class="chat-item-datetime mf-ui-light" datetime="{{chatMsg.time}}">{{chatMsg.time|date:"h:mm a"}}</time>
+                      </div>
+                      <div style="clear:both;float:none !important"></div>
+                      <time style="float:none;left:40%;top:-8px;" data-ng-show="chatMsg.appendTimeFlag" class="main-time" datetime="{{chatMsg.parseTime}}">{{chatMsg.parseTime}}</time>
+                  </li>
+              </ol>
+
+              <p class="file-message show-msg-error hidden" >
+                  File could not be sent. Please try again.</p>
+          </div>
+
+
+            <footer id="chatfooter">
+                    <form id="sendMessageForm" action="#" data-ng-submit="onSubmit($event)" >
+                        <fieldset>
+                            <div data-ng-controller="FileUploadController">
+                                <!--BEGIN File Transfer functionality-->
+                                <div id="upload-progress-bar" class="progress-bar-icon hidden" >
+                                    <img src="img/oval.svg" width="26" alt="">
+                                </div>
+
+                                <div id="attach-selected" class="attach-icon" data-ng-mouseover="hoverInAttach()" data-ng-mouseleave="hoverOutAttach()" data-ng-click="clickAttach($event)">
+                                    <div id="filetransfer" class="file-transfer" ng-file-select="onFileSelect($files,$event)" onclick="this.value = null">
+
+                                    <input type="file" multiple class="hidden" />
+
+                                    </div>
+
+                                </div>
+
+                                <label for="chatmessage" class="hidden">Message</label>
+
+                                <div ng-attr-contenteditable="{{ enableInput }}"
+                                     id="chatmessage"
+                                     autofocus="autofocus"
+                                     ng-paste="onPaste($event)"
+                                     data-ng-keyup="onEnter($event)"
+                                     ng-file-drop-available="dropSupported=true"
+                                     ng-file-drop="onFileSelect($files, $event)" >
+                                </div>
+
+
+                                <button type="submit" id="chatmessagesubmit" class="hidden">Send</button>
+                                <!--END File Transfer functionality-->
+                            </div>
+                        </fieldset>
+                    </form>
+            </footer>
+        </article>
+
+	<!-- cdnify target libraries -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+	<!-- end cdnify target libraries -->
+
+    <!-- build:js(.) scripts/chat-framework.js -->
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+ 	<script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+ 	<script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/jquery.tmpl/jquery.tmpl.js"></script>
+    <script src="bower_components/store/store.js"></script>    
+    <!-- endbuild -->	
+    
+    <!-- build:js({.tmp,app}) scripts/chat-mindframe.js -->
+    <script src="js/util.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/appChat.js"></script>
+    <script src="constants/constants.js"></script>
+    <script src="services/encoding.service.js"></script>
+    <!-- endbuild -->
+
+  </body>
+</html>

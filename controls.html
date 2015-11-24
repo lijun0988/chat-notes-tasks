@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head>
+        <style type="text/css">
+            html,body {
+                background: transparent;
+                margin: 0;
+                padding: 0;
+                border: none;
+                overflow: hidden;
+            }
+            .controlbar {
+                padding: 10px;
+            }
+        </style>
+        <script type="text/javascript">
+            function muteCall() {
+                window.parent.opener;//getPlugin().mute({callId: window.parent.opener.callid});
+            }
+            function unmuteCall() {
+                window.parent.opener;//getPlugin().unmute({callId: window.parent.opener.callid});
+            }
+            function holdCall() {
+                window.parent.opener;//.getPlugin().hold({callId: window.parent.opener.callid});
+            }
+            function resumeCall() {
+                window.parent.opener;//.getPlugin().resume({callId: window.parent.opener.callid});
+            }
+            function endCall() {
+                window.parent.opener;//.getPlugin().endCall({callId: window.parent.opener.callid});
+            }
+        </script>
+    </head>
+<body>
+ <!--   <div class="controlbar">
+<button type="button" onClick="muteCall()">Mute</button>
+<button type="button" onClick="unmuteCall()">Unmute</button>
+<button type="button" onClick="holdCall()">Hold</button>
+<button type="button" onClick="resumeCall()">Resume</button>
+<button type="button" onClick="endCall()">End</button>-->
+<br>
+Press F11(or cmd-F) to toggle full-screen
+</div>
+</body>
+</html>
+

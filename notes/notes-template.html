@@ -1,0 +1,124 @@
+<header>
+    <h1 class="hidden">Notes Module</h1>
+    <form class="search">
+        <fieldset>
+            <label for="search-note" class="hidden">Search</label>
+            <input id="search-note" type="text" placeholder="Search..." data-ng-model="noteSearchTerm" data-ng-change="search()">
+            <button disabled type="submit" class="hidden">Search</button>
+            <a href="" class="clear" data-ng-click="clearSearch()" data-ng-hide="noteSearchTerm == '' || !noteSearchTerm">Clear</a>
+            <span class="search-icon"></span>
+        </fieldset>
+    </form>
+    <a class="action new-content" href="" data-ng-click="addNote()" title="Add note" data-track-info="on_note_create">&nbsp;</a>
+    <section class="filters-btn-parent">
+        <a class="btn mf-filter-btn tooltipx" data-ng-class="{'mf-filter-btn-selected':isAllSelected}" data-ng-click="toggleFilter('true')">All<span>{{strTipsAll}}</span></a>
+        <a class="btn mf-filter-btn tooltipx" data-ng-class="{'mf-filter-btn-selected':!isAllSelected}" data-ng-click="toggleFilter('false')">My Notes<span>{{strTipsMy}}</span></a>
+    </section>
+    <a href="" data-ng-click="popOutNotes()" data-ng-show="!isPopWindow" class="action popout" title="Popout note">&nbsp;</a>
+</header>
+<!--share dialog prompt-->
+<div data-ng-include="'notes/share-dialog.html'" data-ng-show="isShowNoteDialog" class="fadein fadeout"></div>
+<!-- Notes main region -->
+<main>
+    <div class="list">
+        <h2 class="hidden">Notes list</h2>
+        <div class="list-wrapper-1">
+            <div class="list-wrapper-2" data-fixed-heigth data-fixed-heigth-adjust="{{isPopWindow?-40:-223}}" data-video-heigh-adjust>
+                <ul>
+                    <li class="notes-list-left fixed-height" id="note-item-{{note.id}}" data-ng-repeat="note in notes | filter:filterByTab() | object2Array | orderBy:'updatedAt':true" data-ng-click="selectNote(note)" data-ng-repeat-done="notesListLoaded()" data-ng-class="{selected: selectedNote.id == note.id}" highlight-note>
+                        <!--<span class="index">{{$index + 1}}</span>-->
+                        <div>
+                            <h3 class="heading mf-ui-semibold crop" data-ng-bind-html="markKeyword(note.title)" data-ng-class="{'highlight' : note.highlight}"></h3>
+                            <span data-ng-show="isDraft(note)" class="mf-ui-light draft">draft</span>
+                            <span data-ng-show="note.highlight" class="dot"></span>
+                            <p class="mf-ui-light">
+                                <span class="owner" data-ng-bind-html="markKeyword(note.createdBy.firstName+' '+note.createdBy.lastName)"></span>
+                                <!--<span class="labelOwner">To: </span><span class="owner" data-ng-bind-html="markKeyword(note.createdFor.firstName+' '+note.createdFor.lastName)"></span> -->
+                                <time detatime="{{note.createdAt}}">{{note.updatedAt | date:'M/dd/yyyy'}}</time>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="selected-object-content">
+        <h2 data-ng-hide="selectedNote"></h2>
+        <article data-ng-show="selectedNote&&selectedNote.id" data-fixed-heigth data-fixed-heigth-adjust="{{isPopWindow?-42:-230}}" data-video-heigh-adjust>
+            <header>
+                <div>
+                    <div class="firstline">
+                        <h1 data-ng-hide="editSubject" data-ng-model="selectedNote.title" data-ng-bind-html="markKeyword(selectedNote.title)"  class="mf-ui-semibold crop" data-ng-click="enableEditSubject($event)"></h1>
+                        <input type="text" class="edit edit-subject mf-ui-semibold" data-ng-keyup="noteUpdated($event)" data-ng-show="editSubject" data-ng-model="selectedNote.title" data-ng-blur="editSubject = false; noteUpdated($event)" />
+                    </div>
+                    <div class="actions">
+                        <a href="" class="action btn-hover" data-ng-class="{'action-share':selectedNote.isNeededPublish, 'action-shared':!selectedNote.isNeededPublish}" title="Share note with persons" data-ng-click="shareNote($event)">Share</a>
+                        <a href="" class="action action-info btn-hover" data-ng-class="{'editing':isShowNoteInfo}" title="Note information" data-ng-click="showNoteInfo($event)">Info</a>
+                        <a href="" class="action action-remove btn-hover" data-ng-class="{'editing':deleteNoteContextual}" title="Delete Note" data-ng-click="askDeleteNote($event)">Remove</a>
+                        <div data-ng-click="deleteNote()" class="contextual-action delete-position" data-ng-show="deleteNoteContextual">
+                            <a href="">Delete Note?</a>
+                            <div class="pointer right"></div>
+                        </div>
+                    </div>
+
+                    <div class="info-pointer" data-ng-show="isShowNoteInfo" data-ng-click="showNoteInfoDiv($event)"></div>
+                    <div id="notes-main-info" class="dropdown-menu-mf popupmenu-background info-position" data-ng-show="isShowNoteInfo" data-ng-click="showNoteInfoDiv($event)">
+                        <ul>
+                            <li class="info-none"><span>Author:</span><b>{{selectedNote.createdBy.firstName}} {{selectedNote.createdBy.lastName}}</b></li>
+                            <li class="info-none"><span>Created:</span><b><time datetime="{{selectedNote.createdAt}}">{{selectedNote.createdAt | date:'M/dd/yyyy'}}</time></b></li>
+                            <li class="info-none"><span>Edited:</span><b><time datetime="{{selectedNote.updatedAt}}">{{selectedNote.updatedAt | date:'M/dd/yyyy'}}</time></b></li>
+                            <li class="info-none"><span>Edited by:</span><b>{{selectedNote.lastModifiedBy ? selectedNote.lastModifiedBy.firstName : selectedNote.createdBy.firstName}} {{selectedNote.lastModifiedBy ? selectedNote.lastModifiedBy.lastName : selectedNote.createdBy.lastName}}</b></li>
+                            <li class="info-none"><span>Tab:</span><b>{{selectedNote.content ? selectedNote.content.name:'General'}}</b></li>
+                            <li class="info-none"><span>Contact:</span><b>{{selectedNote.createdFor.firstName}} {{selectedNote.createdFor.lastName}}</b></li>
+                        </ul>
+                    </div>
+                    <div class="ui-clear"></div>
+                </div>
+
+                <div style="padding-bottom: 5px;">
+                    <span class="share-title">Share with:</span>
+
+                    <tags-input ng-model="selectedNote.sharelist" class="bootstrap main-window"
+                                placeholder=" "
+                                display-property="displayName"
+                                add-from-autocomplete-only="true"
+                                replace-spaces-with-dashes="false"
+                                on-tag-added="onTagsAddRemove()"
+                                on-tag-removed="onTagsAddRemove()">
+                        <auto-complete source="loadTags($query)"
+                                       min-length="2"
+                                       max-results-to-show="50"
+                                       highlight-matched-text="false"
+                                       loadOnFocus="true"></auto-complete>
+                    </tags-input>
+                </div>
+            </header>
+            <main>
+                <div class="object-wrapper" data-ng-show="selectedNote">
+                    <div data-ng-show="selectedNote.lockedBy&&selectedNote.lockedBy.id&&selectedNote.lockedBy.id!=myPersonId" data-ng-include="'notes/lock.html'"></div>
+                    <div class="notetaskcontent" data-fixed-heigth data-fixed-heigth-adjust="{{isPopWindow?-150:-320}}">
+										<pre class="edit edit-text"
+                                             data-ng-model="selectedNote.text"
+                                             data-ng-bind-html="markKeyword(selectedNote.text)"
+                                             data-ng-blur="noteUpdated($event)"
+                                             data-ng-click="enableEditText($event)"
+                                             data-ng-show="!editText"
+                                             style="cursor:text; -webkit-user-select: text; height: 100%;"></pre>
+                        <textarea
+                                data-ng-readonly="!selectedNote.isEditable"
+                                class="edit edit-text"
+                                data-ng-show="editText"
+                                data-ng-model="selectedNote.text"
+                                data-ng-blur="noteUpdated($event); editText=false"
+                                data-ng-keyup="noteUpdated($event)"
+                                data-ng-bind-html="markKeyword(selectedNote.text)"
+                                data-ng-click="enableEditText($event)"
+                                spellcheck="false"
+                                style="cursor:text; -webkit-user-select: text; height: 100%">
+                        </textarea>
+                    </div>
+                </div>
+            </main>
+        </article>
+    </div>
+</main>

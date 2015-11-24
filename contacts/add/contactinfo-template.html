@@ -1,0 +1,165 @@
+<main>
+    <div class="add-contact-container" >
+
+        <h4>{{!isAddEdit ? 'Edit Contact': 'Add Contact'}} </h4>
+
+        <form id="unrecognizedContactForm" class="add-contact-form" name="unrecognizedContactForm" method="post" data-ng-submit="submit()" novalidate>
+            <label for="email-address" data-ng-class="{'large':xyz==3}">
+                Email
+            </label>
+            <input type="text" id="email-address" data-ng-model="unrecognizedContact.email"  ng-change="searchPerson($event)"  name="email_address" class="form-control" data-ng-class="{'large':xyz==3}" />
+            <div class="dropdown-menu-mf addcontact" data-ng-show="personSearchList.length > 0 && !selectedSearchedPerson" data-ng-class="{'large':xyz==3, 'editright':xyz==2}">
+                <ul class="searchperson">
+                    <li data-ng-repeat="person in personSearchList"
+                        class="clearfix"
+                        data-ng-model="person"
+                        data-id="{{person.id}}"
+                        data-ng-click="selectSearchedPerson()"
+                            >
+                        {{person.firstName}} {{person.lastName}}
+                    </li>
+                </ul>
+
+            </div>
+
+            <label for="first-name" data-ng-class="{'large':xyz==3}">First Name</label>
+            <input id="first-name" name="first_name" type="text" data-ng-model="unrecognizedContact.firstName"
+                   data-ng-class="{'large':xyz==3}"
+                   data-ng-maxlength=60 data-ng-focus/>
+            <label for="last-name" data-ng-class="{'large':xyz==3}">Last Name</label>
+            <input id="last-name" name="last_name" type="text" data-ng-model="unrecognizedContact.lastName"
+                   data-ng-class="{'large':xyz==3}"
+                   data-ng-maxlength=60/>
+            <label for="companyId" data-ng-class="{'large':xyz==3}">Company</label>
+            <input id="companyId" name="companyName" type="text" data-ng-model="unrecognizedContact.companyName"
+                   data-ng-class="{'large':xyz==3}"  data-ng-maxlength=60/>
+
+            <div class="filters" data-ng-class="{'large':xyz==3}">
+                <div class="selector filter-scope">
+                    <div class="droparrow" data-ng-click="togglePhoneType($event, 'work')">
+                        <a href="" class="selected-value">
+                            <span data-ng-class="{'work-left' : phoneType['work'].selected == 'Work', 'home-left' : phoneType['work'].selected == 'Home' }">{{phoneType['work'].selected}} Number</span>
+                        </a>
+                    </div>
+                    <menu class="contextual-menu show dropdown-notes-filters no-padding" data-ng-show="phoneType['work'].isToggle">
+                        <ul class="options">
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['work'].selected == 'Work'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'work', 'Work')"  class="notes-filter"  href="">Work</a>
+                            </li>
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['work'].selected == 'Mobile'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'work', 'Mobile')"  class="notes-filter"  href="">Mobile</a>
+                            </li>
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['work'].selected == 'Home'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'work', 'Home')"  class="notes-filter"  href="">Home</a>
+                            </li>
+                        </ul>
+                    </menu>
+                </div>
+            </div> <!-- end Phone type -->
+
+            <input id="work-phone-number" name="work_phone_number" type="text" data-ng-model="phoneType['work'].number"
+                   data-ng-class="{error: unrecognizedContactForm.work_phone_number.$invalid && unrecognizedContactForm.submitted, 'large':xyz==3}"
+                   phone-number-format
+                   data-ng-maxlength=30/>
+
+            <div class="filters" data-ng-class="{'large':xyz==3}">
+                <div class="selector filter-scope">
+                    <div class="droparrow" data-ng-click="togglePhoneType($event, 'mobile')">
+                        <a href="" class="selected-value">
+                            <span data-ng-class="{'work-left' : phoneType['mobile'].selected == 'Work', 'home-left' : phoneType['mobile'].selected == 'Home' }">{{phoneType['mobile'].selected}} Number</span>
+                        </a>
+                    </div>
+                    <menu class="contextual-menu show dropdown-notes-filters no-padding" data-ng-show="phoneType['mobile'].isToggle">
+                        <ul class="options">
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['mobile'].selected == 'Work'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'mobile', 'Work')"  class="notes-filter"  href="">Work</a>
+                            </li>
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['mobile'].selected == 'Mobile'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'mobile', 'Mobile')"  class="notes-filter"  href="">Mobile</a>
+                            </li>
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['mobile'].selected == 'Home'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'mobile', 'Home')"  class="notes-filter"  href="">Home</a>
+                            </li>
+                        </ul>
+                    </menu>
+                </div>
+            </div> <!-- end Phone type -->
+
+            <input id="mobile-phone-number" name="mobile_phone_number" type="text" data-ng-model="phoneType['mobile'].number"
+                   data-ng-class="{error: unrecognizedContactForm.mobile_phone_number.$invalid && unrecognizedContactForm.submitted,'large':xyz==3}" phone-number-format  data-ng-maxlength=30/>
+
+            <div class="filters" data-ng-class="{'large':xyz==3}">
+                <div class="selector filter-scope">
+                    <div class="droparrow" data-ng-click="togglePhoneType($event, 'home')">
+                        <a href="" class="selected-value">
+                            <span data-ng-class="{'work-left' : phoneType['home'].selected == 'Work', 'home-left' : phoneType['home'].selected == 'Home' }">{{phoneType['home'].selected}} Number</span>
+                        </a>
+                    </div>
+                    <menu class="contextual-menu show dropdown-notes-filters no-padding" data-ng-show="phoneType['home'].isToggle">
+                        <ul class="options">
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['home'].selected == 'Work'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'home', 'Work')"  class="notes-filter"  href="">Work</a>
+                            </li>
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['home'].selected == 'Mobile'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'home', 'Mobile')"  class="notes-filter"  href="">Mobile</a>
+                            </li>
+                            <li class="notes-filter padding">
+                                <img class="checked-item" data-ng-show="phoneType['home'].selected == 'Home'" src="img/icons/check.png" alt="check">
+                                <a data-ng-click="selectPhoneType($event, 'home', 'Home')"  class="notes-filter"  href="">Home</a>
+                            </li>
+                        </ul>
+                    </menu>
+                </div>
+            </div> <!-- end Phone type -->
+
+            <input id="home-phone-number" name="home_phone_number" type="text" data-ng-model="phoneType['home'].number"
+                   data-ng-class="{error: unrecognizedContactForm.home_phone_number.$invalid && unrecognizedContactForm.submitted, 'large':xyz==3}"  phone-number-format  data-ng-maxlength=30/>
+
+
+            <label data-ng-class="{'large':xyz==3}">Type of Contact</label>
+            <ul class="radio-group" data-ng-class="{'large':xyz==3}">
+                <li>
+                    <input id="{{'add-type-contact-private'+xyz}}"
+                           class="mf-form-element mf-checkbox"
+                           type="radio" name="add-type-contact"
+                           value="private"
+                           data-ng-model="unrecognizedContact.typeContact"/>
+                    <label for="{{'add-type-contact-private'+xyz}}">Private</label>
+                </li>
+                <li>
+                    <input id="{{'add-type-contact-public'+xyz}}"
+                           class="mf-form-element mf-checkbox"
+                           type="radio" name="add-type-contact"
+                           value="public"
+                           data-ng-model="unrecognizedContact.typeContact"/>
+                    <label for="{{'add-type-contact-public'+xyz}}">Public</label>
+                </li>
+            </ul>
+            <label for="group" class="label-group" data-ng-class="{'large':xyz==3}">Groups</label>
+            <select name="group" id="group" class="dropdown-select-down" data-ng-class="{'large':xyz==3}" data-ng-model="unrecognizedContact.group">
+                <option value="" data-ng-selected="true">Select a group</option>
+                <option data-ng-repeat="group in groups" data-ng-if="!group.isDefault"  value="{{group.name}}"
+                        class="icon-monkey">{{group.name}}
+                </option>
+            </select>
+            <div class="add-contact-buttons" data-ng-class="{'add-contact-buttons-disable' : editGenericContact}">
+                <!--
+                <input type="button" name="cancel" class="cancel" data-ng-click="cancel($event)">Cancel</input>
+                <input type="submit" name="save" class="save" value=" ">{{unrecognizedContact.userId ? 'Save': 'Add'}}</input>
+                -->
+                <button type="button" data-ng-click="cancel($event)" class="btn btn-2 btn-cancel btn-inverted">Cancel</button>
+                <button type="submit" class="btn btn-2 btn-submit">{{ !isAddEdit ? 'Save': 'Add'}}</button>
+
+            </div>
+        </form>
+
+    </div>
+</main>

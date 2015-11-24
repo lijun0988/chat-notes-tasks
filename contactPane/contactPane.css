@@ -1,0 +1,288 @@
+/* CSS styles for contactPane.module */
+.show-contact-margin {
+    margin-left: 0;
+}
+.hide-contact-margin {
+    margin-left: -275px;
+}
+.contact-pane-module .top-contact-info .left-right-nav { 
+	background: #FFFFFF; 
+	height: 61px; 
+	border-bottom: solid 1px #B7C3CA;
+	/*overflow: hidden;*/
+	text-align: center;
+	position: relative; }
+    .contact-pane-module .top-contact-info .left-right-nav a[rel="contacts"] {
+        display: inline-block;
+        position: absolute;
+        top: 35%;
+        left: 2%;
+        text-indent: -9999px;
+        width: 20px;
+        height: 20px;
+        background: url('../img/icons/Contact-List-Show-Hide.svg') no-repeat 0 0 transparent;
+        background-size: 100% }
+	.contact-pane-module .top-contact-info p {
+		margin-top: 22px; 
+		font-size: 1.25em;
+		display: inline-block;
+		color: #282828;
+		font-family: 'Open Sans', sans-serif, light;
+		white-space: nowrap; }
+	.contact-pane-module .top-contact-info .user-name b {
+		font-family: 'Open Sans', sans-serif, bold;
+		margin-left: 5px }
+	.contact-pane-module .top-contact-info .user-phone { 
+		font-family: 'Open Sans', sans-serif, light-italic; 
+		margin-left: 5px;
+		margin-right: 5px }
+	.contact-pane-module .top-contact-info .phone-icon { 
+		background-image: url('../img/icons/sprite-search-phones.png');
+		background-color: transparent;
+		background-repeat: no-repeat;
+		width: 30px;
+		margin-left: 5px;
+		text-indent: -9999px;
+		position: relative; top: -2px }
+	.contact-pane-module .top-contact-info .phone-icon.office-phone { background-position: 0 2px }
+	.contact-pane-module .top-contact-info .phone-icon.home-phone { background-position: 0 -30px }
+	.contact-pane-module .top-contact-info .phone-icon.mobile-phone { background-position: 0 -60px }
+
+    .contact-pane-module .top-contact-info .phone-selector {
+        display: inline-block;
+        border-radius: 7px;
+        margin-top: 15px;
+        padding: 5px;
+        position:absolute;
+    }
+    .contact-pane-module .top-contact-info .left-right-nav .phone-selector .phoneselect {
+        background-image: url('../img/icons/sprite-search-phones.png');
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: 0 -602px;
+        width: 27px;
+        height: 18px;
+        text-indent: -9999px;
+        display: inline-block;
+        margin-top: 7px;
+        margin-left: -4px;
+        margin-right: 8px;
+		background-size: 200% }
+	.contact-pane-module .top-contact-info .left-right-nav .phone-selector.opened .phoneselect { background-position-y: -499px }
+    .contact-pane-module .top-contact-info .phone-selector .phoneselectorleft { float: left; margin-top: 5px }
+
+    .contact-pane-module .top-contact-info .phone-selector-dropdown {
+        border-radius: 7px;
+        background: white;
+        -webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+        box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+        position: absolute;
+        top: 55px;
+        z-index: 3;
+        width: 230px;
+        left: 42% }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown .pointer {
+        position: absolute;
+		top: -5px;
+		width: 13px;
+		height: 13px;
+		left: 50%;
+		margin-left: -8px;
+		clip: rect(-5px, 21px, 5px, -5px); }
+	.contact-pane-module .top-contact-info .phone-selector-dropdown .pointer em {
+        display: block;
+		-webkit-transform: rotate(45deg);
+		background: #FFFFFF;
+		height: 100%; }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul { list-style: none;
+        margin: 0;
+        padding: 0; }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li {
+        text-indent: 0;
+        padding: 13px 12px 13px 80px;
+        border-bottom: solid 1px #EFEFEF;
+        cursor: pointer;
+        background-image: url('../img/icons/sprite-search-phones.png');
+        background-size: 21.5%;
+        background-position-x: 40px;
+        background-repeat: no-repeat; 
+        position: relative; }
+
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li.office-phone 	{ background-position-y: -166px }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li.mobile-phone 	{ background-position-y: -236px }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li.home-phone 		{ background-position-y: -304px }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li:last-child { border: none }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li:hover { background-color: #E8EEF4 }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li a { font-size: 0.8125em; color: #1D1D1D; text-decoration: none; display: block; }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li a:hover { text-decoration: none }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li a span { display: block; line-height: 1.166666666666667em }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li a span.type { font-weight: bold; }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li a span.number { font-style: italic; }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li img { display: none; position: absolute; left: 15px; top: 24px; width: 10px; height: 10px }
+    .contact-pane-module .top-contact-info .phone-selector-dropdown ul li.selected img { display: inline-block }
+
+.multi-calls-header {
+    text-align:center;
+    margin:0 auto;
+    width:100%;
+    background:#FFFFFF;
+    display:table;
+    table-layout:fixed;
+    height: 61px;
+    line-height:61px;
+    border-bottom: solid 1px #B7C3CA;
+}
+
+.multi-calls-header > ul {
+    display:table-row;
+
+}
+.multi-calls-header > ul > li {
+    display:table-cell;
+    width:200px;
+    border-right: 2px solid #B7C3CA;
+    cursor: pointer;
+    font-weight: normal;
+    line-height: 60px;
+    opacity: 0.5;
+}
+
+.multi-calls-header > ul > li .name {
+    font-size: 1.25em;
+    color: #778899;
+    width: 250px;
+    min-width: 100px;
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*display: inline-block;*/
+    vertical-align: top;
+}
+.multi-calls-header > ul > li.selected {
+    opacity: 1;
+}
+
+.multi-calls-header > ul > li.selected .name {
+    font-weight: bold;
+    color: #282828;
+}
+.multi-calls-header > ul > li .state, .phone-status.state {
+    margin-left: 20px;
+}
+
+.single-call-status.state.icons {
+    margin-left: 80px;
+    position: absolute;
+    height: 20px;
+    top: 40%;
+    text-indent: -9999px;
+    display: inline-block;
+    width: 90px;
+}
+.single-call-status.state.icons.calling {
+    background: url('../img/icons/text-calling.svg') no-repeat;
+}
+.single-call-status.state.icons.connected {
+    background: url('../img/icons/text-connected.svg') no-repeat;
+}
+.single-call-status.state.icons.hold {
+    background: url('../img/icons/text-hold.svg') no-repeat;
+}
+
+.multi-calls-header > ul > li .state.icons{
+    text-indent: -9999px;
+    display: inline-block;
+    background-size: 90px 20px;
+    width: 90px;
+    position:relative;
+    top:25px;
+}
+.multi-calls-header > ul > li .state.icons.calling {
+    background: url('../img/icons/text-calling.svg') no-repeat;
+    /*background-size: 60px 30px;*/
+    top:20px;
+}
+.multi-calls-header > ul > li .state.icons.connected {
+    background: url('../img/icons/text-connected.svg') no-repeat;
+    /*background-size: 85px 40px;*/
+    top:20px;
+}
+.multi-calls-header > ul > li .state.icons.merged {
+    background: url('../img/icons/text-merged.svg') no-repeat;
+    /*background-size: 80px 40px;*/
+    top:20px;
+}
+.multi-calls-header > ul > li .state.icons.hold{
+    background: url('../img/icons/text-hold.svg') no-repeat;
+    /*background-size: 60px 20px;*/
+    top:20px;
+}
+
+
+.conference-dropdown {
+    position: absolute;
+    cursor: default;
+    width: 230px;
+    border-radius: 5px;
+    background: white;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+    box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+    bottom: 70px;
+    color: black;
+    background: white;
+    z-index: 999;
+}
+.conference-dropdown.merge {
+    left: 126px;
+}
+.conference-dropdown.transfter {
+    left:56px;
+}
+.conference-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+}
+.conference-dropdown ul li {
+    text-indent: 0;
+    margin: 4px 0;
+    padding: 6px 13px;
+    border-bottom: solid 1px #EFEFEF;
+    cursor: pointer;
+    position: relative;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.conference-dropdown ul li.last {
+    border-bottom: none;
+
+}
+
+.conference-dropdown ul li:hover {
+    background: #F2F2F2;
+}
+.conference-dropdown ul li span.title{
+    color:#848484;
+}
+.conference-dropdown ul li span.content{
+    color:#000000;
+}
+
+
+.conference-dropdown .pointer {
+    position: absolute;
+    bottom: -5px;
+    width: 15px;
+    height: 15px;
+    left: 50%;
+    margin-left: -8px;
+    clip: rect(10px,30px,20px,-5px);
+}
+.conference-dropdown .pointer em {
+    display: block;
+    -webkit-transform: rotate(45deg);
+    background: #FFFFFF;
+    height: 100%;
+}

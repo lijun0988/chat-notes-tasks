@@ -1,0 +1,56 @@
+
+<html>
+
+<head>
+
+<link type="text/css" href="/jquery/css/start/jquery-ui-1.8.5.custom.css" rel="stylesheet" />
+
+<style type="text/css">
+
+.ui-widget table { font-size: 1em; }
+
+</style>
+
+<script src="/json2.js"></script>
+<script src="/jquery/jquery-1.4.4.js"></script>
+<script src="/jquery/jquery-ui-1.8.5.custom.min.js"></script>
+
+<script type="text/javascript">
+
+	$(document.body).ready(function() {
+
+		$(document.body).css('font-size', '12px').addClass('ui-widget');
+		
+		s = $(location).get(0).search;
+		if (m = /name=(.*?)($|&)/i.exec(s)) { $('#name').text(m[1].replace(/%20/g, ' ')); }
+		if (m = /recipient=(.*?)($|&)/i.exec(s)) { $('#recipient').text(m[1]); }
+		
+		var conversationId = '';
+		if (m = /conversationId=(.*?)($|&)/i.exec(s)) { conversationId = m[1]; }
+		
+		$('#answer').button();
+		
+	}); // document ready
+
+</script>
+
+</head>
+
+<body>
+
+<table width="100%">
+	<tr align="left" valign="middle">
+		<td>
+			<b><label id="name" style="white-space:nowrap"></label></b>
+			<br>
+			<label id="recipient" style="white-space:nowrap"></label>
+		</td>
+	</tr>
+	<tr align="center">
+		<td><button id="answer" style="width:100%">Answer</button></td>
+	</tr>
+</table>
+
+</body>
+
+</html>

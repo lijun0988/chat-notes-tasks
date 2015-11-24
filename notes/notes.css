@@ -1,0 +1,188 @@
+/* CSS styles for notes.module */
+
+.notes-module { width: 100%; height: 100% }
+.notes-module > main > .selected-object-content article > header > .actions .contextual-action { right: 0; top: 22px }
+.notes-module > main > .selected-object-content article > header input.edit-subject { position: relative; left: -1px; top: -4px; height: 28px; margin-bottom: 0 }
+.tabbed-content > header form.search .clear { margin: 0; display: inline-block; width: 15px; height: 15px; background: url('../notes/img/clear.svg') no-repeat 0 0 transparent; text-indent: -9999px; position: absolute; top: 6px; right: 8px; }
+
+/* Temporal popup */
+.lightbox-notes .selected-object-content.add-note-tab {width: 600px; height:350px; position: absolute;background-color: #FAFAF3;top: 50%;left: 50%; border-radius: 10px;/* -webkit-box-shadow: 0 0 1em black; */ box-shadow: 0 0 1em rgba(0,0,0,0.4);z-index:10001; margin-left: -300px;margin-top: -175px;}
+.lightbox-notes .selected-object-content .nomargin {margin:0;}
+.lightbox-notes .selected-object-content .notes-text {border-radius: 3px; resize: none; background-color: #FAFAF3; width: 93%; height:100%; overflow-x:hidden; border: none; outline: none;box-shadow: none; }
+.lightbox-notes .close-btn:hover { background: #6BC6FB }
+.lightbox-notes > main > .selected-object-content article > header h1 { white-space: normal; margin-top: 10px }
+.lightbox-notes > main > .selected-object-content article > header input.edit-subject { white-space: normal; margin-top: 7px; height: 28px; position: relative; left: -1px }
+.lightbox-notes > main > .selected-object-content article > header > hgroup { width: 250px }
+.lightbox-notes > main > .selected-object-content article > header .action { margin-top: 4px !important }
+.lightbox-notes .title-nowrap { white-space: nowrap }
+.lightbox-notes .edit-subject { width: 240px }
+.dropdown-notes-filters { left: -55px }
+.lightbox-notes .overlay { position: absolute; width: 100%; height: 100%; z-index: 3; background: rgba(0,0,0,0.5) }
+
+.notes-module .draft {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    color: #2a9bdb;
+    font: sans-serif;
+    opacity: 0.75;
+    font-size: 10pt;
+}
+.notes-module .tooltip.bottom .tooltip-arrow{
+    left: 9px;
+    bottom:1px;
+}
+
+.notes-module .tooltip.bottom{
+    padding: 5px 0;
+    margin-top: 3px;
+}
+
+ li.notes a img.bell{
+     margin: -5px 0 0 15px;
+     position: absolute;
+     height: 20px;
+ }
+
+
+.highlight{
+    color: black !important;
+    font-size: 16px !important;
+}
+
+.dot{
+    background: #1C5996 !important;
+    height: 10px !important;
+    width: 10px !important;
+    left: 89%;
+    position: absolute;
+    z-index: 9 !important;
+    margin-top: -13px;
+    border-radius: 61px;
+}
+
+.notes-list-left {position: relative}
+
+
+
+/*share dialog */
+.fadein,
+.fadeout {
+    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.5s;
+    -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.5s;
+    -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.5s;
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.5s;
+}
+.fadein.ng-hide-remove,
+.fadeout.ng-hide-add.ng-hide-add-active {
+    opacity: 0;
+    display: block !important;
+}
+.fadeout.ng-hide-add,
+.fadein.ng-hide-remove.ng-hide-remove-active {
+    opacity: 1;
+    display: block !important;
+}
+
+.share-popup {
+    opacity: 1;
+    z-index: 9999;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    margin-left: -140px;
+    z-index: 999;
+    padding: 5px;
+    text-align: center;
+    width: 300px;
+    background: #EBEDEF;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+.share-popup p {
+    color:#6E6E6E; margin: 10px; text-align:left; font-size: 0.9em;
+}.share-popup p.center {
+    text-align:center;
+ }
+.share-popup .header-img {
+    background: url('../img/icons/Share-Persons.svg') no-repeat;
+    display: inline-block;
+    width: 30px;
+    background-color: transparent;
+    text-indent: -9999px;
+}
+.share-popup .tags-container {
+    width: 100%; height: 100px; border: solid 1px #dcdcdc;overflow-y:scroll;
+}
+.share-popup footer {
+    margin: 5px; margin-top:10px;
+}
+.share-popup footer .left {
+    float: left; margin-left: 4px; color:#6E6E6E; background: #EBEDEF;
+}
+.share-popup footer .right {
+    float: right; margin-right: 4px; /*background-color: #add8e6;*/ opacity: 0.5;
+}
+.share-popup footer .right.enable {
+    opacity: 1;
+}
+
+
+.lock-div {
+    position:absolute; right:0; margin-top:-15px;margin-right: 15px;
+    width: 0;
+    height: 0;
+    /* This color is for Notes Area*/
+    border-top: 30px solid #F77725;
+    border-right: 30px solid #F77725;
+    border-left: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+}
+
+.lock-img {
+    background: url('../img/icons/Notes-Lock.svg') no-repeat;
+    position: absolute;
+    margin-top: -23px;
+    margin-left: 4px;
+    width: 30px;
+    background-color: transparent;
+    text-indent: -9999px;
+    
+}
+
+.tooltipxSystem span { 
+    transition: opacity 0.2s 0s ease;
+    opacity: 0;    
+    
+    background-color:#f5f6f7;
+    box-shadow: 0px 0px 6px 0.00px rgba(0, 0, 0, 0.5); 
+    font-family: 'Open Sans';
+    font-size:12px; 
+    font-weight: 500;
+    z-index:10;
+    /*
+    display:none; 
+    */
+    color: black;
+    position:absolute; 
+    padding:4px 4px; 
+    margin-top:30px; 
+    margin-left:-60px; 
+    min-width:90px; 
+    line-height:16px; 
+}
+
+.tooltipxSystem:hover {text-decoration:none;}
+
+.tooltipxSystem:hover span{ 
+    transition: opacity 0.2s 0.5s ease; /* Mouse enter: delay */
+    opacity:1;
+    border:solid 1px black; 
+    display:inline; 
+    position:absolute; 
+    color:black; 
+    background:#FDFDFD;
+    top:-20px;
+    left:-20px;
+}

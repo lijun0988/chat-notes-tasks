@@ -1,0 +1,45 @@
+<section>
+    <main data-ng-click="stopPropagation($event)" id="find-contacts" data-ng-controller="findContactsController"  >
+
+        <div class="find-contact-search-new">
+            <div class="input-container input-container-new">
+                <div id="input-search-icon"></div>
+                <input id="input-search-text" type="text" autocomplete="off" placeholder="Search..."
+                       data-ng-model="init.input" data-ng-keyup="searchGenericContact($event)"/>
+                <button id="clearSearch" type="button" class="contacts-clear-button mf-clear-button" data-ng-hide="init.input == '' || init.loading" data-ng-show="init.input || !init.loading" data-ng-click="cleanSearch()">Clear</button>
+                <img src="img/ajax/loader.gif" alt="Ajax Loader" data-ng-show="init.loading" class="loader-ajax"
+                     id="showLoadingSearch"/>
+
+            </div>
+            <div class="line" data-ng-show="init.input.length>0"></div>
+            <div id="search-container-header-new" data-ng-show="init.input.length>0">
+                <label class="no-found" data-ng-show="contacts&&contacts=='No User Found'">No user found</label>
+                <div class="search-result newheader" data-ng-show="contacts">
+                    <table style="width: 100%;">
+                        <tbody>
+
+                        <tr data-ng-repeat="contact in contacts" data-ng-click="addToExistContact(contact)" data-ng-class="{'baned': contact.authenticationSource&&contact.authenticationSource=='LDAP'}">
+                            <!--
+                            <td>
+                            <span class="icon-contact-presence local-contact-status"></span>
+                            </td>
+                            -->
+                            <td style="text-align:left; padding-left: 20px" >
+
+                                  {{contact.firstName+' '+contact.lastName}}
+
+                            </td>
+
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+</section>
+<div class="pointer"></div>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html id="tasksApp" data-ng-app="mfAppPopupTasks" data-ng-controller="TasksPopoutController">
+<head>
+    <title data-ng-bind="'Mindframe Task For - '+ dataParent.selectedPerson.displayName"></title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <!-- Stylesheets -->
+    
+    <!-- build:css(.) styles/popuptasks-framework.css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/docs/assets/css/bootstrap.css" />  
+    <!-- endbuild -->   
+    
+    <!-- build:css(.tmp/styles) styles/popuptasks-mindframe.css -->
+    <link rel="stylesheet" href="css/bootstrap-override.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="tasks/tasks.css">
+    <link rel="stylesheet" href="contacts/contacts.css">
+    <link rel="stylesheet" href="ng-tags-input/ng-tags-input.css">
+    <!-- endbuild -->   
+    
+    <script>
+        version = localStorage.version;        
+    </script>
+</head>
+<body>    
+    <section class="tasks-module tabbed-content"
+             data-ng-controller="TasksController"
+             data-ng-click="onClickModule()"
+             static-include="tasks/tasks-template.html"
+             >
+    </section>
+ 
+   <!-- cdnify target libraries -->
+   <script src="bower_components/angular/angular.js"></script>
+   <script src="bower_components/angular-route/angular-route.js"></script>
+   <script src="bower_components/angular-resource/angular-resource.js"></script>
+   <script src="bower_components/jquery/dist/jquery.js"></script>
+   <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+   <!-- end cdnify target libraries -->
+ 
+   <!-- build:js(.) scripts/popuptasks-framework.js -->
+   <script src="bower_components/jquery-autosize/jquery.autosize.js"></script>
+   <script src="bower_components/jquery.tmpl/jquery.tmpl.js"></script>
+   <script src="bower_components/jquery.easing/js/jquery.easing.js"></script>
+   <script src="bower_components/jquery.easing/js/jquery.easing.compatibility.js"></script>
+   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>       
+   <!-- endbuild -->
+      
+   <!-- build:js({.tmp,app}) scripts/popuptasks-mindframe.js -->
+   <script src="services/messages/messages_en-US.js"></script>
+   <script src="js/util.js"></script>
+   <script src="tasks/taskPopUp.module.js"></script>   
+   <script src="tasks/tasks.module.js"></script>   
+   <script src="services/popup.service.js"></script>        
+   <script src="constants/constants.js"></script>
+   <script src="services/path.service.js"></script>   
+   <script src="main/main.module.js"></script>
+   <script src="services/storage.service.js"></script>
+   <script src="services/users.service.js"></script>
+   <script src="resources/resources.js"></script>
+   <script src="filters/filters.js"></script>    
+   <script src="directives/directives.js"></script>
+   <script src="js/analytic.js"></script>
+   <script src="js/mf-app.js"></script>
+   <script src="ng-tags-input/ng-tags-input.js"></script>
+   <script src="tasks/share.dialog.js"></script>  
+   <script src="js/lib/call-helpers.js"></script>  
+   <!-- endbuild -->
+</body>
+</html>

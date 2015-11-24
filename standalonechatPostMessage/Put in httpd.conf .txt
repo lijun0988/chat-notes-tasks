@@ -1,0 +1,4 @@
+ProxyRequests Off
+ProxyPreserveHost On
+SSLProxyEngine on
+ProxyPass /httpbinding/ https://192.168.110.205:7335/httpbinding keepalive=On disablereuse=Off

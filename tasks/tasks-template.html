@@ -1,0 +1,182 @@
+﻿<header>
+    <h1 class="hidden">Tasks Module</h1>
+    <form class="search-task">
+        <fieldset>
+            <label for="search-task" class="hidden">Search</label>
+            <input id="search-task" type="text" placeholder="Search..." data-ng-model="taskSearchTerm" data-ng-change="search()">
+            <button disabled type="submit" class="hidden">Search</button>
+            <a href="" class="clear" data-ng-click="clearSearch()" data-ng-hide="taskSearchTerm == '' || !taskSearchTerm">Clear</a>
+            <span class="search-icon-task"></span>
+        </fieldset>
+    </form>
+    <a class="action new-content" href="" data-ng-click="addTask()" title="Add Task" data-track-info="on_task_create">&nbsp;</a>
+    <section class="filters-btn-parent">
+        <a class="btn mf-filter-btn-task tooltipx" data-ng-class="{'mf-filter-btn-selected-task':isAllTaskSelected}" data-ng-click="toggleFilter('true')">All<span>{{strTipsAll}}</span></a>
+        <a class="btn mf-filter-btn-task tooltipx" data-ng-class="{'mf-filter-btn-selected-task':!isAllTaskSelected}" data-ng-click="toggleFilter('false')">My Tasks<span>{{strTipsMy}}</span></a>
+    </section>
+    <a href="" data-ng-click="popOutTasks()" data-ng-show="!isPopWindow" class="action popout-content" title="Popout task">&nbsp;</a>
+</header>
+<!--share dialog prompt-->
+<div data-ng-include="'tasks/share-dialog.html'" data-ng-show="isShowTaskDialog" class="fadein fadeout"></div>
+<!-- Tasks main region -->
+<main>
+    <div class="list">
+        <h2 class="hidden">Tasks list</h2>
+        <div class="list-wrapper-1">
+            <div class="list-wrapper-2" data-fixed-heigth data-fixed-heigth-adjust="{{isPopWindow?-40:-223}}" data-video-heigh-adjust>
+                <ul class="tasks-group-list">
+					<li data-ng-repeat="group in taskGroups" data-ng-class="{'overdue':group.groupName=='Overdue'}" data-ng-hide="$index == 0 && group.tasks.length == 0" >
+						<a href="" data-ng-class="{collapsed: (!group.visible || group.tasks.length == 0)}" data-ng-click="toggleGroup(group)" class="group-collapser">{{group.groupName}}<em></em></a>
+						<ul class="tasks-list" data-ng-show="group.visible">
+							<li data-ng-repeat="task in group.tasks | orderBy:'dueAt'" data-ng-click="selectTask(task)" data-ng-class="{selected: selectedTask.id == task.id , completed: (task.status == 'COMPLETED')}" data-task-id="{{task.id}}" highlight-task>
+								<div class="index">
+									<input id="task-item-{{$parent.$index}}-{{$index}}" type="checkbox" data-ng-checked="(task.status == status.COMPLETED)" data-ng-disabled="task.lockedBy&&task.lockedBy.id&&task.lockedBy.id!=myPersonId"/>
+									<label for="task-item-{{$parent.$index}}-{{$index}}" data-ng-click="toggleStatus(task , $event)">task-item-{{$parent.$index}}-{{$index}}</label>
+								</div>
+								<div style="position:relative;">
+									<h3 class="heading mf-ui-semibold" style="position: relative; width:70%;">
+										<div class="fix-space"><i class="priority" data-ng-show="task.priority == 'NORMAL' || task.priority == 'MEDIUM' || task.priority == 'HIGH'"></i>
+										<i class="priority" data-ng-show="task.priority == 'MEDIUM' || task.priority == 'HIGH'"></i>
+										<i class="priority" data-ng-show="task.priority == 'HIGH'"></i></div>
+										<span data-ng-bind-html="markKeyword(task.title)" class="text crop" data-ng-class="{'highlight' : task.highlight}"></span>
+									</h3>
+                                    <span data-ng-show="isTaskDraft(task)" class="mf-ui-light draft">draft</span>
+                                    <div data-ng-show="task.highlight" class="task-dot"></div>
+
+                                    <p data-ng-hide="taskSearchTerm && task.shortDesc && task.shortDesc != ''">
+										<span class="owner" data-ng-bind-html="markKeyword(task.createdBy.firstName + ' ' + task.createdBy.lastName)"></span>
+										<time detatime="{{task.dueAtUi}}">{{!task.dueAtUi?'None':(task.dueAtUi| date:'M/dd/yyyy')}}</time>
+									</p>
+									<p class="short-desc" data-ng-show="taskSearchTerm && task.shortDesc && task.shortDesc != ''" data-ng-bind-html="markKeyword(task.createdBy.firstName+' '+task.createdBy.lastName)"></p>
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="selected-object-content" data-ng-class="{overdue:selectedTask.isOverdue}">
+		<h2 data-ng-hide="selectedTask"></h2>
+		<article data-ng-show="selectedTask&&selectedTask.id" data-fixed-heigth data-fixed-heigth-adjust="{{isPopWindow?-42:-230}}" data-video-heigh-adjust>
+            <header>
+                <div>
+                    <div class="firstlineTask">
+                        <h1 data-ng-hide="editSubject" data-ng-model="selectedTask.title"  data-ng-click="enableEditSubject($event)" class="mf-ui-semibold crop" data-ng-bind-html="markKeyword(selectedTask.title)"></h1>
+                        <input type="text" class="edit edit-subject mf-ui-semibold" data-ng-show="editSubject" data-ng-model="selectedTask.title" data-ng-blur="editSubject=false;taskUpdated($event)" data-ng-keyup="taskUpdated($event)" />
+                    </div>
+                    <div class="actions">
+                        <a href="" class="action action-shared btn-hover" data-ng-class="{'action-share':selectedTask.isNeededPublish, 'action-shared':!selectedTask.isNeededPublish}" title="Share tasks with persons" data-ng-click="shareTask($event)">Share</a>
+                        <a href="" class="action action-priority btn-hover" data-ng-click="togglePriorityMenu($event)" data-ng-class="{'editing':isShowTaskPriority}"  title="Priority task" >Priority</a>
+                        <a href="" class="action action-due-date btn-hover" data-ng-click="toggleDatePicker($event)" data-ng-class="{'editing':showDatePicker}"  title="Due Date task" >Due date</a>
+                        <a href="" class="action action-info btn-hover" data-ng-class="{'editing':isShowTaskInfo}" title="Task information" data-ng-click="showTaskInfo($event)">Info</a>
+                        <a href="" class="action action-remove btn-hover" data-ng-class="{'editing':deleteTaskContextual}" title="Delete Task" data-ng-click="askDeleteTask($event)">Remove</a>
+                        <div data-ng-click="deleteTask()" class="contextual-action delete-position" data-ng-show="deleteTaskContextual">
+                            <a href="">Delete Task?</a>
+                            <div class="pointer right"></div>
+                        </div>
+                    </div>
+                    <div class="date-picker" data-ng-show="showDatePicker">
+                        <input type="text"
+                                datepicker
+                                ng-model="selectedTask.defaultDateForDatePicker"
+                                show-weeks="false"
+                                min-date="today"
+                                format-year=" 'yyyy')" ng-change="selectTaskDate(dt)"/>
+                        <div class="pointer"><em></em></div>
+                    </div>
+
+                    <div class="info-pointer ng-hide" data-ng-show="isShowTaskInfo" data-ng-click="showTaskInfoDiv($event)"></div>
+                    <div id="task-main-info" class="dropdown-menu-mf popupmenu-background info-position ng-hide" data-ng-show="isShowTaskInfo" data-ng-click="showTaskInfoDiv($event)">
+                        <ul>
+                            <li class="info-none"><span>Author:</span><b>{{selectedTask.createdBy.firstName}} {{selectedTask.createdBy.lastName}}</b></li>
+                            <li class="info-none"><span>Created:</span><b><time datetime="{{selectedTask.createdAt}}">{{selectedTask.createdAt | date:'M/dd/yyyy'}}</time></b></li>
+                            <li class="info-none"><span>Edited:</span><b><time datetime="{{selectedTask.updatedAt}}">{{selectedTask.updatedAt | date:'M/dd/yyyy'}}</time></b></li>
+                            <li class="info-none"><span>Edited by:</span><b>{{selectedTask.lastModifiedBy ? selectedTask.lastModifiedBy.firstName : selectedTask.createdBy.firstName}} {{selectedTask.lastModifiedBy ? selectedTask.lastModifiedBy.lastName : selectedTask.createdBy.lastName}}</b></li>
+                        </ul>
+                    </div>
+
+                    <!-- Priority Menu -->
+                    <div class="selector-task filter-priority">
+                            <menu class="contextual-menu-task position-bottom show no-padding check-list" data-ng-show="isShowTaskPriority">
+                            <ul class="options">
+                                <li class="padding" data-ng-class="{checked: selectedTask.priority === 'NONE'}">
+                                    <img class="checked-item" data-ng-show="selectedTask.priority === 'NONE'" src="img/icons/check.png" alt="check" />
+                                    <a href="" data-ng-click="setPriority($event, 'NONE')">None</a>
+                                </li>
+                                <li class="padding" data-ng-class="{checked: selectedTask.priority === 'NORMAL'}">
+                                    <img class="checked-item" data-ng-show="selectedTask.priority === 'NORMAL'" src="img/icons/check.png" alt="check" />
+                                    <a href="" data-ng-click="setPriority($event, 'NORMAL')">Normal</a>
+                                    <img class="priority-item-1" src="tasks/img/priority-exclamation.svg" alt="check" />
+                                </li>
+                                <li class="padding" data-ng-class="{checked: selectedTask.priority === 'MEDIUM'}">
+                                    <img class="checked-item" data-ng-show="selectedTask.priority === 'MEDIUM'" src="img/icons/check.png" alt="check" />
+                                    <a href="" data-ng-click="setPriority($event, 'MEDIUM')">Medium</a>
+                                    <img class="priority-item-1" src="tasks/img/priority-exclamation.svg" alt="check" />
+                                    <img class="priority-item-2" src="tasks/img/priority-exclamation.svg" alt="check" />
+                                </li>
+                                <li class="padding" data-ng-class="{checked: selectedTask.priority === 'HIGH'}">
+                                    <img class="checked-item" data-ng-show="selectedTask.priority === 'HIGH'" src="img/icons/check.png" alt="check" />
+                                    <a href="" data-ng-click="setPriority($event, 'HIGH')">High</a>
+                                    <img class="priority-item-1" src="tasks/img/priority-exclamation.svg" alt="check" />
+                                    <img class="priority-item-2" src="tasks/img/priority-exclamation.svg" alt="check" />
+                                    <img class="priority-item-3" src="tasks/img/priority-exclamation.svg" alt="check" />
+                                </li>
+                            </ul>
+                            <div class="pointer"><em></em></div>
+                        </menu>
+                    </div>
+                    <div class="ui-clear"></div>
+                </div>
+
+                <div style="margin-bottom: 5px;">
+                    <span class="share-title">Assignee:</span>
+                        <tags-input ng-model="selectedTask.sharelist" class="bootstrap main-window"
+                                placeholder=" "
+                                display-property="displayName"
+                                add-from-autocomplete-only="true"
+                                replace-spaces-with-dashes="false"
+                                max-tags="1"
+                                on-tag-added="onTagsAddRemove()"
+                                on-tag-removed="onTagsAddRemove()">
+                        <auto-complete source="loadTags($query)"
+                                        min-length="2"
+                                        max-results-to-show="50"
+                                        highlight-matched-text="false"
+                                        loadOnFocus="true"></auto-complete>
+                        </tags-input>
+                </div>
+            </header>
+
+			<main>
+				<div></div>
+				<div class="object-wrapper">
+                    <div data-ng-show="selectedTask.lockedBy&&selectedTask.lockedBy.id&&selectedTask.lockedBy.id!=myPersonId" data-ng-include="'tasks/lock.html'"></div>  
+                    <div class="notetaskcontent" data-fixed-heigth data-fixed-heigth-adjust="{{isPopWindow?-150:-320}}">
+						<pre class="edit edit-text"
+								data-ng-show="!editText"
+								data-ng-model="selectedTask.text"
+								data-ng-bind-html="markKeyword(selectedTask.text)"
+								data-ng-click="enableEditText($event)"
+								data-ng-blur="taskUpdated($event)"
+								style="cursor:text; -webkit-user-select: text; height: 100%;"
+								>
+						</pre>
+						<textarea data-ng-readonly="!selectedTask.isEditable"
+									class="edit edit-text"
+									data-ng-show="editText"
+									data-ng-model="selectedTask.text"
+									data-ng-blur="taskUpdated($event); editText=false"
+									data-ng-keyup="taskUpdated($event)"
+                                    data-ng-bind-html="markKeyword(selectedTask.text)"
+									data-ng-click="enableEditText($event)"
+									spellcheck="false"
+									style="cursor:text; -webkit-user-select: text; height:100%">
+						</textarea>
+					</div>
+				</div>
+			</main>
+		</article>
+	</div>    
+</main>

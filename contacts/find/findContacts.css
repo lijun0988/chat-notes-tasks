@@ -1,0 +1,368 @@
+
+.add-find-contact-container {
+    margin: -281px 0 0 0;
+    position: absolute;
+    /*bottom: 283px;*/
+    right: 275px;
+    left: -138px;
+    /*visibility: hidden !important;*/
+    line-height: 37px !important;
+    cursor: default;
+}
+
+.add-find-contact-container-new {
+    display: inline-block;
+    position: absolute;
+    margin-left: -210px;
+    margin-top: 60px;
+    line-height: 37px !important;
+    cursor: default;
+    border-radius: 10px;
+    border: 1px solid #C5C5C5;
+}
+.add-find-contact-container-new .pointer  {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    position: absolute;
+    top: -7px;
+    width: 13px;
+    height: 13px;
+    background: #FFFFFF;
+    -webkit-transform: rotate(45deg);
+    left: 68%;
+}
+
+.visible{
+    visibility: visible !important;
+}
+
+
+.input-container .loader-ajax {
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    right: 22px;
+    top: 16px;
+}
+
+#search-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(54, 29, 0, 0.45);
+    position: absolute;
+    color: #033244 !important;
+    font-family: 'Open Sans', sans-serif, bold;
+    z-index: 999;
+    width: 309px;
+    height: 263px;
+    max-height: 300px;
+    max-width: 500px;
+    border: 1px solid #C5C5C5;
+}
+
+#search-container-header {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(54, 29, 0, 0.45);
+    color: #033244 !important;
+    font-family: 'Open Sans', sans-serif, bold;
+    z-index: 999;
+    width: 309px;
+    height: 263px;
+    max-height: 300px;
+    max-width: 500px;
+    border: 1px solid #C5C5C5;
+}
+
+#search-container-header-new {
+    margin: 0 0 7px 1px;
+    background: white;
+    color: #033244 !important;
+    font-family: 'Open Sans', sans-serif, bold;
+    z-index: 999;
+    height: 250px;
+    max-height: 300px;
+    max-width: 500px;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+
+.find-contact-footer {
+    height: 300px;
+    background: white;
+}
+
+.find-contact-search {
+    background: white;
+    z-index: 99999999999;
+    position: relative;
+    height: 50px;
+    width: 309px;
+    top: 214px;
+    border-radius: 10px;
+    border: 1px solid #C5C5C5;
+}
+.find-contact-search-new {
+    background: white;
+    z-index: 99999999999;
+    width: 309px;
+
+}
+
+.find-contact-search-remove-button-shadow {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-top: 1.5px solid #E4E4E4 !important
+}
+
+.find-contact-search-add-button-shadow {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    box-shadow: 0 3px 15px rgba(54, 29, 0, 0.45);
+}
+
+.input-container {
+    -webkit-border-radius: 50px;
+    border: 1px solid #CCC;
+    height: 25px;
+    width: 270px;
+    margin: 12px 0 7px 0px;
+    bottom: 0;
+    z-index: -999;
+}
+.input-container.input-container-new {
+    margin: 12px 0px 12px 17px;
+}
+
+.input-container input {
+    height: 20px;
+    width: 265px;
+    border: 0;
+    text-decoration: none;
+    margin: -15px 0 0 35px;
+    position: relative;
+    padding: 0;
+    background: transparent;
+    box-shadow: none !important;
+}
+
+.input-container #input-search-text:focus {
+    -webkit-appearance: none !important;
+    box-shadow: none !important;
+}
+
+.input-container #input-search-text:focus:hover {
+    outline: none !important;
+    -webkit-appearance: none !important;
+    box-shadow: none !important;
+}
+
+.input-container #input-search-icon {
+    background: url('../../img/chat/Group_Chat_Search.svg') no-repeat 1px transparent;
+    height: 19px;
+    width: 25px;
+    position: absolute;
+    margin: 3px 0 0 8px;
+}
+
+.search-result {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 250px;
+}
+.search-result.oldheader {
+    height: 200px;
+    margin: 0px 1px 5px 1px;
+}
+.search-result.newheader {
+    margin: 0px 1px 5px 0px;
+}
+.search-result ul label {
+    float: left;
+    margin: -2px 0 0 20px;
+    font-size: 13px !important;
+    cursor: default;
+}
+
+.search-result {
+    font-size: 12px !important;
+}
+
+.search-result .icon-contact-presence {
+    height: 12px;
+    width: 12px;
+    background-size: 12px 12px;
+    padding: 1px 0px 4px 0px;
+    margin: 0 0 0 5px;
+}
+
+.search-result .icon-contact-presence.local-contact-status {
+    background: url('../img/local-contact2.png') no-repeat transparent;
+    background-size: 12px 12px;
+}
+
+.search-result .away {
+    background: url('../../img/presence/Presence_Idle.svg') no-repeat transparent;
+}
+
+.search-result .dnd {
+    background: url('../../img/presence/Presence_Busy.svg') no-repeat transparent;
+}
+
+.search-result .available {
+    background: url('../../img/presence/Presence_Available.svg') no-repeat transparent;
+}
+
+.search-result .unavailable {
+    background: url('../../img/presence/Presence_Offline.svg') no-repeat transparent;
+}
+
+.contact-title {
+    margin: 10px 260px 15px -30px;
+    font-size: 14px;
+    color: #6E6E6E !important;
+}
+
+.search-result .icon-contact-phone {
+    height: 17px;
+    width: 17px;
+    background-size: 17px 17px;
+    margin: -4px 17px 0 5px;
+
+}
+
+.search-result .home {
+    background: url('../../img/icons/Home_Number.svg') no-repeat transparent;
+}
+
+.search-result .mobile {
+    background: url('../../img/icons/Mobile_Number.svg') no-repeat transparent;
+}
+
+.search-result .work {
+    background: url('../../img/icons/Work_Number.svg') no-repeat transparent;
+}
+
+.search-result .contact-phone-number {
+    cursor: pointer;
+    margin: 10px 30px 0 0;
+}
+
+.search-result .contact-phone {
+
+}
+
+.search-result .contact-phone:hover {
+    background: #F2F2F2;
+}
+
+#find-contacts .footer-image {
+
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid white;
+    top: -12px;
+    position: relative;
+    right: 3px;
+}
+
+#find-contacts .footer-image-shadow{
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid rgba(54, 29, 0, 0.20);
+    top: 54px;
+    position: absolute;
+    z-index: -9;
+    padding: 0;
+    margin: -1px 0 0 -27px;
+}
+
+#search-container table {
+    width: 100%;
+    position: relative;
+}
+table tbody tr
+{
+    cursor: pointer;
+}
+
+#search-container table tbody tr td {
+    padding: 0 0 0 10px;
+    text-align: right;
+    height: 34px;
+}
+
+table > tbody tr:hover {
+    background: #F2F2F2;
+}
+table > tbody tr.baned {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: white;
+}
+
+#search-container table > tbody > tr:nth-child(2) > td:nth-child(1) {
+    width: 5%;
+}
+
+#search-container table > tbody > tr:nth-child(2) > td:nth-child(2) p {
+    text-align: left;
+    padding: 0;
+    margin: 0px 0 0 -5px;
+}
+
+#search-container table > tbody > tr > td:nth-child(2) {
+   width: 45%;
+}
+
+#search-container table > tbody > tr > td:nth-child(3) {
+   width: 45%;
+}
+
+#search-container table > tbody > tr > td .call-contact {
+    cursor: pointer;
+}
+
+ .fix-name-space{
+    position: absolute;
+    width: 270px !important;
+}
+
+.fix-number-space{
+    width: 100% !important;
+}
+
+
+.contacts-clear-button {
+    background: url('../../img/chat/Group_Chat_Search_Clear.svg') no-repeat;
+    width: 13px;
+    height: 13px;
+    position: absolute;
+    right: 25px;
+    top: 19px;
+    border: none;
+    cursor: pointer;
+    outline: 0;
+    text-indent: -9999px;
+}
+
+#search-container .no-found {
+    position: absolute;
+    top: 95px;
+    left: 95px;
+}
+
+.dark-overlay-find-contacts {
+    background: #000000;
+    width: 100%;
+    height: 90%;
+    z-index: 999;
+    opacity: 0.2 !important;
+    position: absolute;
+    visibility: hidden;
+}

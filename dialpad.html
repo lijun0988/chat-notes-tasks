@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="dialPadPopup.module">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- build:css(.tmp/styles) styles/dialpad-mindframe.css -->
+    <link rel="stylesheet" href="dialPad/dialpad.css">
+    <!-- endbuild -->
+    
+    <script>
+        version = localStorage.version;
+    </script>
+    <title>Dial Pad</title>
+</head>
+
+<body data-ng-controller="DialPadPopupController">
+
+<div class="center">
+    <div id="dial-pad-container" class="clearfix">
+        <div class="contactName" data-ng-show="dialPadPopup.contactName">
+            <label>{{dialPadPopup.contactName}}</label>
+        </div>
+        <div>
+            <label id="dotsBefore">...</label>
+            <input type="text" id="dialpadInput" autofocus name="dialpadInput"
+                   data-ng-model="dialPadPopup.input"
+                   data-ng-keyup="phoneNumberFormat(dialPadPopup.input, $event)"
+                   data-ng-keypress="keyPress($event)"
+                   maxlength="40"
+                   phone-number/>
+            <span id="cleanInput" data-ng-click="clearLastValue()" data-ng-show="dialPadPopup.input != ''"></span>
+        </div>
+        <ol>
+            <li data-ng-click="pressDialPad('1')">
+                <span class="key-size key-1"></span>
+            </li>
+            <li data-ng-click="pressDialPad('2')">
+                <span class="key-size key-2"></span>
+            </li>
+            <li data-ng-click="pressDialPad('3')">
+                <span class="key-size key-3"></span>
+            </li>
+            <li data-ng-click="pressDialPad('4')">
+                <span class="key-size key-4"></span>
+            </li>
+            <li data-ng-click="pressDialPad('5')">
+                <span class="key-size key-5"></span>
+            </li>
+            <li data-ng-click="pressDialPad('6')">
+                <span class="key-size key-6"></span>
+            </li>
+            <li data-ng-click="pressDialPad('7')">
+                <span class="key-size key-7"></span>
+            </li>
+            <li data-ng-click="pressDialPad('8')">
+                <span class="key-size key-8"></span>
+            </li>
+            <li data-ng-click="pressDialPad('9')">
+                <span class="key-size key-9"></span>
+            </li>
+            <li data-ng-click="pressDialPad('*')">
+                <span class="key-size key-star"></span>
+            </li>
+            <li long-press>
+                <span class="key-size key-0"></span>
+            </li>
+            <li data-ng-click="pressDialPad('#')">
+                <span class="key-size key-pound"></span>
+            </li>
+        </ol>
+        
+        <div data-ng-click="call()" class="dialpad-call-btn" data-ng-class="{'dialpad-disable':!isPhoneReady,'dialpad-call-btn-answer':isPhoneReady&&!startCall,'dialpad-call-btn-decline':isPhoneReady&&startCall}"></div>
+        
+    </div>
+</div>
+</body>
+
+    <!-- build:js(.) scripts/dialpad-framework.js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="bower_components/jquery-autosize/jquery.autosize.js"></script>
+    <script src="bower_components/jquery.tmpl/jquery.tmpl.js"></script>
+    <script src="bower_components/jquery.easing/js/jquery.easing.js"></script>
+    <script src="bower_components/jquery.easing/js/jquery.easing.compatibility.js"></script>    
+    <!-- endbuild -->
+    
+    <!-- directy included libraries -->
+    <script src="js/lib/ciscobase.js"></script>
+	<script src="js/lib/caxl/jabberwerx.js"></script>
+	<script src="js/lib/caxl/jabberwerx.cisco.js"></script>
+	<script src="js/lib/cwic.js"></script>
+	<script src="js/lib/call-helpers.js"></script>   
+    <!-- end directy included libraries -->
+        
+    <!-- build:js({.tmp,app}) scripts/dialpad-mindframe.js -->
+    <script src="dialPad/dialPad.module.js"></script>
+    <script src="dialPad/dialpad-popup.js"></script>
+    <!-- endbuild -->       
+    
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.center').css('visibility', 'visible');
+        $('#dialpadInput').focus();
+    });
+</script>
+
+</html>

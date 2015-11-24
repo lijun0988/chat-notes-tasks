@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html id="notesApp"  data-ng-app="mfAppPopup" data-ng-controller="NotesPopoutController">
+<head>
+    <title data-ng-bind="'Mindframe Notes For - '+ dataParent.selectedPerson.displayName"></title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <!-- Stylesheets -->
+
+    <!-- build:css(.) styles/popnotes-framework.css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/docs/assets/css/bootstrap.css" />  
+    <!-- endbuild -->
+        
+    <!-- build:css(.tmp/styles) styles/popnotes-mindframe.css -->
+    <link rel="stylesheet" href="css/bootstrap-override.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="notes/notes.css">
+    <link rel="stylesheet" href="contacts/contacts.css">
+    <link rel="stylesheet" href="ng-tags-input/ng-tags-input.css">
+    <!-- endbuild -->
+</head>
+<body>
+
+
+<section class="notes-module tabbed-content"
+         data-ng-controller="NotesController"
+         data-ng-click="onClickModulePopup()"
+         static-include="notes/notes-template.html"
+         >
+
+</section>
+
+   <!-- cdnify target libraries -->
+   <script src="bower_components/angular/angular.js"></script>
+   <script src="bower_components/angular-route/angular-route.js"></script>
+   <script src="bower_components/angular-resource/angular-resource.js"></script>
+   <script src="bower_components/jquery/dist/jquery.js"></script>
+   <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+   <!-- end cdnify target libraries -->
+
+   <!-- build:js(.) scripts/popnotes-framework.js -->
+   <script src="bower_components/underscore/underscore.js"></script>
+   <!-- endbuild -->
+   
+   <!-- build:js({.tmp,app}) scripts/popnotes-mindframe.js -->
+   <script src="services/messages/messages_en-US.js"></script>
+   <script src="js/util.js"></script>
+   <script src="appNotes.js"></script>
+   <script src="notes/notes.module.js"></script>
+   <script src="services/popup.service.js"></script>        
+   <script src="constants/constants.js"></script>
+   <script src="services/path.service.js"></script>
+   <script src="services/storage.service.js"></script>
+   <script src="services/users.service.js"></script>
+   <script src="resources/resources.js"></script>
+   <script src="filters/filters.js"></script>    
+   <script src="directives/directives.js"></script>
+   <script src="js/analytic.js"></script>
+   <script src="js/mf-app.js"></script>
+   <script src="ng-tags-input/ng-tags-input.js"></script>
+   <script src="notes/share.dialog.js"></script>  
+   <!-- endbuild -->
+
+</body>
+</html>

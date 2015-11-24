@@ -1,0 +1,227 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+#dial-pad-container ol {
+    margin: 0;
+    padding: 0;
+}
+
+.center {
+    visibility: hidden;
+}
+
+@media (max-width: 1000px) {
+    .center {
+        visibility: hidden;
+    }
+
+    #dial-pad-container {
+        left: 2%;
+        top: 0;
+        position: absolute;
+        width: 210px;
+        height: auto;
+        text-align: center;
+        max-width: 500px;
+        max-height: 500px;
+    }
+}
+
+@media (min-width: 400px) {
+    .center {
+        left: 60%;
+        top: 25%;
+        position: absolute;
+    }
+
+    #dial-pad-container {
+        width: 500px;
+        height: 100%;
+        margin-left: -250px;
+        height: 300px;
+        text-align: center;
+        max-width: 500px;
+        max-height: 500px;
+    }
+}
+
+#dial-pad-container {
+    background: #FFF;
+    border-radius: 15px;
+    /*box-shadow: 0 0 6px rgba(54, 29, 0, 0.45);*/
+    padding: 12px;
+    width: 210px;
+    position: absolute;
+    text-align: center;
+    color: #1C6995;
+    height: auto;
+    z-index: -899999;
+}
+
+#dial-pad-container li {
+    border-radius: 6px;
+    clear: none;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 30px;
+    margin: 8px 0 0 12px;
+}
+
+#dial-pad-container li:active span {
+    background-color: #08C;
+    width: 55px;
+    height: 55px;
+    border-radius: 222px;
+}
+
+#dial-pad-container li span {
+    display: block;
+}
+
+#dial-pad-container .btn {
+    margin-top: 16px;
+}
+
+#dial-pad-container .clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+#dial-pad-container .clearfix {
+    display: inline-block;
+}
+
+#dial-pad-container input {
+    border: 1px hidden;
+    background: none;
+    -webkit-box-shadow: none;
+    font-size: 25px;
+    width: 176px;
+    text-decoration: none;
+    height: 40px;
+    margin: 0px 0 0 -10px;
+    color: #2A9BDB;
+}
+
+#dial-pad-container input:focus {
+    outline: 0;
+}
+
+#dial-pad-container #cleanInput {
+    position: absolute;
+    margin: 12px 0 0 5px;
+    cursor: pointer;
+    background: url('../img/DialPad/Dial-Delete.svg') no-repeat;
+    height: 15px;
+    width: 15px;
+}
+
+#dial-pad-container .contactName {
+    color: #26729E;
+    height: 20px;
+    cursor: default;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.dial-pad-footer {
+    position: absolute;
+    margin: -72px 0 0 -43px;
+    background: url('../img/DialPad/footer.png') no-repeat;
+    height: 100px;
+    width: 100px;
+    z-index: -99999;
+}
+
+#dial-pad-container .key-size {
+    height: 55px;
+    width: 55px
+}
+
+#dial-pad-container .key-1 {
+    background: url('../img/DialPad/Dial-1.svg') no-repeat;
+}
+
+#dial-pad-container .key-2 {
+    background: url('../img/DialPad/Dial-2.svg') no-repeat;
+}
+
+#dial-pad-container .key-3 {
+    background: url('../img/DialPad/Dial-3.svg') no-repeat;
+}
+
+#dial-pad-container .key-4 {
+    background: url('../img/DialPad/Dial-4.svg') no-repeat;
+}
+
+#dial-pad-container .key-5 {
+    background: url('../img/DialPad/Dial-5.svg') no-repeat;
+}
+
+#dial-pad-container .key-6 {
+    background: url('../img/DialPad/Dial-6.svg') no-repeat;
+}
+
+#dial-pad-container .key-7 {
+    background: url('../img/DialPad/Dial-7.svg') no-repeat;
+}
+
+#dial-pad-container .key-8 {
+    background: url('../img/DialPad/Dial-8.svg') no-repeat;
+}
+
+#dial-pad-container .key-9 {
+    background: url('../img/DialPad/Dial-9.svg') no-repeat;
+}
+
+#dial-pad-container .key-0 {
+    background: url('../img/DialPad/Dial-0.svg') no-repeat;
+}
+
+#dial-pad-container .key-star {
+    background: url('../img/DialPad/Dial-Star.svg') no-repeat;
+}
+
+#dial-pad-container .key-pound {
+    background: url('../img/DialPad/Dial-Pound.svg') no-repeat;
+}
+
+#dotsBefore {
+    visibility: hidden;
+}
+
+#dotsBefore.shown {
+    visibility: visible;
+    color: #2A9BDB;
+    font-weight: bold;
+    text-align: left;
+    padding: 0 8px 0 0;
+}
+
+.dialpad-call-btn {
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    margin: 270px 0 0 0;
+    cursor: pointer;
+    right: 86px;
+}
+
+.dialpad-call-btn-answer {
+    background: url('../img/icons/Call_Answer.svg') no-repeat 0 0 transparent;
+}
+
+.dialpad-call-btn-decline {
+    background: url('../img/icons/Call_Decline.svg') no-repeat 0 0 transparent;
+}
+.dialpad-disable {
+    background: url('../img/icons/Call_Inactive.svg') no-repeat 0 0 transparent;
+}

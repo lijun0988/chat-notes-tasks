@@ -1,0 +1,112 @@
+/* CSS styles for forms */
+
+.regular-form label { color: #4A4A4A }
+
+.regular-form input,
+.regular-form select { 
+	border: solid 2px #ECECEC;
+	margin-top: 4px; 
+	-webkit-box-shadow: inset 0px 0px 20px 0px rgba(100, 100, 100, 0.1);
+	box-shadow:         inset 0px 0px 20px 0px rgba(100, 100, 100, 0.1) }
+
+.regular-form select { 
+	height: 32px; 
+	-webkit-appearance: none; 
+	background: url('../img/droparrow.png') no-repeat 198px 8px transparent;
+	background-size: 8px 13px;
+	line-height: 20px }
+
+.regular-form input.width-normal { width: 219px }
+.regular-form select.width-normal { width: 236px; background-position-x: 214px }
+
+.control-group input {
+	padding: 5px 11px;
+}
+
+.control-group .label-inline {
+	display: inline-block;
+}
+
+.control-group a {
+	margin-bottom: 10px;
+	width: 75px;
+}
+
+/* DROPDOWNS */
+.dropdown-select {
+	width: 220px;
+	padding: 0 25px 0 7px;
+	height: 30px;
+    line-height: 26px;
+    background: url('../img/droparrow.png') no-repeat 200px 8px transparent;
+    background-size: 5.5%;
+    font-size: 14px;
+    -webkit-appearance: none;
+    color: #555;
+    display:inline-block;}
+
+.dropdown-select-down {
+    width: 220px;
+    padding: 0 25px 0 7px;
+    height: 30px;
+    line-height: 26px;
+    background: url('../img/droparrow-down.png') no-repeat 200px 10px transparent;
+    background-size: 5.5%;
+    font-size: 14px;
+    -webkit-appearance: none;
+    color: #555;
+    display:inline-block;}
+
+
+
+/* Mindframe custom dropdow */
+.dropdown { font-size: 0.875em; margin-bottom: 10px }
+	 .dropdown .dropdown-toggle { 
+		display: block;
+		padding: 4px 6px 4px 10px;
+		position: relative;
+		text-decoration: none;
+		color: #808080;
+		border: solid 2px #ECECEC;
+		-webkit-border-radius: 4px;
+		border-radius: 4px;
+		-webkit-box-shadow: inset 0px 0px 20px 0px rgba(100, 100, 100, 0.1);
+		box-shadow: inset 0px 0px 20px 0px rgba(100, 100, 100, 0.1); }
+	.dropdown .dropdown-toggle:hover { text-decoration: none; color: #808080 }
+		.dropdown .dropdown-toggle .caret { 
+			display: block;
+			background: url('../img/droparrow.png') no-repeat 0 0 transparent;
+			width: 8px;
+			height: 13px;
+			border: none;
+			float: right;
+			margin: 0;
+			position: absolute;
+			right: 10px;
+			top: 8px;
+			background-size: 8px 13px; }
+	.dropdown .dropdown-menu { 
+		max-height: 180px;
+		overflow-y: auto; 
+		background: #FFFFFF;
+		border: solid 2px #ECECEC;
+		border-top: none;
+		-webkit-border-radius: 4px;
+		border-radius: 4px;
+		-webkit-box-shadow: inset 0px 0px 20px 0px rgba(100, 100, 100, 0.1);
+		box-shadow: inset 0px 0px 20px 0px rgba(100, 100, 100, 0.1); 
+		padding: 0; 
+		min-width: 246px; 
+		top: 90% }
+		.dropdown .dropdown-menu .divider { margin: 0 }
+		.dropdown .dropdown-menu li:first-child { margin-top: 4px }
+		.dropdown .dropdown-menu li:last-child a { padding-bottom: 4px }
+			.dropdown .dropdown-menu li > a { padding: 3px 2px 3px 10px; display: block; cursor: pointer }
+			.dropdown .dropdown-menu li > a:hover,
+			.dropdown .dropdown-menu li > a:focus { 
+				background-color: #2B9BDB; 
+				color: #FFFFFF;
+				background-image: none; }
+
+		.dropdown .dropdown-menu a[href] { color: #2B9BDB }
+		.dropdown .dropdown-menu a:not([href]) { color: #808080 }

@@ -1,0 +1,390 @@
+/*Add new  Contact*/
+
+.test {
+    background: blue;
+    height: 61px;
+    border-bottom: solid 1px #B7C3CA;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+}
+
+.inner-wrapper {
+    background: white;
+}
+
+.add-contact-include {
+    position: relative;
+    top: 0;
+    left: 0px;
+}
+
+.add-contact-container {
+    /*text-align: center;*/
+}
+
+.add-contact-container .add-contact-form {
+    margin: 30px 0 0 -4px;
+}
+
+.add-contact-container input[type='text'], .add-contact-container input[type='email'] {
+    margin: -43px 0 0px 110px;
+    width: 135px;
+    min-width: 135px !important;
+}
+.add-contact-container input[type='text'].large, .add-contact-container input[type='email'].large {
+    width: 180px;
+    margin: -43px 0 0px 140px;
+}
+
+.add-contact-container label {
+    margin: 3px 0 0 8px;
+    width: 90px;
+    color: #6E6E6E;
+    font-size: 12px;
+    cursor: default;
+    text-align: right;
+}.add-contact-container label.large {
+     width: 110px;
+ }
+
+.add-contact-container #group {
+    margin: -60px 0 0px 100px;
+}.add-contact-container #group.large {
+     margin:-43px 0 0px 130px;
+     width: 200px;
+ }
+
+.add-contact-container .label-group {
+    margin: -15px 0 12px 0 !important;
+}
+
+.add-contact-container select {
+    margin: -45px 0 0 100px;
+    width: 150px;
+    background-position: 130px 12px;
+    font-size: 12px;
+    color: #6E6E6E;
+}.add-contact-container select.large {
+     width: 180px;
+     background-position: 170px 12px;
+ }
+
+.add-contact-container ul {
+    margin: -29px 0 25px 98px;
+}.add-contact-container ul.large {
+     margin-left: 120px;
+     list-style: none;
+}
+
+.add-contact-container ul.searchperson {
+    margin:0;
+}
+.add-contact-container .large {
+    top: 81px;
+    left: 145px;
+    width: 195px;
+}
+
+.add-contact-container ul li {
+    padding: 5px !important;
+}
+
+.add-contact-container ul li label {
+    width: 0px;
+    cursor: pointer;
+}
+
+.add-contact-container h4 {
+    color: #005580;
+    margin: 65px 0px -10px 15px;
+}
+.add-contact-container h4.large {
+    margin-bottom: 10px;
+}
+
+.add-contact-container input[type="button"].cancel {
+    background: url('../../img/buttons/Button-Cancel.svg') no-repeat white;
+    width: 115px;
+    height: 35px;
+    float: left;
+    border: 0;
+}
+
+.add-contact-container input[type="button"]:active,
+.add-contact-container input[type="button"]:focus,
+.add-contact-container input[type="button"]:visited {
+    outline: none;
+}
+
+.add-contact-container input.save:active,
+.add-contact-container input.save:focus,
+.add-contact-container input.save:visited {
+    outline: none;
+}
+
+.add-contact-container select:active,
+.add-contact-container select:focus,
+.add-contact-container select:visited {
+    outline: none !important;
+    -webkit-appearance: none !important;
+    box-shadow: none !important;
+}
+
+.add-contact-container input.save {
+    background: url('../../img/buttons/Button-Save.svg') no-repeat white;
+    width: 105px;
+    height: 30px;
+    border: 0;
+    float: right;
+}
+
+.add-contact-container .add-contact-buttons {
+    text-align: center;
+    margin: 0 0 0 5px;
+}
+
+.clearfix:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+.add-contact-container .error {
+    border: 1px solid red !important;
+}
+
+#unrecognizedContactForm > div.filters.large{
+    margin-left: 20px;
+    margin-right: 50px;
+}
+
+#unrecognizedContactForm > div.filters .work-left{
+    margin-left: 8px;
+}
+
+#unrecognizedContactForm > div.filters .home-left{
+    margin-left: 3px;
+}
+
+
+#unrecognizedContactForm > div.filters .droparrow > a > span{
+    color: #2a9bdb;
+    font-size: 12px;
+}
+
+#unrecognizedContactForm > div.filters .droparrow{
+    background: url('../../img/droparrow-blue.png') no-repeat 92px 6px;
+    background-size: 8px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+#unrecognizedContactForm > div.filters .droparrow.left{
+    text-align: left;
+}
+
+#unrecognizedContactForm > div.filters > div > menu > ul{
+    margin: 5px 0 5px 0px;
+}
+
+#unrecognizedContactForm > div.filters > div > menu > ul > li:hover{
+    cursor: pointer;
+    background-color: #E1E1E1;
+}
+
+#unrecognizedContactForm > div.filters > div > menu{
+    bottom: inherit;
+    left: 10px;
+    width: 95px;
+    -webkit-box-shadow: 0px 0px 25px 6px rgba(50, 50, 50, 0.2);
+    box-shadow: 0px 0px 25px 6px rgba(50, 50, 50, 0.2);
+    margin: -57px 0 0 0px;
+}
+
+#unrecognizedContactForm > div.filters > div > menu > ul > li > img{
+    left: 8px;
+    top: 8px;
+}
+
+#unrecognizedContactForm > div.filters > div > menu > ul > li > a{
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+}
+
+
+
+#unrecognizedContactForm .add-contact-buttons-disable {
+    height: 200px;
+    z-index: -9 !important;
+}
+
+#unrecognizedContactForm > div.move-right{
+    margin-left: 30px;
+}
+
+/*Add unrecognized  Contact*/
+.unrecognized-contact-include {
+    z-index: 9999;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -198px;
+    margin-top: -242px;
+}
+
+.unrecognized-contact-container {
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #797979;
+    width: 390px;
+}
+
+.unrecognized-contact-container input[type='text'], .unrecognized-contact-container input[type='email'] {
+    margin: -43px 0 0px 145px;
+    width: 170px;
+}
+
+.unrecognized-contact-container label {
+    margin: 3px 0 0 10px;
+    text-align: right;
+    width: 118px;
+    color: #6E6E6E;
+    font-size: 12px;
+    cursor: default;
+}
+
+.unrecognized-contact-container select {
+    margin: -45px 0 0 145px;
+    width: 184px;
+    background-position: 160px 12px;
+    font-size: 12px;
+    color: #6E6E6E;
+}
+
+.unrecognized-contact-container ul {
+    margin: -29px 0 25px 130px;
+}
+
+.unrecognized-contact-container ul li {
+    padding: 5px !important;
+}
+
+.unrecognized-contact-container ul li label {
+    width: 0px;
+    cursor: pointer;
+}
+
+.unrecognized-contact-container h4 {
+    color: #005580;
+    margin: 20px 0px 25px 30px;
+}
+
+.unrecognized-contact-container input[type="button"].cancel {
+    background: url('../../img/buttons/Button-Cancel.svg') no-repeat white;
+    width: 140px;
+    height: 35px;
+    float: left;
+    border: 0;
+}
+
+.unrecognized-contact-container input[type="button"]:active,
+.unrecognized-contact-container input[type="button"]:focus,
+.unrecognized-contact-container input[type="button"]:visited {
+    outline: none;
+}
+
+.unrecognized-contact-container input.save:active,
+.unrecognized-contact-container input.save:focus,
+.unrecognized-contact-container input.save:visited {
+    outline: none;
+}
+
+.unrecognized-contact-container select:active,
+.unrecognized-contact-container select:focus,
+.unrecognized-contact-container select:visited {
+    outline: none !important;
+    -webkit-appearance: none !important;
+    box-shadow: none !important;
+}
+
+.unrecognized-contact-container input.save {
+    background: url('../../img/buttons/Button-Save.svg') no-repeat white;
+    width: 123px;
+    height: 35px;
+    border: 0;
+    float: right;
+}
+
+.unrecognized-contact-container .unrecognized-buttons {
+    text-align: center;
+    margin: -15px 28px  50px 28px;
+}
+
+.unrecognized-plus-button {
+    background: url('../../img/buttons/Unrecognized-Number-Add.svg') 0px 1px no-repeat;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    margin: 0 0 0 0px;
+    cursor: pointer;
+    background-size: 18px;
+}
+.unknown-dropdown {
+    display: inline-block;
+    position: absolute;
+    margin-left: -72px;
+    margin-top: 60px;
+}
+
+.unrecognized-contact-container .error {
+    border: 1px solid red !important;
+}
+
+.unrecognized-contact-container #group {
+    margin: -90px 0 0px 145px !important;
+}
+
+.unrecognized-contact-container .label-group {
+    margin: -15px 0 12px 0 !important;
+}
+
+.unrecognized-contact-container-popup {
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #797979;
+    width: 265px;
+    z-index: 1000;
+    padding: 10px;
+}
+.unrecognized-contact-container-popup.right {
+    right:10px;
+}
+.unrecognized-contact-container-popup.center {
+    display:inline-block;
+    margin-top: 60px;
+    margin-left: -250px;
+    width: 350px;
+}
+
+.unrecognized-contact-container-popup .ng-binding{
+    margin-top:5px;
+}
+
+.unrecognized-contact-container-popup .pointer{
+    position: absolute;
+    top: -6px;
+    width: 18px;
+    height: 18px;
+    background: #FFFFFF;
+    border: 1px solid #797979;
+    -webkit-transform: rotate(45deg);
+    right: 20px;
+    clip: rect(0px, 14px, 14px, 0px);
+}
+.unrecognized-contact-container-popup .pointer.center {
+    right: 102px;
+}

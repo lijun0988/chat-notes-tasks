@@ -1,0 +1,29 @@
+<section class="share-popup" data-ng-controller="showShareDialogCtrl" data-ng-click="onClickModal($event)">
+    <h4>
+        <span class="header-img">&nbsp;</span>
+        {{metaData.title}}
+    </h4>
+    <p data-ng-bind="metaData.desc" data-ng-class="{'center':metaData.isHideFooter}"></p>
+    <!--<div class="tags-container" data-ng-hide="metaData.isHideTags"> -->
+        <tags-input ng-model="selectedTask.sharelist" class="bootstrap dialog-window" data-ng-hide="metaData.isHideTags"
+                    display-property="displayName"
+                    add-from-autocomplete-only="true"
+                    replace-spaces-with-dashes="false"
+                    max-tags="1"
+                    on-tag-added="onTagsAddRemove()"
+                    on-tag-removed="onTagsAddRemove()">
+
+            <auto-complete source="loadTags($query)"
+                           min-length="2"
+                           max-results-to-show="50"
+                           highlight-matched-text="false"
+                           loadOnFocus="true"></auto-complete>
+        </tags-input>
+    <!--</div> -->
+
+    <footer data-ng-hide="metaData.isHideFooter">
+        <button class="btn btn-default btn-large left" type="button" data-ng-click="cancelBtnClick($event)">{{metaData.btnCancel}}</button>
+        <button disabled class="btn btn-large right" type="button" data-ng-click="shareBtnClick($event)">{{metaData.btnOK}}</button>
+        <div style="clear: both;"></div>
+    </footer>
+</section>

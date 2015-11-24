@@ -1,0 +1,66 @@
+<section>
+    <main data-ng-click="stopPropagation($event)" id="find-contacts" data-ng-controller="findContactsController" data-ng-show="!disableAddButton" >
+        <div id="search-container" data-ng-show="contacts">
+            <label class="no-found" data-ng-show="contacts == 'no-data'">No user found</label>
+            <div class="search-result oldheader" >
+                <table class="fixed">
+                    <tbody data-ng-repeat="contact in contacts">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    <tr data-ng-repeat="work in contact.phones.work" data-ng-click="call(work)" >
+                        <td>
+                            <span data-ng-show="{{$first ? true : false}}" data-ng-class="'{{contact.presence}}'"
+                                  class="icon-contact-presence"></span>
+                        </td>
+                        <td  class="fix-name-space">
+                            <p>
+                                {{ $first ?
+                                  contact.fullName.length >= '10' && (work.length > '25' && work.length <= '40') ? contact.fullName.length == '10' ? contact.fullName : contact.fullName.substring(0, 2) + '...'
+                                : contact.fullName.length >= '12' && (work.length > '15' && work.length <= '25') ? contact.fullName.length == '12' ? contact.fullName : contact.fullName.substring(0, 12) + '...'
+                                : contact.fullName.length >= '18' && (work.length > '10' && work.length <= '15') ? contact.fullName.length == '18' ? contact.fullName : contact.fullName.substring(0, 18) + '...'
+                                : contact.fullName.length >= '22' && (work.length > '5' && work.length <= '10')  ? contact.fullName.length == '22' ? contact.fullName : contact.fullName.substring(0, 22) + '...'
+                                : contact.fullName.length >= '28' && (work.length > '4' && work.length <= '5')   ? contact.fullName.length == '28' ? contact.fullName : contact.fullName.substring(0, 28) + '...'
+                                : contact.fullName : ''}}
+                            </p>
+                        </td>
+                        <td class="fix-number-space">
+                            <span class="call-contact" >{{work}}</span>
+                        </td>
+                        <td>
+                            <span class="icon-contact-phone work"></span>
+                        </td>
+                    </tr>
+                    <tr data-ng-repeat="home in contact.phones.home" data-ng-click="call(home)">
+                        <td colspan="3" >
+                            <span class="call-contact" >{{home}}</span>
+                        </td>
+                        <td data-ng-click="call(home)"><span class="icon-contact-phone home"></span></td>
+                    </tr>
+                    <tr data-ng-repeat="mobile in contact.phones.mobile" data-ng-click="call(mobile)">
+                        <td colspan="3" >
+                            <span class="call-contact" >{{mobile}}</span>
+                        </td>
+                        <td><span class="icon-contact-phone mobile" ></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="find-contact-search" data-ng-class="{'find-contact-search-remove-button-shadow' : contacts, 'find-contact-search-add-button-shadow':  contacts.length == 0  }">
+            <div class="input-container">
+                <div id="input-search-icon"></div>
+                <input id="input-search-text" type="text" autocomplete="off" placeholder="Search..."
+                       data-ng-model="init.input" data-ng-keyup="search($event)"/>
+                <button id="clearSearch" type="button" class="contacts-clear-button mf-clear-button" data-ng-hide="init.input == '' || init.loading" data-ng-show="init.input || !init.loading" data-ng-click="cleanSearch()">Clear</button>
+                <img src="img/ajax/loader.gif" alt="Ajax Loader" data-ng-show="init.loading" class="loader-ajax"
+                     id="showLoadingSearch"/>
+                <div class="footer-image"></div>
+                <div class="footer-image-shadow"></div>
+            </div>
+        </div>
+    </main>
+</section>

@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title></title>
+        <script type="text/javascript">
+            function onLoad() {
+                var results={},
+                    kvp,
+                    getparams=window.location.search,
+                    parentwindow=window.opener || window.parent || null;
+
+                if(getparams.length > 1) {
+                    getparams=getparams.substring(1,getparams.length).split("&");
+                    for(var i=0; i < getparams.length; i++) {
+                        kvp = getparams[i].split("=");
+                        results[kvp[0]]=kvp[1];
+                    }
+                }
+                if(parentwindow && parentwindow.loginBU) {
+                        switch(results['AT']) {
+                            case 'LI':
+                                parentwindow.loginBU(results);
+                                break;
+                            case 'LO':
+                                parentwindow.loginBU(results);
+                                break;
+                            case 'IM':
+                                parentwindow.meetingBU(results);
+                                break;
+                            case 'JM':
+                                parentwindow.meetingBU(results);
+                                break;
+                            default:
+                                parentwindow.otherBU(results);
+                                break;
+                        }
+                }
+                // clear the document so it doesn't execute when parent is reloaded
+                this.location="about:blank";
+            }
+        </script>
+    </head>
+    <body onload="onLoad()">
+    </body>
+</html>
